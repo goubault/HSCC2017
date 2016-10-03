@@ -121,7 +121,7 @@
 \newcommand{\pro}{\mbox{pro }}
 \newcommand{\semb}{[ \! [}
 \newcommand{\seme}{] \! ]}
-%\newcommand{\comment}[1]{}
+%\newcommand{\comment2}[1]{}
 \newcommand{\norma}[1]{\mbox{$\mid \! \mid #1 \mid \! \mid^a$}}
 \newcommand{\normu}[1]{\mbox{$\mid \! \mid #1 \mid \! \mid^\cup$}}
 \newcommand{\normn}[1]{\mbox{$\mid \! \mid #1 \mid \! \mid^\cap$}}
@@ -361,13 +361,14 @@ Taylor models, see Section \ref{sec:Taylor}).
 
 Introducing the new state variable $z=(x,p,t)$ with $\dot z = (\dot x,0,1)$, and defining ${\cal Z} = {\cal D} \times {\cal P} \times \R^+$,
 the equation (\ref{eq:flow}) can be rewritten with all uncertainties embedded in the initial state vector~:
-\begin{equation} \dot z(t) = f_q(z) ,
+\begin{equation} \dot z(t) = f_(z) ,
 \label{eq:flowb}
 \end{equation}
-\begin{equation}
- \gamma_e \left( z(t) \right) = 0. 
-\label{eq:guardb}
- \end{equation}
+
+In the sequel, we will write $x_i$ and $f_i$ for the $i$th component ($i=1,\ldots,n$) of
+the state vector $x$ and of the function $f$. 
+
+\ForAuthors{On veut ptet un paragraph notations?}
 
 \SP{Def de forward inner approximation}
 
@@ -713,15 +714,15 @@ On each time interval $[t_j,t_{j+1}]$ do:\\
 and $[\bfm{R}_{j+1}]$ of ${\cal J}(t;t_j,\z_j)$\\
 - compute the Taylor Models valid on $[t_j,t_{j+1}]$:
 \begin{equation}
-[\z](t,t_j,[{\z}_j]) = [{\z}_j] + \sum_{i=1}^{k-1} (t-t_j)^i f_q^{[i]}([{\z}_j])+ (t-t_j)^k f_q^{[k]}([{\r}_{j+1}]).
+[\z](t,t_j,[{\z}_j]) = [{\z}_j] + \sum_{i=1}^{k-1} (t-t_j)^i f^{[i]}([{\z}_j])+ (t-t_j)^k f^{[k]}([{\r}_{j+1}]).
 \label{eq:TM1}
 \end{equation}
 \begin{equation}
-[\tilde{\z}](t,t_j,[\tilde{\z}_j]) = [\tilde{\z}_j] + \sum_{i=1}^{k-1} (t-t_j)^i f_q^{[i]}([\tilde{\z}_j])+ (t-t_j)^k f_q^{[k]}([\tilde{\r}_{j+1}]).
+[\tilde{\z}](t,t_j,[\tilde{\z}_j]) = [\tilde{\z}_j] + \sum_{i=1}^{k-1} (t-t_j)^i f^{[i]}([\tilde{\z}_j])+ (t-t_j)^k f^{[k]}([\tilde{\r}_{j+1}]).
 \label{eq:TM2}
 \end{equation}
 \begin{eqnarray}
-[\J](t,t_j,[{\z}_j])& =& [{\J}_j] + \sum_{i=1}^{k-1} (t-t_j)^i \mbox{Jac}_x(f_q^{[i]})([{\r}_{j+1}]) [{\J}_j] \\&& +  (t-t_j)^k \mbox{Jac}_x(f_q^{[k]})([{\r}_{j+1}]) [\bfm{R}_{j+1}]
+[\J](t,t_j,[{\z}_j])& =& [{\J}_j] + \sum_{i=1}^{k-1} (t-t_j)^i \mbox{Jac}_x(f^{[i]})([{\r}_{j+1}]) [{\J}_j] \\&& +  (t-t_j)^k \mbox{Jac}_x(f^{[k]})([{\r}_{j+1}]) [\bfm{R}_{j+1}]
 \label{eq:TM3}
 \end{eqnarray}
 - deduce an inner-approximation valid for $t$ in $[t_j,t_{j+1}]$~: if $]\z[(t,t_j)$ defined by Equation~(\ref{eq:inner_cont}) is an improper interval\\
@@ -738,8 +739,67 @@ otherwise the inner-approximation is empty.\\
 We carry on with the computation of outer-approximations for solutions and Jacobians for 
 the Brusselator, on the first time
 step, using affine arithmetic for estimating the images of functions on initial intervals.
-\ForAuthors{OK?}
-(...) % HYPHOP
+
+%First, we use the Picard-Lindel\"of operator to compute rough enclosures $[r_2]$ and
+%$[R_2]$ for, respectively, the states $x_1$ and $x_2$, and the entries of the Jacobian
+%$J_{1,1}$, $J_{1,2}$, $J_{2,1}$ and $J_{2,2}$. 
+
+We will have, as outer-approximations of order 1 with respect to time, the formulas (for $i=1, 2$, $j=1, 2$
+and $t \in [0,h]$ (Equations (\ref{eq:TM1}) and (\ref{eq:TM3})) the following. Note that
+as we only consider one time step here, we write $\int{x_i}(t)$ instead of $\int{x_i}(t,0,\int{x_0})$ :  
+
+\ForAuthors{J'essaie de coller \`a \ref{eq:TM1} mais le
+fait que l'indice en pas de temps soit en bas g\^ene ; on ne pourrait pas le mettre en haut
+plut\^ot? ;-) On a d\'ej\`a les indices en bas naturellement, pour les \'etats et la jacobienne.}
+
+\begin{eqnarray}
+\int{x_i}(t) & = & \int{(x_i)_0} + {f_i}^{[0]}(\int{x_0}) t + f_i^{[1]}(\int{r_1}) \frac{t^2}{2} \\
+\int{J_{i,j}}(t) & = & \int{(J_{i,j})_0}+Jac_x(f_{i}^{[0]})(\int{r_1})\int{R_1}^j t + Jac_x(f_{i}^{[1]})(\int{r_1})\int{R_1}^j \frac{t^2}{2} \\
+\label{TaylorJ}
+\end{eqnarray}
+
+\ForAuthors{C'est compliqu\'e si on veut d\'ecrire toutes les entrees de la Jacobienne
+separement ; $\int{R_1}^j$ c'est la colonne avec que les outer-approx des $J_{*,j}$...mais en
+m\^emes temps pour pr\'esenter des calculs dans des exemples, je prefere avec les entrees
+de la jacobienne separement. Non? ;-)}
+%\noindent where $R_i$ (resp. $R_{i,j}$) are outer-approximations of the second Lie derivatives of
+%$x_i$ (resp. $J_{i,j}$), over the time interval $[0,h]$. 
+
+To determine $Jac_x(f_i^{[1]})$ and $f_i^{[1]}$, we compute the second Lie derivatives, as well ``rough enclosures''
+$\int{r_1}_i$ and $\int{R_1}_{i,j}$ of the $x_i(t)$ and $J_{i,j}(t)$ over $t\in [0,h]$, 
+$x_1 \in \int{(x_1)_0}$, $x_2 \in \int{(x_2)_0}$. For instance, we have : 
+
+\begin{eqnarray}%{lcl}
+{f}_1^{[1]} & = & -2+4x_1+3x_1x_2+\frac{3}{2}x_1^3-9x_1^2x_2\\
+& & \ \ \ +\frac{9}{2}x_1^3x_2^2-\frac{9}{4}x_1^4x_2\\
+%f_2^{[1]} & = & 1-2x_1-3x_1x_2+\frac{15}{2}x_1^2x_2-\frac{3}{2}x_1^3\\
+%& & \ \ \ -\frac{9}{2}x_1^3x_2^2+\frac{9}{4}x_1^4x_2 \\
+Jac_x(f^{[1]})_{1,1}(x_1,x_2)(J_{1,1},J_{2,1}) & = & (3x_2f_1+3x_1f_2)J_{1,1}+(-2+3x_1x_2)Jac_x(f^{[0]}_{1,1}(x_1,x_2)(J_{1,1},J_{2,1}) \\ 
+& & +3x_1f_1J_{2,1}+\frac{3}{2}x_1^2{Jac_x(f^{[0]})}_{2,1}(x_1,x_2)(J_{1,1},J_{2,1}) 
+%Jac_x(f^{[1]}) & = & \left(\begin{array}{cc}
+%(3x_2f_1+3x_1f_2)J_{1,1}+(-2+3x_1x_2)\dot{J}_{1,1}+3x_1f_1J_{2,1}+\frac{3}{2}x_1^2\dot{J}_{2,1} &
+%(3x_2f_1+3x_1f_2)J_{1,2}+(-2+3x_1x_2)\dot{J}_{1,2}
+%+3x_1f_1J_{2,2}+\frac{3}{2}x_1^2\dot{J}_{2,2}\\
+%(-3x_2f_1-3x_1f_2)J_{1,1}+(1-3x_1x_2)\dot{J}_{1,1}\\
+%-3x_1f_1J_{2,1}-\frac{3}{2}x_1^2\dot{J}_{2,1} & 
+%(-3x_2f_1-3x_1f_2)J_{1,2}+(1-3x_1x_2)\dot{J}_{1,2}
+%-3x_1f_1J_{2,2}-\frac{3}{2}x_1^2\dot{J}_{2,2}\end{array}\right)
+\label{secondderivative}
+\end{eqnarray} %$$
+\noindent where $Jac_x(f^{[1]})_{1,1}(x_1,x_2)(J_{1,1},J_{2,1})$ and ${Jac_x(f^{[0]})}_{2,1}(x_1,x_2)(J_{1,1},J_{2,1})$ are given in Equations \ref{jacobian} (they are the right hand side
+of these equations, as Equation (\ref{eq:IVP_jac2}) shows). 
+
+For rough enclosures of $\int{r_1}_i$ and $\int{R_1}_{i,j}$ we use the interval Picard-Lindel\"of method and find : 
+\begin{eqnarray}%{lcl}
+\int{r_1}_1 & = & \left[\frac{93}{50}, \frac{43}{20}\right]\\
+\int{r_1}_2 & = & \left[\frac{1}{10}, \frac{579}{2500}\right]\\
+\int{R_1}_{1,1} & = & \left[\frac{116}{125}, 1\right]\\
+\int{R_1}_{1,2} & = & \left[0, \frac{26}{75}\right]\\
+\int{R_1}_{2,1} & = & \left[-\frac{37}{1500}, \frac{1}{45}\right]\\
+\int{R_1}_{2,2} & = & \left[\frac{49}{75}, 1\right]
+\label{roughenclosures}
+\end{eqnarray}%$$
+\ForAuthors{Ptet remettre les valeurs flottantes?}
 \end{example}
 
 \begin{remark}
@@ -826,6 +886,115 @@ and we have limit conditions $x_1(t) \in [-1,13]$, $x_2(t) \in \R$ (conditions a
 
 \SP{Si on peut montrer qu'on peut soit reussir a remonter la cite soit rester bloque, un peu comme T. Le Mezo a montre dans sa pres a brest, ca serait chouette. 
 Mais au moins dans l'implem matlab ca explose completement, mais relativement bizarrement: je ne suis qu'a moitié confiante sur l'AA dedans ...}
+
+\subsection{Other benchmarks}
+\ForAuthors{To be discussed ;-)}
+
+These benchmarks are taken from \cite{Underapproxflowpipes}. 
+
+\paragraph{Moore-Greitzer model of a jet engine}
+\begin{equation}
+\dot{\left(\begin{array}{c}
+x \\
+y
+\end{array}\right)} = \left(\begin{array}{c}
+-y-1.5x^2-0.5x^3-0.5 \\
+3x-y
+\end{array}\right)
+\end{equation}
+The initial set is given by the simplex 
+$$X_0=\{(x,y) \in \R^2 | -x \leq -0.9 \wedge -y \leq -0.9\wedge x+y-2 \leq 0\}$$
+
+In \cite{Underapproxflowpipes}, two cases are considered : 
+\begin{itemize}
+\item computation of the inner and outer approximations of the reachable set at time
+$t=0.04$
+\item computation of the inner and outer approximations of the reachable set at times
+in [0,3] (using a step-size $\delta=0.02$)
+\end{itemize}
+
+\ForAuthors{J'ai demande \`a Xin Chen les equations exactes utilisees dans le papier}
+
+\paragraph{Shimizu-Morioka}
+
+\paragraph{Steam governor}
+
+\paragraph{Biological system}
+
+(also from \cite{underapprox16}?)
+
+\begin{equation}
+\dot{\left(\begin{array}{c}
+x_1 \\
+x_2 \\
+x_3 \\
+x_4 \\
+x_5 \\
+x_6 \\
+x_7
+\end{array}\right)} = \left(\begin{array}{c}
+-0.4x_1+5x_3x_4 \\
+0.4x_1-x_2 \\
+x_2-5x_3x_4 \\
+5x_5x_6-5x_3x_4 \\
+-5x_5x_6+5x_3x_4 \\
+0.5x_7-5x_5x_6 \\
+-0.5x_7+5x_5x_6
+\end{array}\right)
+\end{equation}
+
+
+\ForAuthors{Les suivants, bof, classiques? mais bien pour benchs si on avait le temps?}
+
+\paragraph{R\"ossler}
+
+
+\paragraph{Lorenz}
+
+\paragraph{Lotka-Volterra}
+(also from \cite{underapprox16}?)
+
+\begin{equation}
+\dot{\left(\begin{array}{c}
+x_1 \\
+x_2 \\
+x_3
+\end{array}\right)} = \left(\begin{array}{c}
+x_1x_2-x_1x_3 \\
+x_2x_3-x_2x_1 \\
+x_3x_1-x_3x_2
+\end{array}\right)
+\end{equation}
+
+\paragraph{Coupled Van der Pol}
+
+The next set of examples is taken from \cite{underapprox16}. 
+
+\paragraph{Electromechanical oscillation}
+
+\begin{equation}
+\dot{\left(\begin{array}{c}
+x \\
+y
+\end{array}\right)} = \left(\begin{array}{c}
+y \\
+0.2-0.7sin(x)-0.05y
+\end{array}\right)
+\end{equation}
+The initial set is given by $[-0.1,0.1]\times [2.9,3.1]$. We are looking at an 
+inner-approximation at times $t=0.5$ and $t=3$. 
+
+\paragraph{Van der Pol}
+
+\begin{equation}
+\dot{\left(\begin{array}{c}
+x_1 \\
+x_2
+\end{array}\right)} = \left(\begin{array}{c}
+x_2 \\
+-0.2(x^2_1-1)x_2-x_1
+\end{array}\right)
+\end{equation}
 
 %------------------------------------------------------------------------------------------------------------------------------------------------
 
