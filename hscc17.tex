@@ -261,7 +261,7 @@
 % of EIGHT authors. SIX appear on the 'first-page' (for formatting
 % reasons) and the remaining two appear in the \additionalauthors section.
 %
-\author{
+%\author{
 % You can go ahead and credit any number of authors here,
 % e.g. one 'row of three' or two rows (consisting of one row of three
 % and a second row of one, two or three).
@@ -273,26 +273,44 @@
 % e-mail address with \email.
 %
 % 1st. author
-\alignauthor E. Goubault \\ %\titlenote{Dr.~Trovato insisted his name be first.}\\
-       \affaddr{LIX, Ecole Polytechnique, CNRS, }\\
-       \affaddr{Universit\'e Paris-Saclay, 91128 Palaiseau, France} \\
-       \email{\small goubault@lix.polytechnique.fr}
+%\alignauthor E. Goubault \\ %\titlenote{Dr.~Trovato insisted his name be first.}\\
+%       \affaddr{LIX, Ecole Polytechnique, CNRS, }\\
+%       \affaddr{Universit\'e Paris-Saclay, 91128 Palaiseau, France} \\
+%       \email{\small goubault@lix.polytechnique.fr}
 % 2nd. author
-\alignauthor S. Putot \\ %\titlenote{The secretary disavows
+%\alignauthor S. Putot \\ %\titlenote{The secretary disavows
 %any knowledge of this author's actions.}\\
-       \affaddr{LIX, Ecole Polytechnique, CNRS, } \\
-       \affaddr{Universit\'e Paris-Saclay, 91128 Palaiseau, France}\\
+%       \affaddr{LIX, Ecole Polytechnique, CNRS, } \\
+%       \affaddr{Universit\'e Paris-Saclay, 91128 Palaiseau, France}\\
 %       \affaddr{France}\\
-       \email{\small putot@lix.polytechnique.fr}
-}
+%       \email{\small putot@lix.polytechnique.fr}
+%}
+\author{}
 
 \maketitle
 \begin{abstract}
-- forward inner- and outer- approximations 
-of the set of  states reachable by an uncertain hybrid systems, that is with uncertain initial conditions and parameters.\\
-- little studied and difficult problem, the small number of existing approaches mostly attack the dual problem aof backward inner-apporximated reachability \\
-- based on a combination of Taylor based methids for teh solution of IVP and generalized mean value theorem for inner-approximation~\cite{hscc14}\\
-- experiments with matlab implementation
+In this paper, we propose a new method for inner-approximations of reachables sets of dynamical systems defined
+by (possibly non-linear, and uncertain) 
+ordinary differential equations. This is a notoriously difficult problem, much more intricate than 
+outer-approximations, for which there exist 
+well known solutions, mostly based on Taylor models. Our solution is also
+based on Taylor models, but contrarily to the few methods developped recently 
+for inner-approximations of non-linear ODEs, our method is a forward method,
+which only needs rather inexpensive set-based methods, instead of the clever, but still complicated, backward
+methods for which extra ingredients, either coming from optimisation, or involving topological criteria to be
+tested (connectedness in particular), are required. 
+Still, we are able to show with our prototype Matlab implementation that our method is both efficient and
+precise on numerous classical examples. 
+\ForAuthors{Est-ce dangereux de se placer un peu sur la complexite? On pourrait nous reprocher d'avoir un
+nombre d'equations en le produit du nombre d'equations d'origine, avec le nombre de variables... Mais la methode
+de Sriram et celle des chinois est potentiellement tres complexe.}
+Our method, being based on Taylor models and being a forward method, also provides outer-approximations, naturally. The combination of both is at the heart of refined methods for verification and falsification of properties
+of cyber-physical systems. 
+%- forward inner- and outer- approximations 
+%of the set of  states reachable by an uncertain hybrid systems, that is with uncertain initial conditions and parameters.\\
+%- little studied and difficult problem, the small number of existing approaches mostly attack the dual problem aof backward inner-apporximated reachability \\
+%- based on a combination of Taylor based methids for teh solution of IVP and generalized mean value theorem for inner-approximation~\cite{hscc14}\\
+%- experiments with matlab implementation
 \end{abstract}
 
 % A category with the (minimum) three required fields
@@ -325,19 +343,33 @@ also require inner-approximating the reachable set, that is computing states tha
 Methods for inner-approximated reachability are far less developed, and especially in the non-linear case, 
 since most methods in the non-linear case rely on conservative linearizations, which necessarily produce outer approximations.
 
+In this paper, we concentrate on the under-approximation of the reachable sets of
+the continuous part of hybrid systems, since the discrete part has been treated elsewhere \cite{HSCC2014}. 
+
 \paragraph{Contributions:}
 
-In previous work~\cite{sas07,hscc14}, we proposed an approach for direct forward inner-approximated reachability of 
-\ForAuthors{Attention au double-blind review}
-discrete dynamical systems, and gave a few hints as to how we would handle continuous and hybrid systems. We build here
-on this previous work. \\
+This paper extends the work presented in ~\cite{sas07,hscc14}, where the authors proposed an approach for direct forward inner-approximated reachability of 
+%\ForAuthors{Attention au double-blind review}
+discrete dynamical systems, and gave a few hints to handle continuous and hybrid systems. 
+%on this previous work. \\
 
-- computing inner-approximations of the flow of uncertain IVP: for a continuous dynamical system, combining Taylor based outer-approximation, on time intervals, of the solution of the initial value problem, 
-and its jacobian with respect to initial value, 
+Our method allows for 
+computing inner-approximations of the flow of uncertain initial value problems. 
+There are two main ingredients for our method. The first one is the fact that one only need outer-approximations
+in fact, for deriving inner-approximations, not only of the reachable states of the dynamics but also
+for the ``variational equations'', including the dynamics of the Jacobian of the solutions with respect to the
+initial values. This is made possible by using a generalized mean value theorem, that we introduce in the
+preliminaries, Section \ref{prelim}. 
+
+\ForAuthors{A continuer}
+
+For 
+a continuous dynamical system, we show that we can combine Taylor based outer-approximations, on time intervals, of the solution of the initial value problem, 
+and its jacobian with respect to initial values, 
 with a generalized mean value theorem as used in \cite{hscc14}, but applied here to the solution of the IVP, yielding both inner and outer approximations 
 of the set of  states reachable from a set of 
 values of initial conditions and uncertain parameters \\
-- guards \\
+%- guards \\
 - experiments with a matlab implementation and tentative comparisons to existing work (but dual approaches - mostly bacward inner reachability ? - combination to be studied ?) 
 
 %\paragraph{Related work}
