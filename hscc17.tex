@@ -700,7 +700,7 @@ Let $f : \bbr^n \rightarrow \bbr$ be differentiable, $\x \in \K^n$ and suppose t
 \end{equation}
 Then, for any $\tilde x \in \pro \x$, the following interval is $(f,\x)$-interpretable~:
 \begin{equation}
-\tilde{f}(\x) = f(\tilde x) + \sum_{i=1}^{n} [\bfm{\Delta}_i] (\x_i - \tilde{x}_i).
+\tilde{f}(\x) = f(\tilde x) + \sum\limits_{i=1}^{n} [\bfm{\Delta}_i] (\x_i - \tilde{x}_i).
 \label{Taylor}
 \end{equation}
 %Note that a tighter estimation of $\bfm{\Delta}_i$ can also be used~:
@@ -749,19 +749,21 @@ the solution using the Banach fixed point theorem and the Picard-Lindel\"of oper
 using a Taylor series expansion of order $k$ of the solution at $t_j$, where $[{\r}_{j+1}]$ is used to enclose the remaining term~: 
 \begin{multline} 
 %{\cal Z}(t;t_j, {\z}_j) \subseteq 
-[\z](t,t_j,[{\z}_j]) =  [{\z}_j] + \sum_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} f^{[i]}([{\z}_j])\\
+[\z](t,t_j,[{\z}_j]) =  [{\z}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} f^{[i]}([{\z}_j])\\
  + \frac{(t-t_j)^k}{k !} f^{[k]}([{\r}_{j+1}]),
 \label{eq:TM}
 \end{multline}
-where the Taylor coefficients $f^{[i]}$, which are the $i$th Lie derivative of $f$ along
+where the Taylor coefficients $f^{[i]}$, which are the $i-1$th Lie derivative of $f$ along
 vector field $f$, are defined inductively, and 
 can be computed by automatic differentiation as follows (for all $k=1,\ldots,n$)~: 
 \begin{eqnarray}
-f^{[0]}_k & = & f_k \\
-f^{[i+1]}_k & = & \sum_{j=1}^n \frac{\partial{f^{[i]}_k}}{\partial z_j} f_j
+f^{[1]}_k & = & f_k \\
+f^{[i+1]}_k & = & \sum\limits_{j=1}^n \frac{\partial{f^{[i]}_k}}{\partial z_j} f_j
 \label{Lie1}
 \end{eqnarray}
 
+\ForAuthors{Est-ce qu'on rajoute la preuve elementaire - style RP 2015, que ce sont
+bien les derivees de Lie de f qu'il faut prendre pour l'expansion de Taylor?}
 %\ForAuthors{Il faut donner les regles de derivation, ce sont des derivees de Lie. Simple mais
 %on ne peut pas y couper je pense.}
 % \SP{A completer ou pas?} 
@@ -801,7 +803,7 @@ use the Taylor expansion~(\ref{eq:TM}) on each time interval $[t_j,t_{j+1}]$ to 
 The coefficients of the Jacobian matrix of the flow satisfy the following differential equations~:
 \begin{equation}
 \dot{J}_{ij}(t,z_0) %=  \frac{\partial \dot z_i}{\partial z_{0,j}} 
-= \sum_{k=1}^n \frac{\partial f_i}{\partial z_k}(z) . J_{kj}(t,z_0)
+= \sum\limits_{k=1}^n \frac{\partial f_i}{\partial z_k}(z) . J_{kj}(t,z_0)
 \label{eq:IVP_jac}
 \end{equation} 
  that can be rewritten
@@ -811,24 +813,31 @@ The coefficients of the Jacobian matrix of the flow satisfy the following differ
 \end{equation} 
 with $J(t_0)=Id$ (these are the ``variational equations'' used in particular in \cite{wilczak}
 for improving outer-approximations of continuous dynamical systems).
-
+We will write equivalently, by a slight abuse of notation, 
+$\mbox{Jac}_z f$ as the function of the $z_i$ and $J_{ij}$ (linear in $J_{ij}$) which is
+the right hand side of Equation \ref{eq:IVP_jac2}. Hence, its $pq$ entry is : 
+\begin{equation}
+(\mbox{Jac}_z f)_{pq} = \sum\limits_{k=1}^n \frac{\partial f_p}{\partial z_k} J_{kq}
+\label{pqentry}
+\end{equation}
 A Taylor expansion can thus be used to outer-approximate the solution of~(\ref{eq:IVP_jac2}) noted ${\cal J}(t;t_0,\z_0)$ on each time interval  $[t_j,t_{j+1}]$, 
 using the outer-approximation for $z(t,z_0)$ given by Taylor expansion~(\ref{eq:TM}).
 We just have to note that Equations (\ref{eq:IVP_jac}) together with Equations
 (\ref{eq:flow}) define a system of $n(n+1)$ ordinary differential equations in $n(n+1)$
 variable (the $z_i$ and $J_{ij}$). We call the corresponding vector field $F$ and
 write similarly, by an abuse of notation, for $H$ a function in the $z_i$ and $J_{ij}$,
-$H^{[i]}$ the $i$th Lie derivative of $H$ along the (augmented) vector field $H$. More
+$H^{[i]}$ the $i-1$th Lie derivative of $H$ along the (augmented) vector field $H$. More
 explicitly, it is defined inductively as follows : 
 \begin{eqnarray}
-H^{[0]} & = & H \\ 
-H^{[i+1]} & = & (H^{[i]})^{[1]}
+H^{[1]} & = & H \\ 
+H^{[i+1]} & = & (H^{[i]})^{[2]}
 \end{eqnarray}
 \noindent where the first Lie derivative is :
 \begin{equation}
-H^{[1]} = \sum_{i=1}^n \frac{\partial H}{\partial z_i} f_i \\
-+\sum_{k,l=1}^n \frac{\partial H}{\partial J_{jk}} \left(
-\sum_{l=1}^n \frac{\partial f_j}{\partial z_l} J_{lk}\right)
+H^{[2]} = 
+\sum\limits_{i=1}^n \frac{\partial H}{\partial z_i} f_i \\
++\sum\limits_{k,l=1}^n \frac{\partial H}{\partial J_{kl}} \left(
+\sum\limits_{s=1}^n \frac{\partial f_k}{\partial z_s} J_{sl}\right)
 \label{eqfirstH}
 \end{equation}
 
@@ -838,8 +847,8 @@ Equations (\ref{eq:IVP_jac}) and (\ref{eq:flow}). The Lie derivative of $H$
 is
 the time derivative of $\tilde{H}(t)=H(z_1(t),\ldots,z_n(t),J_{11}(t),\ldots,J_{nn}(t))$ : 
 $$\begin{array}{rcl}
-\dot{\tilde{H}}(t) & = & \sum_{i=1}^{n} \frac{\partial H}{\partial z_i}(t)
-\dot{z}_i(t)+\sum_{k,l=1}^n \frac{\partial H}{\partial J_{kl}}(t) \dot{J}_{kl}(t)
+\dot{\tilde{H}}(t) & = & \sum\limits_{i=1}^{n} \frac{\partial H}{\partial z_i}(t)
+\dot{z}_i(t)+\sum\limits_{k,l=1}^n \frac{\partial H}{\partial J_{kl}}(t) \dot{J}_{kl}(t)
 \end{array}$$
 We get the formula (\ref{eqfirstH}) by 
 replacing $\dot{z}_i$ by its expression in Equation (\ref{eq:flow}) and
@@ -854,8 +863,9 @@ $$ f(x) = \left(\begin{array}{l}
 x_1-\frac{3}{2} x_1^2x_2
 \end{array}\right)$$
 
-The corresponding variational equations, for the Jacobian of the solutions $x_i$ with respect to the initial
-conditions (at time 0) $x^0_j$ are $J_{i,j}=\frac{\partial x_i}{\partial x^0_j}$ : 
+The corresponding variational equations are~:
+%, for the Jacobian of the solutions $x_i$ with respect to the initial
+%conditions (at time 0) $x^0_j$ are $J_{i,j}=\frac{\partial x_i}{\partial x^0_j}$ : 
 \begin{eqnarray}
 \dot{J}_{1,1} & = & (-2+3x_1x_2)J_{1,1} + \frac{3}{2} x^2_1 J_{2,1} \\
 \dot{J}_{1,2} & = & (-2+3x_1x_2)J_{1,2} + \frac{3}{2} x^2_1 J_{2,2} \\
@@ -878,16 +888,16 @@ and $[\bfm{R}_{j+1}]$ of ${\cal J}(t;t_j,\z_j)$
 
 - compute the Taylor Models valid on $[t_j,t_{j+1}]$:
 \begin{multline}
-[\z](t,t_j,[{\z}_j]) = [{\z}_j] + \sum_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} f^{[i]}([{\z}_j])\\+ 
+[\z](t,t_j,[{\z}_j]) = [{\z}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} f^{[i]}([{\z}_j])\\+ 
 \frac{(t-t_j)^k}{k !} f^{[k]}([{\r}_{j+1}]).
 \label{eq:TM1}
 \end{multline}
 \begin{multline}
-[\tilde{\z}](t,t_j,[\tilde{\z}_j]) = [\tilde{\z}_j] + \sum_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} f^{[i]}([\tilde{\z}_j])\\+ \frac{(t-t_j)^k}{k !} f^{[k]}([\tilde{\r}_{j+1}]).
+[\tilde{\z}](t,t_j,[\tilde{\z}_j]) = [\tilde{\z}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} f^{[i]}([\tilde{\z}_j])\\+ \frac{(t-t_j)^k}{k !} f^{[k]}([\tilde{\r}_{j+1}]).
 \label{eq:TM2}
 \end{multline}
 \begin{multline}
-[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} \mbox{Jac}_x(f^{[i]})([{\r}_{j+1}]) [{\J}_j] \\ +  \frac{(t-t_j)^k}{k !} \mbox{Jac}_x(f^{[k]})([{\r}_{j+1}]) [\bfm{R}_{j+1}]
+[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} \mbox{Jac}_x(f^{[i]})([{\r}_{j+1}]) [{\J}_j] \\ +  \frac{(t-t_j)^k}{k !} \mbox{Jac}_x(f^{[k]})([{\r}_{j+1}]) [\bfm{R}_{j+1}]
 \label{eq:TM3}
 \end{multline}
 
@@ -906,27 +916,29 @@ otherwise the inner-approximation is empty.\\
 Note that in Equation (\ref{eq:TM3}), we made commute, as we can, the $i$th Lie derivative
 with the calculation of the Jacobian. As a matter of fact, we would have naturally written :
 
-\ForAuthors{Faire commuter les derivations plus bas, mais notations pour derivees de Lie a mettre avant ($^{[i]}$)}
+%\ForAuthors{Faire commuter les derivations plus bas, mais notations pour derivees de Lie a mettre avant ($^{[i]}$)}
 
 \begin{multline}
-[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} (\mbox{Jac}_x(f))^{[i]}([{\r}_{j+1}]) [{\J}_j] \\ +  \frac{(t-t_j)^k}{k !} (\mbox{Jac}_x(f)^{[k]}([{\r}_{j+1}]) [\bfm{R}_{j+1}]
+[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} (\mbox{Jac}_x(f))^{[i]}([{\r}_{j+1}],[{\J}_j]) \\ +  \frac{(t-t_j)^k}{k !} (\mbox{Jac}_x(f))^{[k]}([{\r}_{j+1}],[\bfm{R}_{j+1}])
 \label{eq:TM3}
 \end{multline}
-\noindent where $(\mbox{Jac}_x(f))^{[i]}$ denotes the $i$th Lie derivative of 
-$\mbox{Jac}_x(f)$ along the vector field defined by Equation (\ref{eq:IVP_jac2}), i.e. is
-the derivation defined by induction as follows (for all $k$ and $l$ between 1 and $n$), 
-similarly to Equations (\ref{Lie1})~:
-\begin{equation}
-(\mbox{Jac}_x(f))^{[0]}_{k,l} = \mbox{Jac}_x(f)_{k,l}
-\end{equation}
-\begin{multline}
-(\mbox{Jac}_x(f))^{[i+1]}_{k,l} = 
-\sum_{p=1}^n \frac{(\mbox{Jac}_x(f))^{[i]}_{k,l}}{\partial z_p} f_q
-\\+
-\sum_{q,r=1}^n \frac{(\mbox{Jac}_x(f))^{[i]}_{k,l}}{\partial J_{q,r}} \sum_{s=1}^n
-\frac{\partial f_q}{\partial z_s} J_{sr}
-\label{Lie2}
-\end{multline}
+\noindent ($\mbox{Jac}_x(f)$ being seen as a function of the $z_i$ and $J_{ij}$, which 
+is linear in the $J_{ij}$ as in Equation (\ref{pqentry}))
+%\noindent where $(\mbox{Jac}_x(f))^{[i]}$ denotes the $i$th Lie derivative of 
+%$\mbox{Jac}_x(f)$ along the vector field defined by Equation (\ref{eq:IVP_jac2}), i.e. is
+%the derivation defined by induction as follows (for all $k$ and $l$ between 1 and $n$), 
+%similarly to Equations (\ref{Lie1})~:
+%\begin{equation}
+%(\mbox{Jac}_x(f))^{[0]}_{k,l} = \mbox{Jac}_x(f)_{k,l}
+%\end{equation}
+%\begin{multline}
+%(\mbox{Jac}_x(f))^{[i+1]}_{k,l} = 
+%\sum_{p=1}^n \frac{(\mbox{Jac}_x(f))^{[i]}_{k,l}}{\partial z_p} f_q
+%\\+
+%\sum_{q,r=1}^n \frac{(\mbox{Jac}_x(f))^{[i]}_{k,l}}{\partial J_{q,r}} \sum_{s=1}^n
+%\frac{\partial f_q}{\partial z_s} J_{sr}
+%\label{Lie2}
+%\end{multline}
 %Hence in particular~: 
 %\begin{multline}
 %(\mbox{Jac}_x(f))^{[1]}_{k,l} = \sum_{p=1}^n \left(\mbox{Lie}_f
@@ -938,17 +950,65 @@ similarly to Equations (\ref{Lie1})~:
 %\end{multline}
 %\ForAuthors{A compl\'eter}
 
-The Equation (\ref{eq:TM3}) is equivalent since the two derivative (the Jacobian calculation
-and the Lie derivative) commute. Equation (\ref{eq:TM3}) 
+The Equation (\ref{eq:TM3}) is equivalent since the two derivatives (the Jacobian calculation
+and the Lie derivative) commute~:  
+\begin{proof}
+We prove this equivalence by induction on the number of Lie derivations. 
+For $i=1$, we have, by definition $\mbox{Jac}_x(f^{[1]})
+=\mbox{Jac}_x(f)=(\mbox{Jac}_x(f))^{[1]}$. Suppose now we have, as an induction
+step $\mbox{Jac}_x(f^{[i]})=(\mbox{Jac}_x(f))^{[i]}$. We now write~:
+$$\begin{array}{rcl}
+\mbox{Jac}_x(f^{[i+1]})_{pq} & = & \sum\limits_{k=1}^n \frac{\partial f^{[i+1]}_p}{\partial z_k} J_{kq} \\
+ & = & \sum\limits_{k=1}^n \frac{\partial}{\partial z_k} \left(
+\sum\limits_{l=1}^n \frac{\partial{f^{[i]}_p}}{\partial z_l} f_l
+\right)J_{kq}
+\end{array}$$
+\noindent hence, 
+\begin{equation}
+\mbox{Jac}_x(f^{[i+1]})_{pq} =  \sum\limits_{k,l=1}^n \left(\frac{\partial^2 f_p^{[i]}}{\partial z_k \partial z_l} f_l
++\frac{\partial f_p^{[i]}}{\partial z_l}\frac{\partial f_l}{\partial z_k}\right)
+J_{kq}
+\label{firstpart}
+\end{equation}
+On the other hand we have : 
+$$\begin{array}{rcl}
+(\mbox{Jac}_x(f)_{pq})^{[i+1]} & = &
+(\mbox{Jac}_x(f^{[i]})_{pq})^{[2]}
+\end{array}$$
+\noindent by Definition (\ref{eqfirstH}) and by the induction step. 
+Using now Equation (\ref{eqfirstH}) and using the fact (Equation (\ref{pqentry})) that :
+$$\begin{array}{rcl}
+(\mbox{Jac}_x(f^{[i]}))_{pq} = \sum\limits_{k=1}^n \frac{\partial f^{[i]}_p}{\partial z_k} J_{kq}
+\end{array}$$
+\noindent we have~:  
+\begin{multline}
+(\mbox{Jac}_x(f)_{pq})^{[i+1]}  = 
+\sum\limits_{k,l=1}^n \frac{\partial^2 f_p^{[i]}}{\partial z_k \partial z_l} f_l J_{kq} \\
++ \sum\limits_{r=1}^n \frac{\partial f_p^{[i]}}{\partial z_r}\left(\sum\limits_{t=1}^n
+\frac{\partial f_r}{\partial z_t} J_{tq} \right)
+%\sum_{i=1}^n \frac{\partial (\mbox{Jac}_x(f)_{pq})^{[i]}}{\partial z_i} f_i \\
+%& & +\sum_{k,l=1}^n \frac{\partial (\mbox{Jac}_x(f)_{pq})^{[i]}}{\partial J_{jk}} \left(
+%\sum_{l=1}^n \frac{\partial f_j}{\partial z_l} J_{lk}\right)
+\end{multline}
+\noindent which is thus seen to be equal to $\mbox{Jac}_x(f^{[i+1]})_{pq}$ by
+Equation (\ref{firstpart}). 
+%\noindent but $(\mbox{Jac}_x(f)_{pq})^{[i]}$ does not depend on variables $J_{ij}$ since
+%$f$ does only depend on variables $z_i$, so
+%we have :
+%$$\begin{array}{rcl}
+%(\mbox{Jac}_x(f)_{pq})^{[i+1]} & = & 
+%\sum_{i=1}^n \frac{\partial (\mbox{Jac}_x(f)_{pq})^{[i]}}{\partial z_i} f_i \\
+%& = & \sum_{i=1}^n \frac{\partial \mbox{Jac}_x(f^{[i]})_{pq}}{\partial z_i} f_i \\
+%\insertext{by the induction step} \\
+%& =& \sum_{i=1}^n \frac{\partial^2 f^{[i]}_p}{\partial z_i z_q} f_i \\
+%\end{array}$$
+\end{proof}
+
+Equation (\ref{eq:TM3}) 
 is simpler to compute since we already computed
 the Lie derivative of $f$, in Equation (\ref{eq:TM2}), the Jacobian calculation being by
 itself rather 
 inexpensive. 
-
-\begin{proof}
-The Jacobian $Jac_x{f}$...
-\end{proof}
-
 \end{remark}
 
 \begin{example}
@@ -965,9 +1025,7 @@ We will have, as outer-approximations of order 1 with respect to time, the formu
 and $t \in [0,h]$ (Equations (\ref{eq:TM1}) and (\ref{eq:TM3})) the following. Note that
 as we only consider one time step here, we write $\int{x_i}(t)$ instead of $\int{x_i}(t,0,\int{x_0})$ :  
 
-\ForAuthors{J'essaie de coller \`a \ref{eq:TM1} mais le
-fait que l'indice en pas de temps soit en bas g\^ene ; on ne pourrait pas le mettre en haut
-plut\^ot? ;-) On a d\'ej\`a les indices en bas naturellement, pour les \'etats et la jacobienne.}
+\ForAuthors{Je reprends l'exemple plus bas, j'ai a revoir un peu les notations/ecriture}
 
 \begin{equation}
 \int{x_i}(t) = \int{(x_i)_0} + {f_i}^{[0]}(\int{x_0}) t + f_i^{[1]}(\int{r_1}) \frac{t^2}{2}
@@ -978,10 +1036,10 @@ plut\^ot? ;-) On a d\'ej\`a les indices en bas naturellement, pour les \'etats e
 \label{TaylorJ}
 \end{multline}
 
-\ForAuthors{C'est compliqu\'e si on veut d\'ecrire toutes les entrees de la Jacobienne
-separement ; $\int{R_1}^j$ c'est la colonne avec que les outer-approx des $J_{*,j}$...mais en
-m\^emes temps pour pr\'esenter des calculs dans des exemples, je prefere avec les entrees
-de la jacobienne separement. Non? ;-)}
+%\ForAuthors{C'est compliqu\'e si on veut d\'ecrire toutes les entrees de la Jacobienne
+%separement ; $\int{R_1}^j$ c'est la colonne avec que les outer-approx des $J_{*,j}$...mais en
+%m\^emes temps pour pr\'esenter des calculs dans des exemples, je prefere avec les entrees
+%de la jacobienne separement. Non? ;-)}
 %\noindent where $R_i$ (resp. $R_{i,j}$) are outer-approximations of the second Lie derivatives of
 %$x_i$ (resp. $J_{i,j}$), over the time interval $[0,h]$. 
 
@@ -996,9 +1054,9 @@ $x_1 \in \int{(x_1)_0}$, $x_2 \in \int{(x_2)_0}$. For instance, we have :
 %f_2^{[1]} & = & 1-2x_1-3x_1x_2+\frac{15}{2}x_1^2x_2-\frac{3}{2}x_1^3\\
 %& & \ \ \ -\frac{9}{2}x_1^3x_2^2+\frac{9}{4}x_1^4x_2 \\
 \begin{multline}
-Jac_x(f^{[1]})_{1,1}(x_1,x_2)(J_{1,1},J_{2,1}) = (3x_2f_1+3x_1f_2)J_{1,1}\\
-+(-2+3x_1x_2)Jac_x(f^{[0]}_{1,1}(x_1,x_2)(J_{1,1},J_{2,1}) \\ 
-+3x_1f_1J_{2,1}+\frac{3}{2}x_1^2{Jac_x(f^{[0]})}_{2,1}(x_1,x_2)(J_{1,1},J_{2,1}) 
+\mbox{Jac}_x(f^{[1]})_{1,1}(x_1,x_2)(J_{1,1},J_{2,1}) = (3x_2f_1+3x_1f_2)J_{1,1}\\
++(-2+3x_1x_2)\mbox{Jac}_x(f^{[0]})_{1,1}(x_1,x_2)(J_{1,1},J_{2,1}) \\ 
++3x_1f_1J_{2,1}+\frac{3}{2}x_1^2{\mbox{Jac}_x(f^{[0]})}_{2,1}(x_1,x_2)(J_{1,1},J_{2,1}) 
 %Jac_x(f^{[1]}) & = & \left(\begin{array}{cc}
 %(3x_2f_1+3x_1f_2)J_{1,1}+(-2+3x_1x_2)\dot{J}_{1,1}+3x_1f_1J_{2,1}+\frac{3}{2}x_1^2\dot{J}_{2,1} &
 %(3x_2f_1+3x_1f_2)J_{1,2}+(-2+3x_1x_2)\dot{J}_{1,2}
@@ -1025,7 +1083,7 @@ For rough enclosures of $\int{r_1}_i$ and $\int{R_1}_{i,j}$ we use the interval 
 \label{roughenclosures}
 \end{eqnarray}%$$
 %HIPHOP
-\ForAuthors{Ptet remettre les valeurs flottantes?}
+\ForAuthors{Je vais remettre les valeurs flottantes ;-)}
 \end{example}
 
 \begin{remark}
@@ -1057,7 +1115,7 @@ ca juste dans exemples quand on fait un calcul pratique, pour le running example
 \begin{example}
 \label{running3}
 \ForAuthors{Calculs pratiques de sous- et sur- approx des variables pour le Brusselator au first
-time step, detailles}
+time step, detailles - je complete sous peu}
 \end{example}
 
 %******************************************************************************
