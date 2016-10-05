@@ -289,23 +289,25 @@
 
 \maketitle
 \begin{abstract}
-In this paper, we propose a new method for inner-approxima\-tions of reachable sets of dynamical systems defined
-by (possibly non-linear, and uncertain) 
-ordinary differential equations. This is a notoriously difficult problem, much more intricate than 
-outer-approximations, for which there exist 
-well known solutions, mostly based on Taylor models. Our solution for inner-approximations is also
-based on Taylor models, but contrarily to the few methods developped recently, our method is a forward method,
-which only needs rather inexpensive set-based methods, instead of the clever, but still complicated, backward
-methods for which extra ingredients, either coming from optimisation, or involving topological criteria, are required. 
-
+We propose an approach for computing inner-approximations (also called under-approximations) of forward reachable sets of dynamical systems 
+defined by non-linear, uncertain, ordinary differential equations. This is a notoriously difficult problem, much more intricate than 
+outer-approximations for which there exist well known solutions, mostly based on Taylor models. 
+The few methods developped recently for inner-approximation mostly rely on backward flowmaps, and extra ingredients, either coming from optimisation, 
+or involving topological criteria, are required. Our solution, in comparison, builds on rather inexpensive set-based methods, namely a generalized
+mean-value theorem combined with Taylor models outer-approximations (also called over-approximations) of the flow and its jacobian with respect to the uncertainties.
+%for inner-approximations is also based on Taylor models, but contrarily to the few methods developped recently, 
+% is a direct forward method, which only relies on rather inexpensive set-based methods, namely a generalized mean-value theorem 
+%applied to 
+% instead of the %clever, but still complicated, 
+%existing  methods relying on backward flowmaps and for which extra ingredients, either coming from optimisation, or involving topological criteria, are required. 
 We are able to show with our prototype Matlab implementation that our method is both efficient and
-precise on numerous classical examples. 
+precise on classical examples. 
 %\ForAuthors{Est-ce dangereux de se placer un peu sur la complexite? On pourrait nous reprocher d'avoir un
 %nombre d'equations en le produit du nombre d'equations d'origine, avec le nombre de variables... Mais la methode
 %de Sriram et celle des chinois est potentiellement tres complexe.}
-
-Our method, being based on Taylor models and being a forward method, also provides outer-approximations, naturally. The combination of both inner and outer approximations 
-can be seen as the basis for verification and falsification of properties
+%Our method, being based on Taylor models and being a forward method, also provides outer-approximations, naturally. 
+The combination of such forward inner and outer Taylor-model based approximations 
+can be used as a basis for the verification and falsification of properties
 of cyber-physical systems. 
 %- forward inner- and outer- approximations 
 %of the set of  states reachable by an uncertain hybrid systems, that is with uncertain initial conditions and parameters.\\
