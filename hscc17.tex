@@ -347,7 +347,7 @@ also require inner-approximating the reachable set, that is computing states tha
 Methods for inner-approximated reachability are far less developed, and especially in the non-linear case, 
 since most methods in the non-linear case rely on conservative linearizations, which necessarily produce outer approximations.
 
-In this paper, we concentrate on the under-approximation of the reachable sets of
+In this paper, we concentrate on the inner-approximation of the reachable sets of
 the continuous part of hybrid systems. The discrete part has been treated elsewhere \cite{hscc14}
 and we intend to treat guards in subsequent work. 
 
@@ -465,7 +465,7 @@ of states $X_0$. The method of \cite{Underapproxflowpipes} has then to test conn
 can be semi-decided using clever interval methods.
 %\end{itemize} 
 
-A similar backward approach, slightly older than the one of \cite{Underapproxflowpipes} 
+A similar backward approach %, slightly older than the one of \cite{Underapproxflowpipes} 
 has been proposed in~\cite{underapprox16}. It is similar in that it also constructs 
 an outer-approximation of the backward flowmap. But their authors construct an outer-approximation
 of the boundary of the reachable set to find inner-approximations. This is done using 
@@ -503,15 +503,15 @@ sous-approx)? Sinon etonnamment, combiner la methode de Sriram avec celle de
 %Actually, most existing inner-approximating approaches solve this dual problem, which does not permit to prove such property as 
 %(reflechir/verifier et elaborer ou supprimer...).
 
-\ForAuthors{Je ne sais pas quoi faire des deux references en dessous.}
+%\ForAuthors{Je ne sais pas quoi faire des deux references en dessous.}
 
-Under-approximate bounded vertex representation of polyhedra 
-have been proposed for the analysis of Simulink/Stateflow models~\cite{Kanade09}, 
-\SP{Idem c'est backward a priori?}
-but they are restricted to linear transformers. Hybrid systems falsification~\cite{Nghiem10}, 
-relies on simulation-based local inner-approximations.  
-\SP{Enrichir en ref plus recentes. Parler de falsification comme exemple? Aussi
-l'exemple \cite{Circuits06} non?}
+%Under-approximate bounded vertex representation of polyhedra 
+%have been proposed for the analysis of Simulink/Stateflow models~\cite{Kanade09}, 
+%\SP{Idem c'est backward a priori?}
+%but they are restricted to linear transformers. Hybrid systems falsification~\cite{Nghiem10}, 
+%relies on simulation-based local inner-approximations.  
+%\SP{Enrichir en ref plus recentes. Parler de falsification comme exemple? Aussi
+%l'exemple \cite{Circuits06} non?}
 
 \begin{example}
 \label{running0}
@@ -530,7 +530,7 @@ $x_1^0 \in [2, 2.15]$, $x^0_2 \in [0.1, 0.15]$.
 \label{prelim}
 %******************************************************************************
 
-Let us first introduce the ingredients that will be instrumental in the computation of inner approximations of
+Let us first introduce the ingredients that will be instrumental in the computation of inner-approximations of
 the range of a function over interval inputs, and in particular
 generalized intervals and mean-value theorem for inner-approximation~\label{generalized}. 
 The results and notations quickly introduced in this section are mostly based on the work of Goldsztejn {\it et al.} 
@@ -549,24 +549,28 @@ uncertain quantities defined in intervals are noted in bold, outer-approximating
 and inner-approximating intervals are noted in bold face and enclosed within outward facing 
 brackets.
 
- An outer approximating extension of a function $f: \R^n \rightarrow \R $ is a function 
+ An outer-approximating extension of a function $f: \R^n \rightarrow \R $ is a function 
 $[\f]: \I^n\rightarrow \I$ such that for all $\x$ in $\I^n, \mbox{range}(f,\x)=\{f(x), x \in \x\} \subseteq [\f](\x)$.
 The natural interval extension consists in replacing real
 operations by their interval counterparts in the expression of the function. 
 A generally more accurate extension relies on the mean-value theorem, linearizing the 
-function to compute.
+function to compute. Suppose the function f is differentiable over the interval 
+$\x = [a, b]$. Then,the mean-value theorem implies that for any choice of $x_0 \in \x$, then we have
+\[ \forall x \in \x, \, \exists c \in \x, \, f(x) = f(x_0) + f'(c) (x-x_0).\]
+If we can bound the range of the gradient of $f$ over $\x$, by $\mbox{range}(f',\x)=\subseteq [\f'](\x)$, we can 
+derive the following mean-value interval extension: for any  $x_0 \in \x$
+\[    \mbox{range}(f,\x)  \subseteq f(x_0) +  [\f'](\x) (\x - x_0) \]
 
 Classical interval computations can be interpreted as quantified 
 propositions. Consider for example $f(x)=x^2-x$.
 Its natural interval extension, evaluated on $[2,3]$, is 
 $[\f]([2,3])=[2,3]^2-[2,3]=[1,7]$, which can be interpreted as the proposition 
 \[ (\forall x \in [2,3]) \, (\exists z \in [1,7]) \, (f(x)=z).    \]
-\ForAuthors{Peut-etre faut-il introduire le mean-value extension qui ne doit pas etre si connu que cela?}
 The mean-value extension gives
 $f(2.5) + $ $[\f']([2, 3]) \times ([2, 3] - 2.5)$ $ = [1.25, 6.25]$, and can be interpreted similarly.
 
-Inner approximations determine a set of values proved to belong to the range of the function over some input box. 
-The fact that some $]\z[ \in \I$ satisfies $]\z[ \subseteq \range(f,\x)$, i.e., is an inner approximation of the range 
+Inner-approximations determine a set of values proved to belong to the range of the function over some input box. 
+The fact that some $]\z[ \in \I$ satisfies $]\z[ \subseteq \range(f,\x)$, i.e., is an inner-approximation of the range 
 of $f$ over $\x$, can again be written using quantifiers~: 
 \[ (\forall z \in ]\z[) \, (\exists x \in \x) \, (f(x)=z).    \]
 
@@ -614,12 +618,12 @@ where $Q_z = \exists$ if $(\z)$ is proper, and  $Q_z = \forall$ otherwise.
 When all intervals in (\ref{eq1}) are proper, we retrieve the interpretation of classical interval 
 computation, which gives an outer approximation of $\range(f,\x)$
 \[ (\forall x \in \x) \, (\exists z \in [\z]) \, (f(x)=z).    \]
-When all intervals are improper, (\ref{eq1}) becomes an inner approximation  of $\range(f,\x)$
+When all intervals are improper, (\ref{eq1}) becomes an inner-approximation  of $\range(f,\x)$
 \[ (\forall z \in ]\pro \z[) \, (\exists x \in \pro \x) \, (f(x)=z).    \] 
 
 \subsection{Kaucher arithmetic and the generalized interval natural extension}
 \label{Kaucherar2}
- Kaucher arithmetic~\cite{Kaucher} returns intervals that are interpretable as inner approximations in some simple cases. 
+ Kaucher arithmetic~\cite{Kaucher} returns intervals that are interpretable as inner-approximations in some simple cases. 
 
 Kaucher addition extends addition on classical intervals by $\x+\y=[\underline x + \underline y,\overline x + \overline y]$ and 
 $\x-\y=[\underline x - \overline y,\overline x - \underline y]$.
@@ -635,7 +639,7 @@ intuitive explanation of one of its entries below.
 Let us  interpret the result of the multiplication $\z = \x \times \y$ in one of the cases encountered when $\y \in \mbox{dual } \cal Z$, 
 for instance for $\x \in {\cal Z}$. Proposition~\ref{prop1} will express the fact that 
 the result can be interpreted as in Definition~\ref{pb1}. Interval $\z$ can a priori either be proper or improper, 
-let us consider the improper case. We obtain an inner approximation of the range of the multiplication: 
+let us consider the improper case. We obtain an inner-approximation of the range of the multiplication: 
 according to the quantifiers in Definition~\ref{pb1}, 
 computing $\z = \x \times \y$ consists in finding $\z$ such that 
 for all $x \in \x$, for all $z \in \pro \z$, there exists $y \in \pro \y$ such that $z=x \times y$. If $\x$ contains zero, 
@@ -685,7 +689,7 @@ The important feature of Kaucher arithmetic is that it defines a generalized int
 Let $f : \bbr^n \rightarrow \bbr$ be a function, given by an arithmetic expression where each variable appears syntactically only once.
 Then for $\x \in \K^n$, $f(\x)$, computed using Kaucher arithmetic, is $(f,\x)$-interpretable.
 \end{proposition}
-Kaucher arithmetic can thus be used in some cases to compute an inner approximation of $\range(f,\x)$.
+Kaucher arithmetic can thus be used in some cases to compute an inner-approximation of $\range(f,\x)$.
 But the restriction to functions $f$ with single occurrences of variables, 
 that is with no dependency, prevents its direct use. A mean-value extension allows us to by-pass this limitation.
 
@@ -715,13 +719,13 @@ Then, for any $\tilde x \in \pro \x$, the following interval is $(f,\x)$-interpr
 \end{theorem}
 
 \begin{example}
-Let $f$ be defined by $f(x)=x^2-x$, for which we want to compute an inner approximation of the range over $\x=[2,3]$. Due to the
+Let $f$ be defined by $f(x)=x^2-x$, for which we want to compute an inner-approximation of the range over $\x=[2,3]$. Due to the
 two occurrences of $x$, $f(\x)$, computed with Kaucher arithmetic, 
 is not  $(f,\x)$-interpretable. The interval $\tilde{f}(\x) = f(2.5) + \f'([2,3]) (\x - 2.5)=3.75 + [3,5](\x - 2.5)$
 given by its mean-value extension, computed with Kaucher arithmetic, is $(f,\x)$-interpretable. 
 For  $\x=[3,2]$, using the multiplication rule for ${\cal P} \times \dual {\cal Z}$, we get 
 $\tilde{f}(\x) = 3.75 + [3,5]([3,2] - 2.5)=  3.75 + [3,5] [0.5,-0.5] = 3.75 + [1.5,-1.5] = [5.25,2.25]$, that can be interpreted 
-as: $\forall z \in [2.25,5.25]$, $\exists x \in [2,3],$  $z=f(x)$. Thus, $[2.25,5.25]$ is an inner approximation of $\range(f,[2,3])$.
+as: $\forall z \in [2.25,5.25]$, $\exists x \in [2,3],$  $z=f(x)$. Thus, $[2.25,5.25]$ is an inner-approximation of $\range(f,[2,3])$.
 \end{example}
 % Consider again the evaluation of the range of $f(x)=x^2-x$ on $[2,3]$. 
 %The mean-value extension, evaluated on the center $2.5$ of $[2,3]$, and with $[\f']([2, 3]) \subseteq 2[2,3]-1 = [3,5]$, 
