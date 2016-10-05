@@ -753,9 +753,17 @@ using a Taylor series expansion of order $k$ of the solution at $t_j$, where $[{
  + \frac{(t-t_j)^k}{k !} f^{[k]}([{\r}_{j+1}]),
 \label{eq:TM}
 \end{multline}
-where the Taylor coefficients $f^{[i]}$ can be computed by automatic differentiation. \\
-\ForAuthors{Il faut donner les regles de derivation, ce sont des derivees de Lie. Simple mais
-on ne peut pas y couper je pense.}
+where the Taylor coefficients $f^{[i]}$, which are the $i$th Lie derivative of $f$ along
+vector field $f$, are defined inductively, and 
+can be computed by automatic differentiation as follows (for all $k=1,\ldots,n$)~: 
+\begin{eqnarray}
+f^{[0]}_k & = & f_k \\
+f^{[i+1]}_k & = & \sum_{j=1}^n \frac{\partial{f^{[i]}_k}}{\partial z_j} f_j
+\label{Lie1}
+\end{eqnarray}
+
+%\ForAuthors{Il faut donner les regles de derivation, ce sont des derivees de Lie. Simple mais
+%on ne peut pas y couper je pense.}
 % \SP{A completer ou pas?} 
 Finally, we use enclosure $[{\z}_{j+1}]=[\z](t_{j+1},t_j,[{\z}_j])$ as initial solution set at time $t_{j+1}$ to derive the interval Taylor model on the next time step. \\
 
@@ -805,7 +813,38 @@ with $J(t_0)=Id$ (these are the ``variational equations'' used in particular in 
 for improving outer-approximations of continuous dynamical systems).
 
 A Taylor expansion can thus be used to outer-approximate the solution of~(\ref{eq:IVP_jac2}) noted ${\cal J}(t;t_0,\z_0)$ on each time interval  $[t_j,t_{j+1}]$, 
-using the outer-approximation for $z(t,z_0)$ given by Taylor expansion~(\ref{eq:TM}).\\
+using the outer-approximation for $z(t,z_0)$ given by Taylor expansion~(\ref{eq:TM}).
+We just have to note that Equations (\ref{eq:IVP_jac}) together with Equations
+(\ref{eq:flow}) define a system of $n(n+1)$ ordinary differential equations in $n(n+1)$
+variable (the $z_i$ and $J_{ij}$). We call the corresponding vector field $F$ and
+write similarly, by an abuse of notation, for $H$ a function in the $z_i$ and $J_{ij}$,
+$H^{[i]}$ the $i$th Lie derivative of $H$ along the (augmented) vector field $H$. More
+explicitly, it is defined inductively as follows : 
+\begin{eqnarray}
+H^{[0]} & = & H \\ 
+H^{[i+1]} & = & (H^{[i]})^{[1]}
+\end{eqnarray}
+\noindent where the first Lie derivative is :
+\begin{equation}
+H^{[1]} = \sum_{i=1}^n \frac{\partial H}{\partial z_i} f_i \\
++\sum_{k,l=1}^n \frac{\partial H}{\partial J_{jk}} \left(
+\sum_{l=1}^n \frac{\partial f_j}{\partial z_l} J_{lk}\right)
+\label{eqfirstH}
+\end{equation}
+
+\begin{proof}
+Consider a solution $t \rightarrow z_i(t)$ and $t \rightarrow J_{ij}(t)$ of
+Equations (\ref{eq:IVP_jac}) and (\ref{eq:flow}). The Lie derivative of $H$
+is
+the time derivative of $\tilde{H}(t)=H(z_1(t),\ldots,z_n(t),J_{11}(t),\ldots,J_{nn}(t))$ : 
+$$\begin{array}{rcl}
+\dot{\tilde{H}}(t) & = & \sum_{i=1}^{n} \frac{\partial H}{\partial z_i}(t)
+\dot{z}_i(t)+\sum_{k,l=1}^n \frac{\partial H}{\partial J_{kl}}(t) \dot{J}_{kl}(t)
+\end{array}$$
+We get the formula (\ref{eqfirstH}) by 
+replacing $\dot{z}_i$ by its expression in Equation (\ref{eq:flow}) and
+$\dot{J}_{kl}$ by its expression in Equation (\ref{eq:IVP_jac}). 
+\end{proof}
 
 \begin{example}
 \label{running1}
@@ -870,13 +909,46 @@ with the calculation of the Jacobian. As a matter of fact, we would have natural
 \ForAuthors{Faire commuter les derivations plus bas, mais notations pour derivees de Lie a mettre avant ($^{[i]}$)}
 
 \begin{multline}
-[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} \mbox{Jac}_x(f^{[i]})([{\r}_{j+1}]) [{\J}_j] \\ +  \frac{(t-t_j)^k}{k !} \mbox{Jac}_x(f^{[k]})([{\r}_{j+1}]) [\bfm{R}_{j+1}]
+[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} (\mbox{Jac}_x(f))^{[i]}([{\r}_{j+1}]) [{\J}_j] \\ +  \frac{(t-t_j)^k}{k !} (\mbox{Jac}_x(f)^{[k]}([{\r}_{j+1}]) [\bfm{R}_{j+1}]
 \label{eq:TM3}
 \end{multline}
+\noindent where $(\mbox{Jac}_x(f))^{[i]}$ denotes the $i$th Lie derivative of 
+$\mbox{Jac}_x(f)$ along the vector field defined by Equation (\ref{eq:IVP_jac2}), i.e. is
+the derivation defined by induction as follows (for all $k$ and $l$ between 1 and $n$), 
+similarly to Equations (\ref{Lie1})~:
+\begin{equation}
+(\mbox{Jac}_x(f))^{[0]}_{k,l} = \mbox{Jac}_x(f)_{k,l}
+\end{equation}
+\begin{multline}
+(\mbox{Jac}_x(f))^{[i+1]}_{k,l} = 
+\sum_{p=1}^n \frac{(\mbox{Jac}_x(f))^{[i]}_{k,l}}{\partial z_p} f_q
+\\+
+\sum_{q,r=1}^n \frac{(\mbox{Jac}_x(f))^{[i]}_{k,l}}{\partial J_{q,r}} \sum_{s=1}^n
+\frac{\partial f_q}{\partial z_s} J_{sr}
+\label{Lie2}
+\end{multline}
+%Hence in particular~: 
+%\begin{multline}
+%(\mbox{Jac}_x(f))^{[1]}_{k,l} = \sum_{p=1}^n \left(\mbox{Lie}_f
+%\left(\frac{\partial{f_i}}{\partial z_p}\right) J_{pl} \right.\\
+%\left.\frac{\partial{f_i}}{\partial z_p} \sum_{q=1}^n \frac{\partial f_p}{\partial z_q}
+%J_{ql}
+%\right)
+%\label{Lie2}
+%\end{multline}
+%\ForAuthors{A compl\'eter}
 
-but the equivalent Equation (\ref{eq:TM3}) is simpler to compute since we already computed
-the Lie derivative of $f$, in Equation (\ref{eq:TM2}). The Jacobian calculation is afterwards
+The Equation (\ref{eq:TM3}) is equivalent since the two derivative (the Jacobian calculation
+and the Lie derivative) commute. Equation (\ref{eq:TM3}) 
+is simpler to compute since we already computed
+the Lie derivative of $f$, in Equation (\ref{eq:TM2}), the Jacobian calculation being by
+itself rather 
 inexpensive. 
+
+\begin{proof}
+The Jacobian $Jac_x{f}$...
+\end{proof}
+
 \end{remark}
 
 \begin{example}
