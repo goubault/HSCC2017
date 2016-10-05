@@ -884,16 +884,21 @@ The corresponding variational equations are~:
 the Kronecker symbol).
 \end{example}
 
-Altogether, the algorithm, given a time grid  $t_0 < t_1 < \ldots < t_N$, an initial range $\z_0$, and some $\tilde{z_0} \in \z_0$, is as follows~:
-
+Altogether, the algorithm to compute an inner-approximated flow-pipe of the uncertain initial-value problem given a time grid  $t_0 < t_1 < \ldots < t_N$, 
+an initial range $\z_0$, and some $\tilde{z_0} \in \z_0$, is as follows~:
+ {\par\smallskip                     %  authors:
+  \begin{center}%                    %
+   \fbox%                            %    --------
+   {\parbox{1.\linewidth}%          %    |  #1  |
+    {\raggedright\sc  
 Initialize: $j=0$, $t_j=t_0$, $[\z_j]=\z_0$, $[\tilde{z}_j]=\tilde{z}_0$, $[\J_j] = Id$
 
 Then on each time interval $[t_j,t_{j+1}]$ do:
 
-- compute a priori enclosures $[\r_{j+1}]$  of  ${\cal Z}(t;t_j,\z_j)$ for all $t$ in $[t_j,t_{j+1}]$, $[\tilde{\r}_{j+1}]$  of  ${\cal Z}(t;t_j,\tilde{z}_j)$ for all $t$ in $[t_j,t_{j+1}]$,
+1) compute a priori enclosures $[\r_{j+1}]$  of  ${\cal Z}(t;t_j,\z_j)$ for all $t$ in $[t_j,t_{j+1}]$, $[\tilde{\r}_{j+1}]$  of  ${\cal Z}(t;t_j,\tilde{z}_j)$ for all $t$ in $[t_j,t_{j+1}]$,
 and $[\bfm{R}_{j+1}]$ of ${\cal J}(t;t_j,\z_j)$
 
-- compute the Taylor Models valid on $[t_j,t_{j+1}]$:
+2) compute the Taylor Models valid on $[t_j,t_{j+1}]$:
 \begin{multline}
 [\z](t,t_j,[{\z}_j]) = [{\z}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} f^{[i]}([{\z}_j])\\+ 
 \frac{(t-t_j)^k}{k !} f^{[k]}([{\r}_{j+1}]).
@@ -908,7 +913,7 @@ and $[\bfm{R}_{j+1}]$ of ${\cal J}(t;t_j,\z_j)$
 \label{eq:TM3}
 \end{multline}
 
-- deduce an inner-approximation valid for $t$ in $[t_j,t_{j+1}]$~: if $]\z[(t,t_j)$ defined by Equation~(\ref{eq:inner_cont}) is an improper interval\\
+3) deduce an inner-approximation valid for $t$ in $[t_j,t_{j+1}]$~: if $]\z[(t,t_j)$ defined by Equation~(\ref{eq:inner_cont}) is an improper interval\\
 \begin{equation} 
 ]\z[(t,t_j) = [\tilde{\z}](t,t_j,[\tilde{\z}_j]) + [\J](t,t_j,[{\z}_j])*([\overline{z_0},\underline{z_0}]-\tilde{z_0}) 
 \label{eq:inner_cont}
@@ -917,8 +922,12 @@ and $[\bfm{R}_{j+1}]$ of ${\cal J}(t;t_j,\z_j)$
 then interval $\pro]\z[(t,t_j)$ is an inner-approximation of  the set of solutions $\{ z(t,z_0), \, z_0(t_0) \in \z_0 \}$ of  (\ref{eq:flowb}) at time $t$,
 otherwise the inner-approximation is empty.\\
 
-- compute $[{\z}_{j+1}]=[\z](t_{j+1},t_j,[{\z}_j])$, $[\tilde{\z}_{j+1}]=[\tilde{\z}](t_{j+1},t_j,$ $[\tilde{\z}_j])$, $[\J_{j+1}] = [\J](t,t_j,[{\z}_j]) $\\
-
+4) compute $[{\z}_{j+1}]=[\z](t_{j+1},t_j,[{\z}_j])$, $[\tilde{\z}_{j+1}]=[\tilde{\z}](t_{j+1},t_j,$ $[\tilde{\z}_j])$, $[\J_{j+1}] = [\J](t,t_j,[{\z}_j]) $\\
+ }%         %    --------
+   }%                                %
+  \end{center}%                      %
+  \par\smallskip                     %
+ }        
 \begin{remark}
 Note that in Equation (\ref{eq:TM3}), we made commute, as we can, the $i$th Lie derivative
 with the calculation of the Jacobian. As a matter of fact, we would have naturally written :
