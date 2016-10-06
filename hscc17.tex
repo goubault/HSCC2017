@@ -1327,8 +1327,18 @@ x_2 \\
 \section{Conclusion and future work}
 %******************************************************************************
 %
+A natural future extension of the present work, that we are interested in, is the inner-approximation of reachable sets 
+in presence of guards and constraints, so as to handle general hybrid systems. Our approach allows us to inner-approximate 
+not only the variables as demonstrated here, but also the projection on whatever function of these variables. Also, the 
+symbolic information included in our model if we have a relational information in the evaluation of the Taylor model coefficients, 
+such as is the case when we evaluate them with affine arithmetic, will allow us to use existing work on the inner-approximation 
+of joint range of functions and constraint solving. 
+\ForAuthors{Ajouter ref?} 
+In that respect, our current matlab prototype, while producing interesting results for the continuous case, does not allow us to 
+handle this symbolic information in a satisfying way, and some engineering improvement is needed and planned.
+
+
 \begin{itemize}
-\item Hybrid systems (and inner-approximated constraints)
 \item combination with backward inner-approximated analyses ? 
 \item abstract model-checking ? 
 \end{itemize}
