@@ -901,7 +901,7 @@ an initial range $\z_0$, and some $\tilde{z_0} \in \z_0$, is as follows~:
   \begin{center}%                    %
    \fbox%                            %    --------
    {\parbox{1.\linewidth}%          %    |  #1  |
-    {\raggedright\sc  
+    { %\raggedright\sc  
 Initialize: $j=0$, $t_j=t_0$, $[\z_j]=\z_0$, $[\tilde{z}_j]=\tilde{z}_0$, $[\J_j] = Id$
 
 Then on each time interval $[t_j,t_{j+1}]$ do:
@@ -940,12 +940,13 @@ otherwise the inner-approximation is empty.\\
   \par\smallskip                     %
  }        
 \begin{remark}
-Note that in Equation (\ref{eq:TM3}), 
-we relied on the possibility to commute the $i$th Lie derivative
-with the calculation of the Jacobian. As a matter of fact, we would have naturally written :
+The formulation of Equation (\ref{eq:TM3}), 
+relies on the possibility to commute the $i$th Lie derivative
+with the calculation of the Jacobian. Without this, we would have written:
 %\ForAuthors{Faire commuter les derivations plus bas, mais notations pour derivees de Lie a mettre avant ($^{[i]}$)}
 \begin{multline}
 [\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} (\mbox{Jac}_x(f))^{[i]}([{\r}_{j+1}],[{\J}_j]) \\ +  \frac{(t-t_j)^k}{k !} (\mbox{Jac}_x(f))^{[k]}([{\r}_{j+1}],[\bfm{R}_{j+1}])
+\label{eq:TM3b}
 \end{multline}
 \noindent ($\mbox{Jac}_x(f)$ being seen as a function of the $z_i$ and $J_{ij}$, which 
 is linear in the $J_{ij}$ as in Equation (\ref{pqentry}))
@@ -974,7 +975,7 @@ is linear in the $J_{ij}$ as in Equation (\ref{pqentry}))
 %\label{Lie2}
 %\end{multline}
 %\ForAuthors{A compl\'eter}
-The Equation (\ref{eq:TM3}) is equivalent since the two derivatives (the Jacobian calculation
+Equations (\ref{eq:TM3}) and (\ref{eq:TM3b}) are equivalent since the two derivatives (the Jacobian calculation
 and the Lie derivative) commute.  
 \begin{proof}
 We prove this equivalence by induction on the number of Lie derivations. 
@@ -1213,9 +1214,14 @@ que je fasse d'autres experiences}
 
 \subsection{Comparisons to the related work}
 \label{sec:exp_compar}
-\ForAuthors{To be discussed ;-)}
+We provide in this section some elements of comparisons to the experimental results given in the related work~\cite{Underapproxflowpipes,underapprox16}.
 
-These benchmarks are taken from \cite{Underapproxflowpipes}. 
+\paragraph{Brusselator}
+We fist consider again the Brusselator model, with the initial set taken in~\cite{Underapproxflowpipes}, defined by 
+$x_1 \geq 0.9$, $x_2 \geq 0$, $x_1+x_2-1 \leq 0$, which we can project on $1 \geq x_1 \geq 0.9$, $0.1 \geq x_2 \geq 0$.
+They study the result for T = 3 and T = 4
+
+In they take 0.3, 0.4] × [0.5, 0.7] for T = 1.1 seconds. 
 
 \paragraph{Moore-Greitzer model of a jet engine}
 \begin{equation}
