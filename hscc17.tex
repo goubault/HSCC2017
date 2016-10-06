@@ -537,7 +537,7 @@ The results and notations quickly introduced in this section are mostly based on
 on modal intervals~\cite{gold1}. 
 
 \subsection{Interval extensions, outer and inner approximations}
-Classical intervals are used in many situations to rigorously compute with interval
+Classical intervals~\cite{Moore66,IA2001} are used in many situations to rigorously compute with interval
 domains instead of reals, usually leading to outer approximations of function
 ranges over boxes. 
 
@@ -558,7 +558,7 @@ function to compute. Suppose the function f is differentiable over the interval
 $\x = [a, b]$. Then,the mean-value theorem implies that for any choice of $x_0 \in \x$, then we have
 \[ \forall x \in \x, \, \exists c \in \x, \, f(x) = f(x_0) + f'(c) (x-x_0).\]
 If we can bound the range of the gradient of $f$ over $\x$, by $\mbox{range}(f',\x)=\subseteq [\f'](\x)$, we can 
-derive the following mean-value interval extension: for any  $x_0 \in \x$
+derive the following interval enclosure, usually called the mean-value extension: for any  $x_0 \in \x$
 \[    \mbox{range}(f,\x)  \subseteq f(x_0) +  [\f'](\x) (\x - x_0) \]
 
 Classical interval computations can be interpreted as quantified 
