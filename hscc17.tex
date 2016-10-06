@@ -940,14 +940,12 @@ otherwise the inner-approximation is empty.\\
   \par\smallskip                     %
  }        
 \begin{remark}
-Note that in Equation (\ref{eq:TM3}), we made commute, as we can, the $i$th Lie derivative
+Note that in Equation (\ref{eq:TM3}), 
+we relied on the possibility to commute the $i$th Lie derivative
 with the calculation of the Jacobian. As a matter of fact, we would have naturally written :
-
 %\ForAuthors{Faire commuter les derivations plus bas, mais notations pour derivees de Lie a mettre avant ($^{[i]}$)}
-
 \begin{multline}
 [\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} (\mbox{Jac}_x(f))^{[i]}([{\r}_{j+1}],[{\J}_j]) \\ +  \frac{(t-t_j)^k}{k !} (\mbox{Jac}_x(f))^{[k]}([{\r}_{j+1}],[\bfm{R}_{j+1}])
-\label{eq:TM3}
 \end{multline}
 \noindent ($\mbox{Jac}_x(f)$ being seen as a function of the $z_i$ and $J_{ij}$, which 
 is linear in the $J_{ij}$ as in Equation (\ref{pqentry}))
@@ -976,9 +974,8 @@ is linear in the $J_{ij}$ as in Equation (\ref{pqentry}))
 %\label{Lie2}
 %\end{multline}
 %\ForAuthors{A compl\'eter}
-
 The Equation (\ref{eq:TM3}) is equivalent since the two derivatives (the Jacobian calculation
-and the Lie derivative) commute~:  
+and the Lie derivative) commute.  
 \begin{proof}
 We prove this equivalence by induction on the number of Lie derivations. 
 For $i=1$, we have, by definition $\mbox{Jac}_x(f^{[1]})
@@ -1040,6 +1037,11 @@ inexpensive.
 
 \ForAuthors{Je pense qu'il faut dire un mot rapide sur comment on calcule le rough
 enclosure au moins de la Jacobienne, car on dit au debut qu'on n'utilise pas la meme que Goldstejn ;-)}
+\ForAuthors{Oui, de touet facon on a sasn doute interet a structurer la section, peut-etre en 
+utilisant des paragraphes: introduction sur l'idee generale et algo, en en numerotatnt par exemple les etapes, 
+puis eventuellemnt un paragraphe pour commenter chaque etape; ce qui nous permet d'eviter d'utiliser trop systematiquement
+le style ``remarque'' en italique, ce uqi estdesagreable, d'autant qu'ensuite les preuves ne ressortent pas, etc. 
+Apres, faut voir si on trouve qqchsoe a dire sur chaque ``etape'' mais bon pas oblige d'en mettre des tonnes; qu'en penses tu?}
 \begin{example}
 \label{running2}
 We carry on with the computation of outer-approximations for solutions and Jacobians for 
@@ -1124,10 +1126,10 @@ with respect to the initial condition $z_0$.
 
 \begin{remark}
 Note that the wider the outer-approximation in Taylor models~(\ref{eq:TM1}-\ref{eq:TM3}), the tighter thus the less accurate the inner-approximation~(\ref{eq:inner_cont}): 
-it can even potentially even leading to an empty inner-approximation if the result of Equation~(\ref{eq:inner_cont}) in Kaucher arithmetic is not an improper interval. 
+it can even potentially lead to an empty inner-approximation if the result of Equation~(\ref{eq:inner_cont}) in Kaucher arithmetic is not an improper interval. 
 
 This can occur in two ways. First, note that $[\overline{z_0},\underline{z_0}]-\tilde{z_0}$ is an improper interval that belongs to $\dual {\cal Z}$ as defined 
-in Section~\ref{generalized}. The outer-approximation of the Jacobian matrix,  $[\J](t,t_j,[{\z}_j])$ is a proper interval. The Kaucher multiplication as defined in Table~{tabmult}
+in Section~\ref{generalized}. The outer-approximation of the Jacobian matrix,  $[\J](t,t_j,[{\z}_j])$ is a proper interval. The Kaucher multiplication as defined in Table~\ref{tabmult}
 will yield a non-zero improper interval only if$[\J](t,t_j,[{\z}_j])$ does not contain $0$. And, in this case, the result of this multiplication will depend on the 
 lower bound of the absolute value of the Jacobian (while the same mean-value theorem used for outer-approximation would imply a multiplication of proper intervals that would, 
 in the same case, depend on the upper bound of the absolute value of the Jacobian). The larger this lower bound, the wider the inner-approximation. 
@@ -1151,10 +1153,14 @@ time step, detailles - je complete sous peu}
 \section{Experiments and Benchmarks}
 \label{sec:experiments}
 %******************************************************************************
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-\ForAuthors{Rajouter des exemples de la litterature}
-
+%----------------------------------------------------------------------------------------------------------------------------------------------------------------
+We first demonstrate in Section~\ref{sec:exp_bruss} the good behaviour of our inner-approximated flowpipes
+ on the quite difficult Brusselator model. % plus des elements permettant de quantifier le cout de surapprox par rapport a sousapprox
+Then, in Section~\ref{sec:exp_compar}, we provide some elements of comparisons to the experimental results 
+given in the related work. 
+\SP{And elements allowing to compare the cost of inner-approx comapred to inner-approx of same degree: where to put this and on which example, see later}   
 \subsection{Brusselator}
+\label{sec:exp_bruss}
 $$\left\{\begin{array}{rcl}
 \dot{x}_1 & = & 1+x_1^2x_2-2.5x_1 \\
 \dot{x}_2 & = & 1.5x_1-x_1^2x_2
@@ -1186,21 +1192,25 @@ The Brusselator (x2): Taylor model of order 4 in t, up to t=10
 que je fasse d'autres experiences}
 
 %------------------------------------------------------------------------------------------------------------------------------------------------
-\subsection{Car on the hill}
-\[ \left\{ 
-\begin{array}{lll} \dot x_1 & = & x_2 \\
-\dot x_2 & = & - 9.81 \sin(\frac{dg}{dx}(x_1))-0.7 x_2 + u
-\end{array}
-\right.
-\]
-where \[ g(x) = \frac{1}{2} (-\frac{1.1}{1.2} \cos(x) + \frac{1.2}{1.1} cos(1.1x)), \]
-the command $u$ is bounded in $[-2,2]$, the initial condition is $x_1(0) \in [-1,1]$, $x_2(0) \in [-1,1]$, 
-and we have limit conditions $x_1(t) \in [-1,13]$, $x_2(t) \in \R$ (conditions as in T. Le Mezo's document ``viability list of problems'')
 
-\SP{Si on peut montrer qu'on peut soit reussir a remonter la cite soit rester bloque, un peu comme T. Le Mezo a montre dans sa pres a brest, ca serait chouette. 
-Mais au moins dans l'implem matlab ca explose completement, mais relativement bizarrement: je ne suis qu'a moitié confiante sur l'AA dedans ...}
+% Exemple retiré car je n'arrive pas a bioen le traiter pour le moment
+%\subsection{Car on the hill}
+%\[ \left\{ 
+%\begin{array}{lll} \dot x_1 & = & x_2 \\
+%\dot x_2 & = & - 9.81 \sin(\frac{dg}{dx}(x_1))-0.7 x_2 + u
+%\end{array}
+%\right.
+%\]
+%where \[ g(x) = \frac{1}{2} (-\frac{1.1}{1.2} \cos(x) + \frac{1.2}{1.1} cos(1.1x)), \]
+%the command $u$ is bounded in $[-2,2]$, the initial condition is $x_1(0) \in [-1,1]$, $x_2(0) \in [-1,1]$, 
+%and we have limit conditions $x_1(t) \in [-1,13]$, $x_2(t) \in \R$ (conditions as in T. Le Mezo's document ``viability list of problems'')
 
-\subsection{Other benchmarks}
+%\SP{Si on peut montrer qu'on peut soit reussir a remonter la cite soit rester bloque, un peu comme T. Le Mezo a montre dans sa pres a brest, ca serait chouette. 
+%Mais au moins dans l'implem matlab ca explose completement, mais relativement bizarrement: je ne suis qu'a moitié confiante sur l'AA dedans ...}
+%}
+
+\subsection{Comparisons to the related work}
+\label{sec:exp_compar}
 \ForAuthors{To be discussed ;-)}
 
 These benchmarks are taken from \cite{Underapproxflowpipes}. 
