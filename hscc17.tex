@@ -291,10 +291,10 @@
 \begin{abstract}
 We propose an approach for computing inner-approximations (also called under-approximations) of reachable sets of dynamical systems 
 defined by non-linear, uncertain, ordinary differential equations. This is a notoriously difficult problem, much more intricate than 
-outer-approximations for which there exist well known solutions, mostly based on Taylor models. 
+outer-approximations for whi\-ch there exist well known solutions, mostly based on Taylor models. 
 The few methods developped recently for inner-approximation mostly rely on backward flowmaps, and extra ingredients, either coming from optimisation, 
 or involving topological criteria, are required. Our solution, in comparison, builds on rather inexpensive set-based methods, namely a generalized
-mean-value theorem combined with Taylor models outer-approximations (also called over-approximations) of the flow and its jacobian with respect 
+mean-value theorem combined with Taylor models outer-approximations (also called over-approx\-imations) of the flow and its jacobian with respect 
 to the uncertain inputs and parameters.
 %for inner-approximations is also based on Taylor models, but contrarily to the few methods developped recently, 
 % is a direct forward method, which only relies on rather inexpensive set-based methods, namely a generalized mean-value theorem 
@@ -436,7 +436,7 @@ the state vector $x$ and of the function $f$.
 %\SP{Pour le moment ci-dessous = surtout du copie-coller de HSCC2014 + des trucs en vrac, je vais reprendre/enrichir bien sur, 
 %mais j'attends de savoir jusqu'ou on va et comment sur les gardes car ca risque d'orienter la biblio...}
 
-\ForAuthors{Je ne fais la partie related work que des articles que je connais ;-)}
+%\ForAuthors{Je ne fais la partie related work que des articles que je connais ;-)}
 
 Outer-approximations of non-linear systems are well studied, using in particular Taylor
 models, see \cite{Taylor07} for instance. Inner-approximations have been far less studied, 
@@ -478,14 +478,24 @@ complicated to approximate.
 The method we are presenting is much more straightforward, and relies only on classical
 Taylor models (although for a slightly augmented system of ODEs), and on simple methods
 for inner-approximating the image of a non-linear vector-valued scalar functions. 
+
+Finally, the authors have recently discovered the work \cite{Gold06}, whose Section 4 contains
+similar ideas as ours. The main differences seems to be that we are considering more
+general parameterized dynamical systems, and that we have a different scheme for bounding
+the remainder in our inner-approximated Taylor models. We could not assess the practical
+differences since \cite{Gold06} contains no real experiment as far as we could see. 
+Our method can also be extended to deal with inner-approximations of guards and treat complete
+hybrid system. We chose not to present that part for sake of readability, and also because
+it needed a much more involved implementation, that is currently being developped. 
+
 %But there exist fewer a few methods to compute global inner-approximations of the image of non-linear vector-valued 
 %functions, 
 
-\ForAuthors{Perso, je ne citerais pas trop les problemes d'inner approx de vector-valued
-function, ca nous emmene bien loin pour pas grand chose je pense. On pourrait a la limite
-citer Henrion pour le probleme de la Region of Attraction d'un systeme dynamique (et sa
-sous-approx)? Sinon etonnamment, combiner la methode de Sriram avec celle de
-\cite{HenrionLouembet} pourrait etre tres tres bien! Ca economiserait le test de connectness...}
+%\ForAuthors{Perso, je ne citerais pas trop les problemes d'inner approx de vector-valued
+%function, ca nous emmene bien loin pour pas grand chose je pense. On pourrait a la limite
+%citer Henrion pour le probleme de la Region of Attraction d'un systeme dynamique (et sa
+%sous-approx)? Sinon etonnamment, combiner la methode de Sriram avec celle de
+%\cite{HenrionLouembet} pourrait etre tres tres bien! Ca economiserait le test de connectness...}
 
 %mostly based on bisections of the input domain, see for instance \cite{Goldsztejn2010}, later
 %extended by the authors in \cite{rc13}, or inner approximating sets of (semi-algebraic)
@@ -618,7 +628,7 @@ where $Q_z = \exists$ if $(\z)$ is proper, and  $Q_z = \forall$ otherwise.
 When all intervals in (\ref{eq1}) are proper, we retrieve the interpretation of classical interval 
 computation, which gives an outer approximation of $\range(f,\x)$
 \[ (\forall x \in \x) \, (\exists z \in [\z]) \, (f(x)=z).    \]
-When all intervals are improper, (\ref{eq1}) becomes an inner-approximation  of $\range(f,\x)$
+When all intervals are improper, (\ref{eq1}) becomes an inner-approx\-imation  of $\range(f,\x)$
 \[ (\forall z \in ]\pro \z[) \, (\exists x \in \pro \x) \, (f(x)=z).    \] 
 
 \subsection{Kaucher arithmetic and the generalized interval natural extension}
@@ -769,8 +779,8 @@ f^{[i+1]}_k & = & \sum\limits_{j=1}^n \frac{\partial{f^{[i]}_k}}{\partial z_j} f
 \label{Lie1}
 \end{eqnarray}
 
-\ForAuthors{Est-ce qu'on rajoute la preuve elementaire - style RP 2015, que ce sont
-bien les derivees de Lie de f qu'il faut prendre pour l'expansion de Taylor?}
+\ForAuthors{Une ligne sur 
+bien les derivees de Lie de f qu'il faut prendre pour l'expansion de Taylor}
 %\ForAuthors{Il faut donner les regles de derivation, ce sont des derivees de Lie. Simple mais
 %on ne peut pas y couper je pense.}
 % \SP{A completer ou pas?} 
@@ -795,8 +805,8 @@ that is guaranteed to contain the reachable set of solutions of~(\ref{eq:flowb})
 
 We now want to compute also an inner-approximating flowpipe of this reachable set, that is for all $t$ in $[t_j,t_{j+1}]$, 
 a range $]\z[(t,t_j,[\z_j])$ such that all values inside that range are sure to be reached at time $t$ by an execution of system (\ref{eq:flowb}).
-\ForAuthors{Est-ce qu'on ne veut pas ecrire $]\z[(t,t_j,]\z_j[)$ plut\^ot avec
-$]\z_0[=[\z_0]$?}
+%\ForAuthors{Est-ce qu'on ne veut pas ecrire $]\z[(t,t_j,]\z_j[)$ plut\^ot avec
+%$]\z_0[=[\z_0]$?}
 For that, we will apply Theorem~\ref{thm1}, at all time $t$, to the function $z$ from $\R^n$ to $R^n$, defined by 
 $z_0 \mapsto z(t,z_0)$, solution to the IVP (\ref{eq:flowb}). 
 
@@ -818,7 +828,7 @@ The coefficients of the Jacobian matrix of the flow satisfy the following differ
 \dot{J}(t,z_0) =  \mbox{Jac}_z f(z(t,z_0)) . J(t,z_0).
 \label{eq:IVP_jac2}
 \end{equation} 
-with $J(t_0)=Id$ (these are the ``variational equations'' used in particular in \cite{wilczak}
+with $J(t_0)=Id$ (these are the ``variational equations'' used in particular in \cite{Zgliczynski2002}
 for improving outer-approximations of continuous dynamical systems).
 We will write equivalently, by a slight abuse of notation, 
 $\mbox{Jac}_z f$ as the function of the $z_i$ and $J_{ij}$ (linear in $J_{ij}$) which is
@@ -880,6 +890,7 @@ The corresponding variational equations are~:
 \dot{J}_{2,2} & = & (1-3x_1x_2)J_{1,2}-\frac{3}{2} x^2_1 J_{2,2} 
 \label{jacobian}
 \end{eqnarray}
+\ForAuthors{Forme matricielle a mettre plutot}
 \noindent with initial conditions (at time 0) $J_{i,j}=\delta_{i,j}$ (where $\delta$ denotes
 the Kronecker symbol).
 \end{example}
@@ -1027,6 +1038,8 @@ itself rather
 inexpensive. 
 \end{remark}
 
+\ForAuthors{Je pense qu'il faut dire un mot rapide sur comment on calcule le rough
+enclosure au moins de la Jacobienne, car on dit au debut qu'on n'utilise pas la meme que Goldstejn ;-)}
 \begin{example}
 \label{running2}
 We carry on with the computation of outer-approximations for solutions and Jacobians for 
@@ -1125,8 +1138,8 @@ interval resulting from the Kaucher multiplication, then the sum of the two inte
 and the inner-approximation empty. 
 \end{remark}
 
-\ForAuthors{Fait-on une section ou sous-section avec calcul par arithmetique affine? Ou on dit
-ca juste dans exemples quand on fait un calcul pratique, pour le running example typiquement?}
+\ForAuthors{Arithmetique affine 
+juste dans exemples quand on fait un calcul pratique, pour le running example typiquement}
 
 \begin{example}
 \label{running3}
@@ -1213,7 +1226,7 @@ $t=0.04$
 in [0,3] (using a step-size $\delta=0.02$)
 \end{itemize}
 
-\ForAuthors{J'ai demande \`a Xin Chen les equations exactes utilisees dans le papier}
+\ForAuthors{Je rajoute les equations plus tard}
 
 \paragraph{Shimizu-Morioka}
 
