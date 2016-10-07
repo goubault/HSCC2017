@@ -1166,7 +1166,6 @@ given in the related work.
 \subsection{Brusselator}
 \label{sec:exp_bruss}
 
-3.3996e+03
 
 $$\left\{\begin{array}{rcl}
 \dot{x}_1 & = & 1+x_1^2x_2-2.5x_1 \\
@@ -1184,8 +1183,8 @@ Taylor model of order 3 in t, interval vs affine arithmetic evaluation
 The Brusselator (x1): Taylor model of order 4 in t, up to t=10
 
 \begin{center}
-\epsfig{file=brusselator_x1_t10_comment.png,clip=,width=10cm}
-% ou version non commentée : \epsfig{file=brusselator_x1_t10.png,clip=,width=10cm}
+\epsfig{file=brusselator_x1_t10.png,clip=,width=10cm}
+% ou version non commentée : \epsfig{file=brusselator_x1_t10_comment.png,clip=,width=10cm}
 \end{center}
 
 The Brusselator (x2): Taylor model of order 4 in t, up to t=10
@@ -1239,7 +1238,9 @@ of the set of vectors (not mentioned).
 
 We consider the initial set taken in~\cite{Underapproxflowpipes}, defined by 
 $x_1 \geq 0.9$, $x_2 \geq 0$, $x_1+x_2-1 \leq 0$, which we can project on $1 \geq x_1 \geq 0.9$, $0.1 \geq x_2 \geq 0$.
-They study the result for T = 3 and T = 4. We choose, as they do, 4th order Taylor models. 
+They study the result for T = 3 and T = 4. We choose, as they do, 4th order Taylor models, and a time step $h=0.02$. 
+Our implementation takes a total of 3400 secs (for computing both outer and inner approximations).
+
 \begin{center}
 \epsfig{file=sriram_bruss_order4_t4_x1.png,clip=,width=8cm}
 \end{center}
@@ -1252,10 +1253,18 @@ They study the result for T = 3 and T = 4. We choose, as they do, 4th order Tayl
 \begin{center}
 \epsfig{file=sriram_bruss_order4_t4_widthx2.png,clip=,width=8cm}
 \end{center}
+\begin¶{figure}
 \begin{center}
 \epsfig{file=sriram_bruss_order4_t4_minwidth.png,clip=,width=8cm}
 \end{center}
-\Sp{Add elements allowing to compare the cost of inner-approx comapred to inner-approx of same degree: where to put this and on which example, see later}  
+\caption{Evolution of $\gamma_{\min}$ with time}
+\label{ex:width_sriram_bruss}
+\end{figure}
+On Figure~\ref{ex:width_sriram_bruss}, we see that at $t=3$, the relative width of the inner-approximation over the
+outer-approximation is of order $0.7$, which is equal to the value given in Table~1 of \cite{Underapproxflowpipes}. 
+However, this ration decreases quickly, mostly due to the $x_2$ component, and at $t=4$, we get a ratio very close to $0.1$!
+
+\SP{Add elements allowing to compare the cost of inner-approx comapred to inner-approx of same degree: where to put this and on which example, see later}  
 
 \paragraph{Comparison to \cite{underapprox16} (Brusselator)}
 In \cite{underapprox16} they take X=[0.3, 0.4] × [0.5, 0.7] for a time frame in [0,1.1], and a time step h=0.05. 
@@ -1296,7 +1305,16 @@ x_2-5x_3x_4 \\
 \end{array}\right)
 \end{equation}
 
-\section{Other examples}
+\subsection{Conclusion}
+Resultats preliminaires qui peuvent ne pas sembler que positif mais a priori essentiellement dus a la presente implem
+\ForAuthors{
+- comparaison sur / sous-approx => sous-approx competitive en complexite par rapport aux modeles de Taylor classiques\\
+- bon passage a l'echelle sur degre 7 ? \\
+- IA / AA laissant etendre que implem AA utilisee tres sous-optimale
+- un des interets est qu'on peut raffiner la precision en montant en ordre a la demande
+}
+
+\subsection{Other examples}
 \paragraph{Moore-Greitzer model of a jet engine}
 \begin{equation}
 \dot{\left(\begin{array}{c}
