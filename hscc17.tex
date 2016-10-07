@@ -480,13 +480,14 @@ Taylor models (although for a slightly augmented system of ODEs), and on simple 
 for inner-approximating the image of a non-linear vector-valued scalar functions. 
 
 Finally, the authors have recently discovered the work \cite{Gold06}, whose Section 4 contains
-similar ideas as ours. The main differences seems to be that we are considering more
-general parameterized dynamical systems, and that we have a different scheme for bounding
-the remainder in our inner-approximated Taylor models. We could not assess the practical
-differences since \cite{Gold06} contains no real experiment as far as we could see. 
-Our method can also be extended to deal with inner-approximations of guards and treat complete
-hybrid system. We chose not to present that part for sake of readability, and also because
-it needed a much more involved implementation, that is currently being developped. 
+ideas that look similar to ours. The main differences seems to be that we are considering more
+general parameterized dynamical systems, which will later allow us to handle guard conditions for hybrid systems, 
+and that we have a different scheme for bounding
+the remainder in our inner-approximated Taylor models. But we could not assess the practical
+differences since the description in \cite{Gold06} is sketchy, and contains no real experiment. 
+%Our method can also be extended to deal with inner-approximations of guards and treat complete
+%hybrid system. %We chose not to present that part for sake of readability, and also because
+%it needed a much more involved implementation, that is currently being developped. 
 
 %But there exist fewer a few methods to compute global inner-approximations of the image of non-linear vector-valued 
 %functions, 
@@ -1161,7 +1162,7 @@ It allows us to first demonstrate in Section~\ref{sec:exp_bruss} the good behavi
  on the quite difficult Brusselator model. % plus des elements permettant de quantifier le cout de surapprox par rapport a sousapprox
 Then, in Section~\ref{sec:exp_compar}, we provide some elements of comparisons to the experimental results 
 given in the related work. 
-\SP{And elements allowing to compare the cost of inner-approx comapred to inner-approx of same degree: where to put this and on which example, see later}   
+ 
 \subsection{Brusselator}
 \label{sec:exp_bruss}
 $$\left\{\begin{array}{rcl}
@@ -1215,13 +1216,38 @@ que je fasse d'autres experiences}
 \subsection{Comparisons to the related work}
 \label{sec:exp_compar}
 We provide in this section some elements of comparisons to the experimental results given in the related work~\cite{Underapproxflowpipes,underapprox16}.
+Let us highlight that is difficult to have a fair comparison, as on the one hand, evaluating the compared accuracy of these methods is difficult, 
+and on the other hand we only used a very basic Matlab implementation of our approach, whereas the related work relies on actual implementations.
+
+In  \cite{Underapproxflowpipes}, the  accuracy of computations is measured by the minimum width ratio 
+\[ \gamma_{\min}=\min{\frac{\gamma_u(v)}{\gamma_o(v)}}, v \in V \]
+where $V$ is a set of vectors, and $\gamma_u(v)$ and $\gamma_o(v)$ measure respectively the width of the inner-approximation and outer-approximation
+in direction $v \in V$. 
+Intuitively, the larger this ratio, the better the approximation. 
+Our method naturally gives inner ranges for the projection of the flow system on its state variables (although we can also directly deduce from our Taylor models 
+an inner-approximation of the range of any linear function of these variables, and also define a joint range, as shown in~\cite{hscc14,rc13}). 
+We thus measure in our case \[ \gamma_{\min}=\min_{i}{\frac{\gamma_u(x_i)}{\gamma_u(x_i)}}, \]
+where the $x_i$ are the state variables of the system, which may be more optimistic than the measure of \cite{Underapproxflowpipes}, depending on their choice 
+of the set of vectors (not mentioned). 
+
+\SP{And elements allowing to compare the cost of inner-approx comapred to inner-approx of same degree: where to put this and on which example, see later}  
 
 \paragraph{Brusselator}
 We fist consider again the Brusselator model, with the initial set taken in~\cite{Underapproxflowpipes}, defined by 
 $x_1 \geq 0.9$, $x_2 \geq 0$, $x_1+x_2-1 \leq 0$, which we can project on $1 \geq x_1 \geq 0.9$, $0.1 \geq x_2 \geq 0$.
-They study the result for T = 3 and T = 4
+They study the result for T = 3 and T = 4. We choose, as they do, 4th order Taylor models. 
 
-In they take 0.3, 0.4] × [0.5, 0.7] for T = 1.1 seconds. 
+
+
+In \cite{underapprox16} they take [0.3, 0.4] × [0.5, 0.7] for T = 1.1 seconds. 
+
+% condition initiale
+X = [infsup(0.3,0.4) ; infsup(0.5,0.7)]
+
+% pas
+tau = 0.05
+tmax = 1.1
+time (order 4 Taylor Model, AA) =  118.1229
 
 \paragraph{Moore-Greitzer model of a jet engine}
 \begin{equation}
