@@ -1165,6 +1165,9 @@ given in the related work.
  
 \subsection{Brusselator}
 \label{sec:exp_bruss}
+
+3.3996e+03
+
 $$\left\{\begin{array}{rcl}
 \dot{x}_1 & = & 1+x_1^2x_2-2.5x_1 \\
 \dot{x}_2 & = & 1.5x_1-x_1^2x_2
@@ -1217,8 +1220,12 @@ que je fasse d'autres experiences}
 \label{sec:exp_compar}
 We provide in this section some elements of comparisons to the experimental results given in the related work~\cite{Underapproxflowpipes,underapprox16}.
 Let us highlight that is difficult to have a fair comparison, as on the one hand, evaluating the compared accuracy of these methods is difficult, 
-and on the other hand we only used a very basic Matlab implementation of our approach, whereas the related work relies on actual implementations.
+and on the other hand we only used a very basic Matlab implementation of our approach, whereas the related work relies on actual implementations,
+using optimized solvers such as VNode. Among the examples studied in ~\cite{Underapproxflowpipes,underapprox16}, we selected
+the Brusselator as a representative of the systems of low degree. 
+We then chose as second example the biological system, because of its degree 7, to give a first idea of the way the method scales. 
 
+\paragraph{Comparison to \cite{Underapproxflowpipes} (Brusselator)}
 In  \cite{Underapproxflowpipes}, the  accuracy of computations is measured by the minimum width ratio 
 \[ \gamma_{\min}=\min{\frac{\gamma_u(v)}{\gamma_o(v)}}, v \in V \]
 where $V$ is a set of vectors, and $\gamma_u(v)$ and $\gamma_o(v)$ measure respectively the width of the inner-approximation and outer-approximation
@@ -1226,18 +1233,31 @@ in direction $v \in V$.
 Intuitively, the larger this ratio, the better the approximation. 
 Our method naturally gives inner ranges for the projection of the flow system on its state variables (although we can also directly deduce from our Taylor models 
 an inner-approximation of the range of any linear function of these variables, and also define a joint range, as shown in~\cite{hscc14,rc13}). 
-We thus measure in our case \[ \gamma_{\min}=\min_{i}{\frac{\gamma_u(x_i)}{\gamma_u(x_i)}}, \]
+We thus measure in our case \[ \gamma_{\min}=\min_{i}{\frac{\gamma_u(x_i)}{\gamma_o(x_i)}}, \]
 where the $x_i$ are the state variables of the system, which may be more optimistic than the measure of \cite{Underapproxflowpipes}, depending on their choice 
 of the set of vectors (not mentioned). 
 
-\SP{And elements allowing to compare the cost of inner-approx comapred to inner-approx of same degree: where to put this and on which example, see later}  
-
-\paragraph{Brusselator}
-We fist consider again the Brusselator model
-, with the initial set taken in~\cite{Underapproxflowpipes}, defined by 
+We consider the initial set taken in~\cite{Underapproxflowpipes}, defined by 
 $x_1 \geq 0.9$, $x_2 \geq 0$, $x_1+x_2-1 \leq 0$, which we can project on $1 \geq x_1 \geq 0.9$, $0.1 \geq x_2 \geq 0$.
 They study the result for T = 3 and T = 4. We choose, as they do, 4th order Taylor models. 
+\begin{center}
+\epsfig{file=sriram_bruss_order4_t4_x1.png,clip=,width=8cm}
+\end{center}
+\begin{center}
+\epsfig{file=sriram_bruss_order4_t4_x2.png,clip=,width=8cm}
+\end{center}
+\begin{center}
+\epsfig{file=sriram_bruss_order4_t4_widthx1.png,clip=,width=8cm}
+\end{center}
+\begin{center}
+\epsfig{file=sriram_bruss_order4_t4_widthx2.png,clip=,width=8cm}
+\end{center}
+\begin{center}
+\epsfig{file=sriram_bruss_order4_t4_minwidth.png,clip=,width=8cm}
+\end{center}
+\Sp{Add elements allowing to compare the cost of inner-approx comapred to inner-approx of same degree: where to put this and on which example, see later}  
 
+\paragraph{Comparison to \cite{underapprox16} (Brusselator)}
 In \cite{underapprox16} they take X=[0.3, 0.4] × [0.5, 0.7] for a time frame in [0,1.1], and a time step h=0.05. 
 We compute the inner and outer-approximations, with order 4 Taylor Models, evaluated in AA, in 118.12 seconds, 
 and get the following results:
@@ -1252,6 +1272,31 @@ and get the following results:
 \end{center}
 \ForAuthors{Eric, tu sais comprendre par rapport aux Chinois ce que ca donne en precision ?}
 
+
+\paragraph{Biological system}
+
+
+\begin{equation}
+\dot{\left(\begin{array}{c}
+x_1 \\
+x_2 \\
+x_3 \\
+x_4 \\
+x_5 \\
+x_6 \\
+x_7
+\end{array}\right)} = \left(\begin{array}{c}
+-0.4x_1+5x_3x_4 \\
+0.4x_1-x_2 \\
+x_2-5x_3x_4 \\
+5x_5x_6-5x_3x_4 \\
+-5x_5x_6+5x_3x_4 \\
+0.5x_7-5x_5x_6 \\
+-0.5x_7+5x_5x_6
+\end{array}\right)
+\end{equation}
+
+\section{Other examples}
 \paragraph{Moore-Greitzer model of a jet engine}
 \begin{equation}
 \dot{\left(\begin{array}{c}
@@ -1278,33 +1323,6 @@ in [0,3] (using a step-size $\delta=0.02$)
 \paragraph{Shimizu-Morioka}
 
 \paragraph{Steam governor}
-
-\paragraph{Biological system}
-
-(also from \cite{underapprox16}?)
-
-\begin{equation}
-\dot{\left(\begin{array}{c}
-x_1 \\
-x_2 \\
-x_3 \\
-x_4 \\
-x_5 \\
-x_6 \\
-x_7
-\end{array}\right)} = \left(\begin{array}{c}
--0.4x_1+5x_3x_4 \\
-0.4x_1-x_2 \\
-x_2-5x_3x_4 \\
-5x_5x_6-5x_3x_4 \\
--5x_5x_6+5x_3x_4 \\
-0.5x_7-5x_5x_6 \\
--0.5x_7+5x_5x_6
-\end{array}\right)
-\end{equation}
-
-
-\ForAuthors{Les suivants, bof, classiques? mais bien pour benchs si on avait le temps?}
 
 \paragraph{R\"ossler}
 
