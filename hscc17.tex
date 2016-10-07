@@ -1166,14 +1166,19 @@ given in the related work.
 \subsection{Brusselator}
 \label{sec:exp_bruss}
 
-
+We consider the following instance of the Brusselator system: 
 $$\left\{\begin{array}{rcl}
 \dot{x}_1 & = & 1+x_1^2x_2-2.5x_1 \\
 \dot{x}_2 & = & 1.5x_1-x_1^2x_2
 \end{array}\right.$$
 \noindent with $x_1(0) \in [0.9,1]$ and $x_2(0) \in [0,0.1]$.
 
-Taylor model of order 3 in t, interval vs affine arithmetic evaluation
+We first use Taylor models of order 3 in t, which we evaluate for inner and outer-approximations 
+with plain interval arithmetic: when trying to get flowpipes for time ranging between $0$ and $1$, 
+we see that
+\ForAuthors{Sylvie. continuer}
+
+ interval vs affine arithmetic evaluation
 \begin{center}
 \epsfig{file=brusselator_x1_IA_AA.png,clip=,width=8cm}
 \end{center}
@@ -1253,7 +1258,7 @@ Our implementation takes a total of 3400 secs (for computing both outer and inne
 \begin{center}
 \epsfig{file=sriram_bruss_order4_t4_widthx2.png,clip=,width=8cm}
 \end{center}
-\begin¶{figure}
+\begin{figure}
 \begin{center}
 \epsfig{file=sriram_bruss_order4_t4_minwidth.png,clip=,width=8cm}
 \end{center}
