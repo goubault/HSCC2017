@@ -480,7 +480,7 @@ Taylor models (although for a slightly augmented system of ODEs), and on simple 
 for inner-approximating the image of a non-linear vector-valued scalar functions. 
 
 Finally, the authors have recently discovered the work \cite{Gold06}, whose Section 4 contains
-ideas that look similar to ours. The main differences seems to be that we are considering more
+ideas that look similar to ours. The main differences seem to be that we are considering more
 general parameterized dynamical systems, which will later allow us to handle guard conditions for hybrid systems, 
 and that we have a different scheme for bounding
 the remainder in our inner-approximated Taylor models. But we could not assess the practical
@@ -780,8 +780,35 @@ f^{[i+1]}_k & = & \sum\limits_{j=1}^n \frac{\partial{f^{[i]}_k}}{\partial z_j} f
 \label{Lie1}
 \end{eqnarray}
 
-\ForAuthors{Une ligne sur 
-bien les derivees de Lie de f qu'il faut prendre pour l'expansion de Taylor}
+\begin{proof}
+Let $z(t)$ be a solution to Equation (\ref{eq:flow}) starting at
+time 0 at point $z_0$. By definition~: 
+$$
+\begin{array}{rcl}
+\frac{d z}{d t}(t) & = & f(z(t)) \\
+& = & f^{[1]}(z(t))
+\end{array}$$
+\noindent and more generally, we can prove by induction on $l$ that 
+%\begin{eqnarray}
+$\frac{d^{(l+1)} z}{dt^{(l+1)}}(t) = f^{[l+1]}(z(t))$, 
+%\label{equ3}
+%\end{eqnarray} 
+%\noindent 
+since by induction hypothesis :
+$$\begin{array}{rcl}
+\frac{d^{(l+1)} z}{dt^{(l+1)}}(t) & = & \frac{d}{dt}\left(t \rightarrow
+f^{[l]}(z(t))\right) \\
+& = & \sum\limits_{j=1}^n \dot{z}_j(t) \frac{\partial f^{[l]}}{\partial z_j}(z(t)) \\
+& = & \sum\limits_{j=1}^n f_j(z(t)) \frac{\partial f^{[l]}}{\partial z_j}(z(t)) \\
+& = & f^{[l+1]}(z(t))
+\end{array}$$
+Equation (\ref{eq:TM}) is then a direct consequence from Taylor-Lagrange expansion
+formula, for sufficiently smooth functions $f$. 
+\end{proof}
+
+%\ForAuthors{Une ligne sur 
+%bien les derivees de Lie de f qu'il faut prendre pour l'expansion de Taylor}
+
 %\ForAuthors{Il faut donner les regles de derivation, ce sont des derivees de Lie. Simple mais
 %on ne peut pas y couper je pense.}
 % \SP{A completer ou pas?} 
@@ -810,6 +837,24 @@ a range $]\z[(t,t_j,[\z_j])$ such that all values inside that range are sure to 
 %$]\z_0[=[\z_0]$?}
 For that, we will apply Theorem~\ref{thm1}, at all time $t$, to the function $z$ from $\R^n$ to $R^n$, defined by 
 $z_0 \mapsto z(t,z_0)$, solution to the IVP (\ref{eq:flowb}). 
+
+In what follows, we begin to present our algorithm in Section
+\ref{principle}, and explain its principle. 
+If its principle is simple to grasp, there are a number of subtleties. 
+First, we show in Section \ref{efficientLieJacobian} that we can compute
+the Taylor model of the Jacobian as if we were simply derivating the Taylor model 
+for the solution of the initial ODE, which makes things much more efficient. 
+The remainder part of the Taylor model for the Jacobian cannot be easily estimated
+from the remainder of the Taylor model of the original solution : we use in both
+case the classical interval Picard-Lindel\"of iteration method to get ``rough
+enclosures'' that we use for computing the remainders, in Section \ref{roughenc}.
+
+Finally, we discuss some practical numerical issues in Section \ref{practicalissues}, 
+that we had to solve, and that we observed, when implementing our Algorithm. 
+
+\subsection{Principle of the algorithm}
+
+\label{principle}
 
 We thus need an (outer) enclosure of $z(t,\tilde{z_0})$ for some $\tilde{z_0} \in \z_0$, and of its Jacobian with respect to $z_0$, evaluated over range $\z_0$, 
 defined by the coefficients $J_{ij}(t,\z_0)=\frac{\partial z_i}{\partial z_{0,j}}(t,\z_0)$, for $i$ and $j$ between $1$ and $n$, and where $z_i$ is the $i$-th 
@@ -881,22 +926,29 @@ $$ f(x) = \left(\begin{array}{l}
 x_1-\frac{3}{2} x_1^2x_2
 \end{array}\right)$$
 
-The corresponding variational equations are~:
+The Jacobian that appears in Equation (\ref{eq:IVP_jac2}) is~: 
+$$
+\mbox{Jac}_z f(z(t,z_0)) = \left(\begin{array}{cc} 
+-2+3x_1x_2  & \frac{3}{2} x^2_1 \\
+1-3x_1x_2 & -\frac{3}{2} x^2_1
+\end{array}\right)
+$$
+%The corresponding variational equations are~:
 %, for the Jacobian of the solutions $x_i$ with respect to the initial
 %conditions (at time 0) $x^0_j$ are $J_{i,j}=\frac{\partial x_i}{\partial x^0_j}$ : 
-\begin{eqnarray}
-\dot{J}_{1,1} & = & (-2+3x_1x_2)J_{1,1} + \frac{3}{2} x^2_1 J_{2,1} \\
-\dot{J}_{1,2} & = & (-2+3x_1x_2)J_{1,2} + \frac{3}{2} x^2_1 J_{2,2} \\
-\dot{J}_{2,1} & = & (1-3x_1x_2)J_{1,1}-\frac{3}{2} x^2_1 J_{2,1} \\
-\dot{J}_{2,2} & = & (1-3x_1x_2)J_{1,2}-\frac{3}{2} x^2_1 J_{2,2} 
-\label{jacobian}
-\end{eqnarray}
-\ForAuthors{Forme matricielle a mettre plutot}
-\noindent with initial conditions (at time 0) $J_{i,j}=\delta_{i,j}$ (where $\delta$ denotes
-the Kronecker symbol).
+%\begin{eqnarray}
+%\dot{J}_{1,1} & = & (-2+3x_1x_2)J_{1,1} + \frac{3}{2} x^2_1 J_{2,1} \\
+%\dot{J}_{1,2} & = & (-2+3x_1x_2)J_{1,2} + \frac{3}{2} x^2_1 J_{2,2} \\
+%\dot{J}_{2,1} & = & (1-3x_1x_2)J_{1,1}-\frac{3}{2} x^2_1 J_{2,1} \\
+%\dot{J}_{2,2} & = & (1-3x_1x_2)J_{1,2}-\frac{3}{2} x^2_1 J_{2,2} 
+%\label{jacobian}
+%\end{eqnarray}
+%\ForAuthors{Forme matricielle a mettre plutot}
+%\noindent with initial conditions (at time 0) $J_{i,j}=\delta_{i,j}$ (where $\delta$ denotes
+%the Kronecker symbol).
 \end{example}
 
-Altogether, the algorithm to compute an inner-approximated flow-pipe of the uncertain initial-value problem given a time grid  $t_0 < t_1 < \ldots < t_N$, 
+Altogether, the algorithm to compute an inner-approxima\-ted flow-pipe of the uncertain initial-value problem given a time grid  $t_0 < t_1 < \ldots < t_N$, 
 an initial range $\z_0$, and some $\tilde{z_0} \in \z_0$, is as follows~:
  {\par\smallskip                     %  authors:
   \begin{center}%                    %
@@ -940,7 +992,12 @@ otherwise the inner-approximation is empty.\\
   \end{center}%                      %
   \par\smallskip                     %
  }        
-\begin{remark}
+
+\subsection{Efficient computations of the Lie derivatives of the Jacobian}
+
+\label{efficientLieJacobian}
+
+%\begin{remark}
 The formulation of Equation (\ref{eq:TM3}), 
 relies on the possibility to commute the $i$th Lie derivative
 with the calculation of the Jacobian. Without this, we would have written:
@@ -1035,15 +1092,21 @@ is simpler to compute since we already computed
 the Lie derivative of $f$, in Equation (\ref{eq:TM2}), the Jacobian calculation being by
 itself rather 
 inexpensive. 
-\end{remark}
+%\end{remark}
 
-\ForAuthors{Je pense qu'il faut dire un mot rapide sur comment on calcule le rough
-enclosure au moins de la Jacobienne, car on dit au debut qu'on n'utilise pas la meme que Goldstejn ;-)}
-\ForAuthors{Oui, de touet facon on a sasn doute interet a structurer la section, peut-etre en 
-utilisant des paragraphes: introduction sur l'idee generale et algo, en en numerotatnt par exemple les etapes, 
-puis eventuellemnt un paragraphe pour commenter chaque etape; ce qui nous permet d'eviter d'utiliser trop systematiquement
-le style ``remarque'' en italique, ce uqi estdesagreable, d'autant qu'ensuite les preuves ne ressortent pas, etc. 
-Apres, faut voir si on trouve qqchsoe a dire sur chaque ``etape'' mais bon pas oblige d'en mettre des tonnes; qu'en penses tu?}
+\subsection{Computation of the rough enclosures}
+% HOP
+\label{roughenc}
+
+\ForAuthors{Rappel ultra rapide de Picard-Lindel\"of}
+
+%\ForAuthors{Je pense qu'il faut dire un mot rapide sur comment on calcule le rough
+%enclosure au moins de la Jacobienne, car on dit au debut qu'on n'utilise pas la meme que Goldstejn ;-)}
+%\ForAuthors{Oui, de touet facon on a sasn doute interet a structurer la section, peut-etre en 
+%utilisant des paragraphes: introduction sur l'idee generale et algo, en en numerotatnt par exemple les etapes, 
+%puis eventuellemnt un paragraphe pour commenter chaque etape; ce qui nous permet d'eviter d'utiliser trop systematiquement
+%le style ``remarque'' en italique, ce uqi estdesagreable, d'autant qu'ensuite les preuves ne ressortent pas, etc. 
+%Apres, faut voir si on trouve qqchsoe a dire sur chaque ``etape'' mais bon pas oblige d'en mettre des tonnes; qu'en penses tu?}
 \begin{example}
 \label{running2}
 We carry on with the computation of outer-approximations for solutions and Jacobians for 
@@ -1119,18 +1182,33 @@ For rough enclosures of $\int{r_1}_i$ and $\int{R_1}_{i,j}$ we use the interval 
 \ForAuthors{Je vais remettre les valeurs flottantes ;-)}
 \end{example}
 
-\begin{remark}
-We use the same Taylor expansion, but with different initial conditions, to compute in~(\ref{eq:TM1}) an outer-approximation of the solution of system(\ref{eq:flowb}) 
+%\begin{remark}
+\subsection{Practical numerical calculations}
+\label{practicalissues}
+
+\paragraph{Calculation of the center of the inner-approximation}
+
+Note that Equation (\ref{eq:TM2}) is required for estimating the inner-approximations as in Equation (\ref{eq:inner_cont}) : we need to propagate a ``center'' in 
+a flowpipe of solutions of ODE (\ref{eq:flow}), at each time step $t_j$ in our time
+grid, and this central solution is certainly not in general derivable from the 
+outer-approximation of the flowpipe, e.g. as its midpoint. 
+ 
+We then use the same Taylor expansion, but with different initial conditions, to compute in~(\ref{eq:TM1}) an outer-approximation of the solution of system(\ref{eq:flowb}) 
 with $z(t_0)=\tilde{z_0}$, used as the center in inner-approximation~(\ref{eq:inner_cont}), and  in~(\ref{eq:TM2}) an outer-approximation of the solution of the 
 same system but with uncertain $z(t_0) \in \z_0$, used to compute the Taylor coefficients in Equation~(\ref{eq:TM3}) which outer-approximates the Jacobian of the flow 
 with respect to the initial condition $z_0$. 
-\end{remark}
+%\end{remark}
 
-\begin{remark}
-Note that the wider the outer-approximation in Taylor models~(\ref{eq:TM1}-\ref{eq:TM3}), the tighter thus the less accurate the inner-approximation~(\ref{eq:inner_cont}): 
-it can even potentially lead to an empty inner-approximation if the result of Equation~(\ref{eq:inner_cont}) in Kaucher arithmetic is not an improper interval. 
+%\begin{remark}
 
-This can occur in two ways. First, note that $[\overline{z_0},\underline{z_0}]-\tilde{z_0}$ is an improper interval that belongs to $\dual {\cal Z}$ as defined 
+\paragraph{On the effect of the precision of outer-approximations on inner-approximations}
+
+As the experiments will show, note also that 
+the wider the outer-approximation in Taylor models~(\ref{eq:TM1}-\ref{eq:TM3}), the tighter thus the less accurate the inner-approximation~(\ref{eq:inner_cont}): 
+it can even potentially lead to an empty inner-approximation if the result of Equation~(\ref{eq:inner_cont}) in Kaucher arithmetic is not an improper interval. Hence the
+precision of the inner-approximation is strongly tied to the one of the outer-appro\-ximation and the order we choose for it. 
+
+The phenomenom we mentionned above can occur in two ways. First, note that $[\overline{z_0},\underline{z_0}]-\tilde{z_0}$ is an improper interval that belongs to $\dual {\cal Z}$ as defined 
 in Section~\ref{generalized}. The outer-approximation of the Jacobian matrix,  $[\J](t,t_j,[{\z}_j])$ is a proper interval. The Kaucher multiplication as defined in Table~\ref{tabmult}
 will yield a non-zero improper interval only if$[\J](t,t_j,[{\z}_j])$ does not contain $0$. And, in this case, the result of this multiplication will depend on the 
 lower bound of the absolute value of the Jacobian (while the same mean-value theorem used for outer-approximation would imply a multiplication of proper intervals that would, 
@@ -1140,10 +1218,27 @@ Suppose now that the Kaucher multiplication indeed yields an improper interval. 
 of the solution at time $t$ of the solution of the system starting from point $\tilde{\z}_0$. Ideally, this should be tight, but if this interval is wider than the improper 
 interval resulting from the Kaucher multiplication, then the sum of the two intervals - computed using the extension of interval addition - will be proper, 
 and the inner-approximation empty. 
-\end{remark}
+%\end{remark}
 
-\ForAuthors{Arithmetique affine 
-juste dans exemples quand on fait un calcul pratique, pour le running example typiquement}
+\paragraph{Calculations of coefficients of the Taylor models}
+
+We need to outer-approximate the values of some functions (in particular, all Lie
+derivatives, which are coefficients in the Taylor models) in Equations 
+(\ref{eq:TM1}-\ref{eq:TM3}). We have a wide choice from all the existing set-based
+methods, from interval computations to Bernstein polynomials \cite{Dang} if $f$
+is polynomial. We will use in our running example simple affine arithmetic
+\cite{com-sto-93-aa} and will compare it with interval computations, that we
+both used in our prototype implementation, in Section \ref{sec:experiments}. 
+Affine arithmetic was also used in \cite{hscc14} for inner-approximations of
+discrete dynamical systems. The interest of this approach, using affine arithmetic,
+is that we can use the results from \cite{rc13} to get good estimates of the
+joint inner range of the state variables $z_j$, altogether, when needed. In practice
+though, this is rarely needed, as, either for estimating guards of the form
+$p(z) ? 0$ (where $?$ may be equality, less or equal etc.) when analyzing
+hybrid systems, or for proving some specification depending on arithmetic expressions of
+the state variables $p$ again, we can just evaluate $]p(z)[$ by using simple
+affine arithmetic and 
+Equations (\ref{eq:inner_cont})
 
 \begin{example}
 \label{running3}
