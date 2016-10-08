@@ -1117,20 +1117,22 @@ step, using affine arithmetic for estimating the images of functions on initial 
 %$[R_2]$ for, respectively, the states $x_1$ and $x_2$, and the entries of the Jacobian
 %$J_{1,1}$, $J_{1,2}$, $J_{2,1}$ and $J_{2,2}$. 
 
-We will have, as outer-approximations of order 1 with respect to time, the formulas (for $i=1, 2$, $j=1, 2$
-and $t \in [0,h]$ (Equations (\ref{eq:TM1}) and (\ref{eq:TM3})) the following. Note that
-as we only consider one time step here, we write $\int{x_i}(t)$ instead of $\int{x_i}(t,0,\int{x_0})$ :  
+%We will have, as outer-approximations of order 1 with respect to time, the formulas (for $i=1, 2$, $j=1, 2$
+%and $t \in [0,h]$ (Equations (\ref{eq:TM1}) and (\ref{eq:TM3})) the following. 
+Note that
+as we only consider one time step here, we write $\int{x_i}(t)$ instead of $\int{x_i}(t,0,\int{x_0})$. We first need to determine the rough enclosures, and remainders
+for $k=2$ (first order Taylor model for Equations (\ref{eq:TM1}) and (\ref{eq:TM3}).
 
-\ForAuthors{Je reprends l'exemple plus bas, j'ai a revoir un peu les notations/ecriture}
+%\ForAuthors{Je reprends l'exemple plus bas, j'ai a revoir un peu les notations/ecriture}
 
-\begin{equation}
-\int{x_i}(t) = \int{(x_i)_0} + {f_i}^{[0]}(\int{x_0}) t + f_i^{[1]}(\int{r_1}) \frac{t^2}{2}
-\end{equation}
-\begin{multline}
-\int{J_{i,j}}(t) =  \int{(J_{i,j})_0}+Jac_x(f_{i}^{[0]})(\int{r_1})\int{R_1}^j t \\
-+ Jac_x(f_{i}^{[1]})(\int{r_1})\int{R_1}^j \frac{t^2}{2} 
-\label{TaylorJ}
-\end{multline}
+%\begin{equation}
+%\int{x_i}(t) = \int{(x_i)_0} + {f_i}^{[0]}(\int{x_0}) t + f_i^{[1]}(\int{r_1}) \frac{t^2}{2}
+%\end{equation}
+%\begin{multline}
+%\int{J_{i,j}}(t) =  \int{(J_{i,j})_0}+Jac_x(f_{i}^{[0]})(\int{r_1})\int{R_1}^j t \\
+%+ Jac_x(f_{i}^{[1]})(\int{r_1})\int{R_1}^j \frac{t^2}{2} 
+%\label{TaylorJ}
+%\end{multline}
 
 %\ForAuthors{C'est compliqu\'e si on veut d\'ecrire toutes les entrees de la Jacobienne
 %separement ; $\int{R_1}^j$ c'est la colonne avec que les outer-approx des $J_{*,j}$...mais en
@@ -1139,7 +1141,7 @@ as we only consider one time step here, we write $\int{x_i}(t)$ instead of $\int
 %\noindent where $R_i$ (resp. $R_{i,j}$) are outer-approximations of the second Lie derivatives of
 %$x_i$ (resp. $J_{i,j}$), over the time interval $[0,h]$. 
 
-To determine $Jac_x(f_i^{[1]})$ and $f_i^{[1]}$, we compute the second Lie derivatives, as well ``rough enclosures''
+To determine $Jac_x(f_i^{[2]})$ and $f_i^{[2]}$, we compute the first Lie derivatives, as well ``rough enclosures''
 $\int{r_1}_i$ and $\int{R_1}_{i,j}$ of the $x_i(t)$ and $J_{i,j}(t)$ over $t\in [0,h]$, 
 $x_1 \in \int{(x_1)_0}$, $x_2 \in \int{(x_2)_0}$. For instance, we have : 
 
@@ -1150,9 +1152,9 @@ $x_1 \in \int{(x_1)_0}$, $x_2 \in \int{(x_2)_0}$. For instance, we have :
 %f_2^{[1]} & = & 1-2x_1-3x_1x_2+\frac{15}{2}x_1^2x_2-\frac{3}{2}x_1^3\\
 %& & \ \ \ -\frac{9}{2}x_1^3x_2^2+\frac{9}{4}x_1^4x_2 \\
 \begin{multline}
-\mbox{Jac}_x(f^{[1]})_{1,1}(x_1,x_2)(J_{1,1},J_{2,1}) = (3x_2f_1+3x_1f_2)J_{1,1}\\
-+(-2+3x_1x_2)\mbox{Jac}_x(f^{[0]})_{1,1}(x_1,x_2)(J_{1,1},J_{2,1}) \\ 
-+3x_1f_1J_{2,1}+\frac{3}{2}x_1^2{\mbox{Jac}_x(f^{[0]})}_{2,1}(x_1,x_2)(J_{1,1},J_{2,1}) 
+\mbox{Jac}_x(f^{[1]})_{11}(x_1,x_2)(J_{11},J_{21}) = (3x_2f_1+3x_1f_2)J_{11}\\
++(-2+3x_1x_2)\mbox{Jac}_x(f^{[0]})_{11}(x_1,x_2)(J_{11},J_{21}) \\ 
++3x_1f_1J_{21}+\frac{3}{2}x_1^2{\mbox{Jac}_x(f^{[0]})}_{21}(x_1,x_2)(J_{11},J_{21}) 
 %Jac_x(f^{[1]}) & = & \left(\begin{array}{cc}
 %(3x_2f_1+3x_1f_2)J_{1,1}+(-2+3x_1x_2)\dot{J}_{1,1}+3x_1f_1J_{2,1}+\frac{3}{2}x_1^2\dot{J}_{2,1} &
 %(3x_2f_1+3x_1f_2)J_{1,2}+(-2+3x_1x_2)\dot{J}_{1,2}
@@ -1163,21 +1165,25 @@ $x_1 \in \int{(x_1)_0}$, $x_2 \in \int{(x_2)_0}$. For instance, we have :
 %-3x_1f_1J_{2,2}-\frac{3}{2}x_1^2\dot{J}_{2,2}\end{array}\right)
 \label{secondderivative}
 \end{multline} %$$
-\noindent where $Jac_x(f^{[1]})_{1,1}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
-and ${Jac_x(f^{[0]})}_{2,1}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
-are given in Equations (\ref{jacobian}) (they are the right hand side
-of these equations, as Equation (\ref{eq:IVP_jac2}) shows). 
+\noindent where $Jac_x(f^{[1]})_{11}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
+and ${Jac_x(f^{[0]})}_{21}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
+are given in Example \ref{running1}.
+%Equations (\ref{jacobian}) (they are the right hand side
+%of these equations, as Equation (\ref{eq:IVP_jac2}) shows). 
 
 For rough enclosures of $\int{r_1}_i$ and $\int{R_1}_{i,j}$ we use the interval Picard-Lindel\"of method and find : 
-\begin{eqnarray}%{lcl}
-\int{r_1}_1 & = & \left[\frac{93}{50}, \frac{43}{20}\right]\\
-\int{r_1}_2 & = & \left[\frac{1}{10}, \frac{579}{2500}\right]\\
-\int{R_1}_{1,1} & = & \left[\frac{116}{125}, 1\right]\\
-\int{R_1}_{1,2} & = & \left[0, \frac{26}{75}\right]\\
-\int{R_1}_{2,1} & = & \left[-\frac{37}{1500}, \frac{1}{45}\right]\\
-\int{R_1}_{2,2} & = & \left[\frac{49}{75}, 1\right]
-\label{roughenclosures}
-\end{eqnarray}%$$
+%\begin{eqnarray}%{lcl}
+$\int{r_1} = \left(\begin{array}{c}
+\left[\frac{93}{50}, \frac{43}{20}\right]\\
+\left[\frac{1}{10}, \frac{579}{2500}\right]
+\end{array}\right)$, 
+$\int{R_1} =\left(\begin{array}{cc} 
+\left[\frac{116}{125}, 1\right] & \left[0, \frac{26}{75}\right]\\
+\left[-\frac{37}{1500}, \frac{1}{45}\right] & 
+\left[\frac{49}{75}, 1\right] \\
+\end{array}\right)$
+%\label{roughenclosures}
+%\end{eqnarray}%$$
 %HIPHOP
 \ForAuthors{Je vais remettre les valeurs flottantes ;-)}
 \end{example}
@@ -1246,8 +1252,39 @@ Equations (\ref{eq:inner_cont})
 
 \begin{example}
 \label{running3}
-\ForAuthors{Calculs pratiques de sous- et sur- approx des variables pour le Brusselator au first
-time step, detailles - je complete sous peu}
+We compute a first-order Taylor model for the Brusselator, using Equation
+(\ref{eq:TM}) with $k=2$, and using affine arithmetic to compute $f^{[i]}([{\z}_j])$
+and $\mbox{Jac}_x(f^{[i]})([\r_{j+1}])[\J_j]$ 
+\ForAuthors{Tout a coup j'ai un doute, ce n'est pas 
+$\mbox{Jac}_x(f^{[i]}([\z_j])[\J_j]$ plutot?}. We start with 
+$(x_1)_0\in [2,2.5]$ and $(x_2)_0 \in [0.1,0.15]$, hence, in affine arithmetic,
+$(x_1)_0 = \frac{83}{40}+\frac{3}{40}\epsilon_1$ and 
+$(x_2)_0 = \frac{1}{8}+\frac{1}{40}\epsilon_2$. Evaluating $f^{[1]}=f$ using
+simple rules from affine arithmetic, we find~: 
+
+\begin{eqnarray}%{lcl}
+f^{[1]}(x_0) & = & \left(\begin{array}{c}
+\left(-\frac{119919}{51200}-\frac{1173}{12800} \epsilon_1+\frac{41361}{256000}\epsilon_2
+\right.
+\\
+\ \left.+\frac{27}{51200}\eta_1+\frac{3015}{256000}\eta_2\right) \\ 
+%on peut tout mettre dans un \eta, mais ils ont une signification, partagee avec la suite, a voir
+%\dot{x}^0_2 & = & 
+\left(\frac{64879}{51200}+\frac{213}{12800}\epsilon_1-\frac{41361}{256000}\epsilon_2
+\right.\\
+\ \left. -\frac{27}{51200}\eta_1
+-\frac{3015}{256000}\eta_2 \right) 
+\end{array}\right)
+\end{eqnarray}
+\begin{eqnarray}
+\mbox{Jac}_x(f^{[1]})([x_0])_{11} & = & -\frac{391}{320}+\frac{9}{320}\epsilon_1+\frac{249}{1600}\epsilon_2+\frac{9}{1600}\eta_3\\
+\mbox{Jac}_x(f^{[1]})([x_0])_{12} & = & \frac{41361}{6400}+\frac{747}{1600}\epsilon_1+\frac{27}{6400}\eta_1\\
+\mbox{Jac}_x(f^{[1]})([x_0])_{21} & = & \frac{71}{320}-\frac{9}{320}\epsilon_1-\frac{249}{1600}\epsilon_2-\frac{9}{1600}\eta_3\\
+\mbox{Jac}_x(f^{[1]})([x_0])_{2é2} & = & -\frac{41361}{6400}-\frac{747}{1600}\epsilon_1-\frac{27}{6400}\eta_1
+\label{firstderivative}
+\end{eqnarray}
+%\ForAuthors{Calculs pratiques de sous- et sur- approx des variables pour le Brusselator au first
+%time step, detailles - je complete sous peu}
 \end{example}
 
 %******************************************************************************
