@@ -1186,6 +1186,10 @@ For rough enclosures of $\int{r_1}_i$ and $\int{R_1}_{i,j}$ we use the interval 
 \subsection{Practical numerical calculations}
 \label{practicalissues}
 
+\ForAuthors{J'ai mis une subsection pour ``Computation of the rough
+enclosures'' mais c'est peut-\^etre discutable, ptet mieux dans practical
+numerical calculations? Mais apres ca fait trop fourre-tout...Qu'en penses-tu?}
+
 \paragraph{Calculation of the center of the inner-approximation}
 
 Note that Equation (\ref{eq:TM2}) is required for estimating the inner-approximations as in Equation (\ref{eq:inner_cont}) : we need to propagate a ``center'' in 
@@ -1320,7 +1324,13 @@ que je fasse d'autres experiences}
 We provide in this section some elements of comparisons to the experimental results given in the related work~\cite{Underapproxflowpipes,underapprox16}.
 Let us highlight that is difficult to have a fair comparison, as on the one hand, evaluating the compared accuracy of these methods is difficult, 
 and on the other hand we only used a very basic Matlab implementation of our approach, whereas the related work relies on actual implementations,
-using optimized solvers such as VNode. Among the examples studied in ~\cite{Underapproxflowpipes,underapprox16}, we selected
+using optimized solvers such as VNode. 
+
+\ForAuthors{J'aime bien l'idee de comparer le cout du calcul sous-approx
+a celui de l'outer-approx du meme degre avec ton implem - tu le mets en
+remarque plus loin. Je pense qu'il faut l'expliquer un peu ici?}
+
+Among the examples studied in ~\cite{Underapproxflowpipes,underapprox16}, we selected
 the Brusselator as a representative of the systems of low degree. 
 We then chose as second example the biological system, because of its degree 7, to give a first idea of the way the method scales. 
 
@@ -1331,13 +1341,20 @@ where $V$ is a set of vectors, and $\gamma_u(v)$ and $\gamma_o(v)$ measure respe
 in direction $v \in V$. 
 Intuitively, the larger this ratio, the better the approximation. 
 Our method naturally gives inner ranges for the projection of the flow system on its state variables (although we can also directly deduce from our Taylor models 
-an inner-approximation of the range of any linear function of these variables, and also define a joint range, as shown in~\cite{hscc14,rc13}). 
+an inner-approximation of the range of any linear function of these variables, and also define a joint range, as shown in~\cite{hscc14,rc13}).
+\ForAuthors{Deja dit avant, on insiste ou pas?} 
 We thus measure in our case \[ \gamma_{\min}=\min_{i}{\frac{\gamma_u(x_i)}{\gamma_o(x_i)}}, \]
 where the $x_i$ are the state variables of the system, which may be more optimistic than the measure of \cite{Underapproxflowpipes}, depending on their choice 
-of the set of vectors (not mentioned). 
+of the set of vectors (which is not mentioned). 
+
+\ForAuthors{Sriram dit dans le dernier paragraph ``Results'' de [1], 
+pour $\gamma_{min}$ que ``The vectors are selected along the dimensions
+(axis-aligned).''? Donc ca serait comparable a nous?}
 
 We consider the initial set taken in~\cite{Underapproxflowpipes}, defined by 
 $x_1 \geq 0.9$, $x_2 \geq 0$, $x_1+x_2-1 \leq 0$, which we can project on $1 \geq x_1 \geq 0.9$, $0.1 \geq x_2 \geq 0$.
+\ForAuthors{Evidemment, la on peut perdre pas mal de precision par rapport
+a Sriram vu qu'on prendre le carre englobant le triangle en condition initiale. Ptet insister la dessus?}
 They study the result for T = 3 and T = 4. We choose, as they do, 4th order Taylor models, and a time step $h=0.02$. 
 Our implementation takes a total of 3400 secs (for computing both outer and inner approximations).
 
@@ -1363,11 +1380,18 @@ Our implementation takes a total of 3400 secs (for computing both outer and inne
 On Figure~\ref{ex:width_sriram_bruss}, we see that at $t=3$, the relative width of the inner-approximation over the
 outer-approximation is of order $0.7$, which is equal to the value given in Table~1 of \cite{Underapproxflowpipes}. 
 However, this ration decreases quickly, mostly due to the $x_2$ component, and at $t=4$, we get a ratio very close to $0.1$!
+\ForAuthors{Instead of 0.55 as in [1]. Mais je crois quand meme que de ne
+pas demarrer par un simplex doit pouvoir changer pas mal! Je peux essayer
+de demander a Xin Chen si on peut facilement avoir leur resultat sur le
+carre initial, pour T=3 et T=4? Peut-etre aussi essayer l'ordre 5 de notre
+cote? J'aurais presque compare le width de under-approx a l'ordre 5 sur
+l'over-approx a l'ordre 4, on a un peu l'impression qu'on ``perd'' un ordre
+dans la sous-approx.}
 
 \SP{Add elements allowing to compare the cost of inner-approx comapred to inner-approx of same degree: where to put this and on which example, see later}  
 
 \paragraph{Comparison to \cite{underapprox16} (Brusselator)}
-In \cite{underapprox16} they take X=[0.3, 0.4] × [0.5, 0.7] for a time frame in [0,1.1], and a time step h=0.05. 
+In \cite{underapprox16} they take $X=[0.3, 0.4] \times [0.5, 0.7]$ for a time frame in [0,1.1], and a time step h=0.05. 
 We compute the inner and outer-approximations, with order 4 Taylor Models, evaluated in AA, in 118.12 seconds, 
 and get the following results:
 \begin{center}
@@ -1380,6 +1404,28 @@ and get the following results:
 \epsfig{file=cav16_bruss_order4_distance.png,clip=,width=8cm}
 \end{center}
 \ForAuthors{Eric, tu sais comprendre par rapport aux Chinois ce que ca donne en precision ?}
+\ForAuthors{De ce que je comprends, leur $\epsilon_M$ est la pr\'ecision
+avec laquelle ils donnent une surapprox de la frontiere du reachable set.
+Leur precision c'est la taille (en chaque coordonnee) des boites qui 
+font cette surapprox. Donc au pire ils sont a $\epsilon_M$ de la frontiere,
+dans cette collection de boites, dans chaque direction. Apres ils trouvent
+un polytope maximal \`a l'interieur de cette approximation de frontiere
+par collection de boites. Donc ben difficile a comparer...Par rapport
+au vrai reachable set ils seront en general plus ou moins a $\epsilon_M$
+de la, mais peut-etre bcp plus, peut-etre bcp moins s'ils ont de la chance...
+Eux ils font avec $\epsilon_M=0.001$ et $\epsilon_M=0.0002$ ; je n'ai 
+pas trouve a quel ordre ils utilisent VNODE (j'ai souvenir d'un ordre
+20 que je ne trouve plus?). La a cause du $x_1$ pour une fois, on est
+en gros potentiellement 10 fois moins bons, mais il y a aussi la distance
+de la surapprox au vrai reachable set. On pourrait aussi utiliser un 
+modele de Taylor surapprox (voire VNODE?) a ordre bcp plus eleve pour
+affiner cette distance? Ou alors integrer le brusselator, numeriquement
+au hasard sur pas mal d'etats initiaux et voir la distance? (un peu comme
+eux avec leurs simus RK4?). On peut essayer aussi au moins a l'ordre 5
+voir si on ameliore cette distance? Eux meme avec VNODE, ils mettent
+55s pour le premier $\epsilon_M$ et 410s pour le deuxieme, on devrait
+pouvoir se comparer agreablement vu qu'on a du Matlab, et plein de choses
+non optimisees?}
 
 
 \paragraph{Biological system}
@@ -1491,6 +1537,28 @@ x_2 \\
 -0.2(x^2_1-1)x_2-x_1
 \end{array}\right)
 \end{equation}
+
+\paragraph{Integrable systems}
+To make precision estimates of our method. 
+
+$$\dot{u}=u^2$$
+\noindent with $u(0)=u_0$. 
+Then $u=\frac{u_0}{1-u_0t}$
+
+The logistic equation :
+
+$$\dot{u}=\lambda u(1-u)$$
+\noindent with $u(0)=u_0$. Then
+$u(t)=\frac{u_0e^{\lambda t}}{1-u_0+u_0e^{\lambda t}}$.
+
+\ForAuthors{Pas mal d'autres dans \url{http://www.math.umn.edu/~olver/am_/odz.pdf} mais les deux au dessus paraissent simples et raisonnables, surtout la 
+logistic equation?}
+
+$$\dot{y} = \frac{a}{\sqrt{y}}+y$$
+\noindent with $y(a)=1$
+Solution is :
+$$y(t)=\left(exp\left(\frac{3t}{2} - \frac{3a}{2} + log(a + 1)\right) - a\right)^{\frac{2}{3}}$$
+(from Mathworks - can find $y(0)$ and translate it into polynomial system?)
 
 %------------------------------------------------------------------------------------------------------------------------------------------------
 
