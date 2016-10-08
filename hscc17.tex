@@ -1367,7 +1367,12 @@ $x_1 \geq 0.9$, $x_2 \geq 0$, $x_1+x_2-1 \leq 0$, which we can project on $1 \ge
 \ForAuthors{Evidemment, la on peut perdre pas mal de precision par rapport
 a Sriram vu qu'on prendre le carre englobant le triangle en condition initiale. Ptet insister la dessus?}
 \ForAuthors{On peut le dire - je l'ajoute - mais en meme temps c'est notre faute si on n'est pas capable 
-de prendre en compte ce genre de conditions initiales ;)}
+de prendre en compte ce genre de conditions initiales ;) Certes mais selon
+la methode ensembliste utilisee pour abstraire les coefficients de Taylor
+(dont $z_0$) on peut faire des choses plus ou moins elaborees. On pourrait
+faire une approximation zonotope du triangle (pas commode neanmoins) et
+faire mieux eventuellement. En tout cas on pourrait dire que l'on n'est pas
+limite forcement a des intervalles en entree?}
 They study the result for T = 3 and T = 4. We choose, as they do, 4th order Taylor models, and a time step $h=0.02$. 
 Our implementation takes a total of 3400 secs (for computing both outer and inner approximations).
 
@@ -1405,7 +1410,12 @@ dans la sous-approx.}
 \ForAuthors{Oui ordre 5 je voulais le faire c'etait prevu mais comme c'est long a calculer j'ai pas eu le temps vendredi;
 et je suis d'accord pour l'ordre car en fait ce que je calcule actuellement c'est il me semble des TM a l'ordre 3 
 sur la jacobienne - car j'ai pour cela besoin des coeff des TM a l'ordre 4 des TM sur le flot. Si ca marche bien a l'ordre 5 je raconterai ca - evidemment ca va etre encore plus couteux ... 
-Ce que je veux faire aussi lundi c'est d'essayer avec un pas plus grand, je ne crois pas qu'il y a besoin d'un si petit pas, enfin je ferai ca apres, d'abord les urgences...}
+Ce que je veux faire aussi lundi c'est d'essayer avec un pas plus grand, je ne crois pas qu'il y a besoin d'un si petit pas, enfin je ferai ca apres, d'abord les urgences...
+
+Oui bien sur pour les urgences ;-) Mais oui un pas plus grand peut 
+parfaitement marcher. Dans tous les cas, comparer le temps sur et sous
+approx, ca permet de donner un facteur pour le temps, du essentiellement
+a l'implem.}
 
 \SP{Add elements allowing to compare the cost of inner-approx comapred to inner-approx of same degree: where to put this and on which example, see later}  
 
