@@ -1002,7 +1002,7 @@ otherwise the inner-approximation is empty.\\
  }        
 
 
-\subsection{Step 1: computating the rough enclosures}
+\subsection{Step 1: computing the rough enclosures}
 % HOP
 \label{roughenc}
 
@@ -1344,9 +1344,7 @@ toolbox.
 \caption{Brusselator, evaluation of the Taylor models (order 3) with interval vs affine arithmetic \label{fig:brusselator_order3_t1}}
 \end{figure}
 
-In the following experiments, we now use Taylor models of order 4, and represent respectively in Figures~\ref{fig:brusselator_order4_x1_t10} and~\ref{fig:brusselator_order4_x2_t10}, the inner and outer approximated flowpipes for variables $x1$ and $x2$, with an evaluation in affine arithmetic, up to a maximum time $t=10$.   
-\ForAuthors{commenter que la sous-approx devient vide puis re-apparait} 
-%(cf \ref~{practicalissues})
+In the following experiments, we now use Taylor models of order 4, and represent respectively in Figures~\ref{fig:brusselator_order4_x1_t10} and~\ref{fig:brusselator_order4_x2_t10}, the inner and outer approximated flowpipes for variables $x1$ and $x2$, with an evaluation in affine arithmetic, up to a maximum time $t=10$. We see that for both variables, while the width of the outer-approximation stays relatively stable with time, the width of the inner-approximation can decrease until the inner-approximation becomes empty, but the width can still later be non-zero again. This is the case for instance on variable $x_2$ around time $t=4$. At first look, this could appear as a bug in our implementation, but this is not the case. This phenomenon is an illustration of the fact detailed in Section~\ref{practicalissues}, that when adding an improper with a proper interval, we can get a proper interval, which results in anempty inner-approximation, but this does not prevent us to keep computing the Taylor models that can give non-empty inner-approximations at later times, depending on the behaviour of the Jacobian of the flow.    
 
 \begin{figure}[htbp]
 \begin{center}
@@ -1408,25 +1406,31 @@ Our method naturally gives inner ranges for the projection of the flow system on
 an inner-approximation of the range of any linear function of these variables, and also define a joint range, as shown in~\cite{hscc14,rc13}).
 \ForAuthors{Deja dit avant, on insiste ou pas?} 
 We thus measure in our case \[ \gamma_{\min}=\min_{i}{\frac{\gamma_u(x_i)}{\gamma_o(x_i)}}, \]
-where the $x_i$ are the state variables of the system, which may be more optimistic than the measure of \cite{Underapproxflowpipes}, depending on their choice 
-of the set of vectors (which is not mentioned). 
+where the $x_i$ are the state variables of the system. We think this corresponds to the measure that was used for experiments 
+in~\cite{Underapproxflowpipes}, as they mention that the vectors are selected along the dimensions (axis-aligned).
 
-\ForAuthors{Sriram dit dans le dernier paragraph ``Results'' de [1], 
-pour $\gamma_{min}$ que ``The vectors are selected along the dimensions
-(axis-aligned).''? Donc ca serait comparable a nous?}
+%\ForAuthors{Sriram dit dans le dernier paragraph ``Results'' de [1], 
+%pour $\gamma_{min}$ que ``The vectors are selected along the dimensions
+%(axis-aligned).''? Donc ca serait comparable a nous?}
 
 We consider the initial set taken in~\cite{Underapproxflowpipes}, defined by 
 $x_1 \geq 0.9$, $x_2 \geq 0$, $x_1+x_2-1 \leq 0$, which we can project on $1 \geq x_1 \geq 0.9$, $0.1 \geq x_2 \geq 0$.
-\ForAuthors{Evidemment, la on peut perdre pas mal de precision par rapport
-a Sriram vu qu'on prendre le carre englobant le triangle en condition initiale. Ptet insister la dessus?}
-\ForAuthors{On peut le dire - je l'ajoute - mais en meme temps c'est notre faute si on n'est pas capable 
-de prendre en compte ce genre de conditions initiales ;) Certes mais selon
-la methode ensembliste utilisee pour abstraire les coefficients de Taylor
-(dont $z_0$) on peut faire des choses plus ou moins elaborees. On pourrait
-faire une approximation zonotope du triangle (pas commode neanmoins) et
-faire mieux eventuellement. En tout cas on pourrait dire que l'on n'est pas
-limite forcement a des intervalles en entree?}
-They study the result for T = 3 and T = 4. We choose, as they do, 4th order Taylor models, and a time step $h=0.02$. 
+Naturally, this outer-approximation of the initial set is quite inaccurate, which will result in a lower quality of the inner-approximation
+that must be taken into account in the comparison to the results of~\cite{Underapproxflowpipes}. In our approach, 
+we actually can consider initial sets that are not given as intervals, for instance given as zonotopes 
+(in the present case, we could use a zonotopic outer-approximation of the simplex),  
+but we did not investigate this here. 
+
+%\ForAuthors{Evidemment, la on peut perdre pas mal de precision par rapport
+%a Sriram vu qu'on prendre le carre englobant le triangle en condition initiale. Ptet insister la dessus?}
+%\ForAuthors{On peut le dire - je l'ajoute - mais en meme temps c'est notre faute si on n'est pas capable 
+%de prendre en compte ce genre de conditions initiales ;) Certes mais selon
+%la methode ensembliste utilisee pour abstraire les coefficients de Taylor
+%(dont $z_0$) on peut faire des choses plus ou moins elaborees. On pourrait
+%faire une approximation zonotope du triangle (pas commode neanmoins) et
+%faire mieux eventuellement. En tout cas on pourrait dire que l'on n'est pas
+%limite forcement a des intervalles en entree?}
+In ~\cite{Underapproxflowpipes}, the authors study the result for T = 3 and T = 4. We choose, as they do, 4th order Taylor models, and a time step $h=0.02$. 
 Our implementation takes a total of 3400 secs (for computing both outer and inner approximations).
 
 \begin{center}
@@ -1451,7 +1455,8 @@ Our implementation takes a total of 3400 secs (for computing both outer and inne
 On Figure~\ref{ex:width_sriram_bruss}, we see that at $t=3$, the relative width of the inner-approximation over the
 outer-approximation is of order $0.7$, which is equal to the value given in Table~1 of \cite{Underapproxflowpipes}. 
 However, this ration decreases quickly, mostly due to the $x_2$ component, and at $t=4$, we get a ratio very close to $0.1$,
-instead of 0.55 as in [1]!
+instead of 0.55 as in [1]! Indeed, $t=4$ is a time at which, as already seen in Section~\label{sec:exp_bruss}, our 
+inner-approximation of variable $x_2$ is temporarily of lower quality. 
 \ForAuthors{Mais je crois quand meme que de ne
 pas demarrer par un simplex doit pouvoir changer pas mal! Je peux essayer
 de demander a Xin Chen si on peut facilement avoir leur resultat sur le
