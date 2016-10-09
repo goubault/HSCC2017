@@ -90,7 +90,7 @@
 \def\N{{\mathbb N}}
 \def\Z{{\mathbb Z}}
 \def\R{{\mathbb R}}
-\def\int#1{\mbox{$[ #1 ]$}}
+\def\intvl#1{\mbox{$[ #1 ]$}}
 
 \newcommand{\IR}{\mathbb{IR}}
 \newcommand{\va}{{\bf a}}
@@ -517,8 +517,9 @@ $$ f(x) = \left(\begin{array}{l}
 1-2 x_1+\frac{3}{2} x_1^2 x_2 \\
 x_1-\frac{3}{2} x_1^2x_2
 \end{array}\right)$$
-over the time interval $\left[0,h\right]$ ($h=\frac{1}{20}$), and with initial conditions
-$x_1^0 \in [2, 2.15]$, $x^0_2 \in [0.1, 0.15]$.
+\noindent with $x=(x_1,x_2)$, over the time interval $\left[0,h\right]$ 
+$\left(h=\frac{1}{20}\right)$, and with initial conditions
+$x_0=\left([2, 2.15],[0.1, 0.15]\right)$.
 %(...)
 \end{example}
 
@@ -788,7 +789,7 @@ f^{[l]}(z(t))\right) \\
 & = & \sum\limits_{j=1}^n f_j(z(t)) \frac{\partial f^{[l]}}{\partial z_j}(z(t)) \\
 & = & f^{[l+1]}(z(t))
 \end{array}$$
-Equation (\ref{eq:TM}) is then a direct consequence from Taylor-Lagrange expansion
+Equation (\ref{eq:TM}) is then a direct consequence from Taylor-La\-grange expansion
 formula, for sufficiently smooth functions $f$. 
 \end{proof}
 
@@ -992,7 +993,30 @@ otherwise the inner-approximation is empty.\\
 % HOP
 \label{roughenc}
 
-\ForAuthors{Rappel ultra rapide de Picard-Lindel\"of}
+In order the $k$th term in Equations (\ref{eq:TM1}) and (\ref{eq:TM2}) we need
+to compute $\intvl{\r_j}$ (respectively $\intvl{\bfm{R}_j}$), i.e. intervals which over-approximate 
+the components of the solutions $z$ and $J$ to the variational equations over the
+time interval $[t_j,t_{j+1}]$. This is done by using the classical interval
+Picard-Lindel\"of method. This goes as follows : note first that Equation 
+(\ref{eq:flow}) can be rewritten in the form of the integral equation
+\begin{equation}
+z(t) = z_0+\int_{t_j}^{t_{j+1}} \! f(z(s)) \mathrm{d}s
+\label{Picard1}
+\end{equation}
+Hence calling $F$ the functional which to function $z$ associates the right-hand
+side of Equation (\ref{Picard1}), under the condition that $f$ is Lipschitz, it 
+possesses a unique fixpoint, that is the solution to Equations (\ref{eq:flow}) and
+(\ref{Picard1}). The interval version ${F}^{\sharp}$ of the Picard-Lindel\"of operator $F$ 
+enjoys the same property and is derived using the obvious rough interval approximation
+of the integral : $F^{\sharp}(\intvl{z})=z_0+[t_j,t_{j+1}]f(\intvl{z})$ (where
+$\intvl{z}$ will denote ultimately the ``rough'' enclosure of the solutions to
+Equation (\ref{eq:flow}) and $f$ denotes also the interval extension of function $f$). 
+Simple Jacobi like iteration suffices to reach the fixpoint of $F^{\sharp}$ : 
+$\intvl{z}_0=z_0$, $\intvl{z}_{i+1}=F^{\sharp}(\intvl{z}_i)$ for all $i \in \N$. 
+Finite time convergence can be ensured using outwards rounding in finite precision,
+numerical acceleration techniques, widening techniques etc. 
+
+%\ForAuthors{Rappel ultra rapide de Picard-Lindel\"of}
 
 %\ForAuthors{Je pense qu'il faut dire un mot rapide sur comment on calcule le rough
 %enclosure au moins de la Jacobienne, car on dit au debut qu'on n'utilise pas la meme que Goldstejn ;-)}
@@ -1004,82 +1028,68 @@ otherwise the inner-approximation is empty.\\
 \begin{example}
 \label{running2}
 We carry on with the computation of outer-approximations for solutions and Jacobians for 
-the Brusselator, on the first time
-step, using affine arithmetic for estimating the images of functions on initial intervals.
-
+the Brusselator on the first time
+step.
+% using affine arithmetic for estimating the images of functions on initial intervals.
 %First, we use the Picard-Lindel\"of operator to compute rough enclosures $[r_2]$ and
 %$[R_2]$ for, respectively, the states $x_1$ and $x_2$, and the entries of the Jacobian
 %$J_{1,1}$, $J_{1,2}$, $J_{2,1}$ and $J_{2,2}$. 
 
 %We will have, as outer-approximations of order 1 with respect to time, the formulas (for $i=1, 2$, $j=1, 2$
 %and $t \in [0,h]$ (Equations (\ref{eq:TM1}) and (\ref{eq:TM3})) the following. 
-Note that
-as we only consider one time step here, we write $\int{x_i}(t)$ instead of $\int{x_i}(t,0,\int{x_0})$. We first need to determine the rough enclosures, and remainders
-for $k=2$ (first order Taylor model for Equations (\ref{eq:TM1}) and (\ref{eq:TM3}).
+%Note that
+%as we only consider one time step here, 
+We will write $\intvl{x_i}(t)$ instead of $\intvl{x_i}(t,0,\intvl{x_0})$ as
+we are only considering the first time step. 
+We first need to determine the rough enclosures, the remainders
+for $k=2$ (first order Taylor model for Equations (\ref{eq:TM1}) and (\ref{eq:TM3}))
+will be determined in Example \ref{running3}. 
 
 %\ForAuthors{Je reprends l'exemple plus bas, j'ai a revoir un peu les notations/ecriture}
 
 %\begin{equation}
-%\int{x_i}(t) = \int{(x_i)_0} + {f_i}^{[0]}(\int{x_0}) t + f_i^{[1]}(\int{r_1}) \frac{t^2}{2}
+%\intvl{x_i}(t) = \intvl{(x_i)_0} + {f_i}^{[0]}(\intvl{x_0}) t + f_i^{[1]}(\intvl{r_1}) \frac{t^2}{2}
 %\end{equation}
 %\begin{multline}
-%\int{J_{i,j}}(t) =  \int{(J_{i,j})_0}+Jac_x(f_{i}^{[0]})(\int{r_1})\int{R_1}^j t \\
-%+ Jac_x(f_{i}^{[1]})(\int{r_1})\int{R_1}^j \frac{t^2}{2} 
+%\intvl{J_{i,j}}(t) =  \intvl{(J_{i,j})_0}+Jac_x(f_{i}^{[0]})(\intvl{r_1})\intvl{R_1}^j t \\
+%+ Jac_x(f_{i}^{[1]})(\intvl{r_1})\intvl{R_1}^j \frac{t^2}{2} 
 %\label{TaylorJ}
 %\end{multline}
 
 %\ForAuthors{C'est compliqu\'e si on veut d\'ecrire toutes les entrees de la Jacobienne
-%separement ; $\int{R_1}^j$ c'est la colonne avec que les outer-approx des $J_{*,j}$...mais en
+%separement ; $\intvl{R_1}^j$ c'est la colonne avec que les outer-approx des $J_{*,j}$...mais en
 %m\^emes temps pour pr\'esenter des calculs dans des exemples, je prefere avec les entrees
 %de la jacobienne separement. Non? ;-)}
 %\noindent where $R_i$ (resp. $R_{i,j}$) are outer-approximations of the second Lie derivatives of
 %$x_i$ (resp. $J_{i,j}$), over the time interval $[0,h]$. 
 
-To determine $Jac_x(f_i^{[2]})$ and $f_i^{[2]}$, we compute the first Lie derivatives, as well ``rough enclosures''
-$\int{r_1}_i$ and $\int{R_1}_{i,j}$ of the $x_i(t)$ and $J_{i,j}(t)$ over $t\in [0,h]$, 
-$x_1 \in \int{(x_1)_0}$, $x_2 \in \int{(x_2)_0}$. For instance, we have : 
+%HUPHUP 
 
-\begin{multline}
-{f}_1^{[1]} = -2+4x_1+3x_1x_2+\frac{3}{2}x_1^3-9x_1^2x_2\\
-+\frac{9}{2}x_1^3x_2^2-\frac{9}{4}x_1^4x_2
-\end{multline}
-%f_2^{[1]} & = & 1-2x_1-3x_1x_2+\frac{15}{2}x_1^2x_2-\frac{3}{2}x_1^3\\
-%& & \ \ \ -\frac{9}{2}x_1^3x_2^2+\frac{9}{4}x_1^4x_2 \\
-\begin{multline}
-\mbox{Jac}_x(f^{[1]})_{11}(x_1,x_2)(J_{11},J_{21}) = (3x_2f_1+3x_1f_2)J_{11}\\
-+(-2+3x_1x_2)\mbox{Jac}_x(f^{[0]})_{11}(x_1,x_2)(J_{11},J_{21}) \\ 
-+3x_1f_1J_{21}+\frac{3}{2}x_1^2{\mbox{Jac}_x(f^{[0]})}_{21}(x_1,x_2)(J_{11},J_{21}) 
-%Jac_x(f^{[1]}) & = & \left(\begin{array}{cc}
-%(3x_2f_1+3x_1f_2)J_{1,1}+(-2+3x_1x_2)\dot{J}_{1,1}+3x_1f_1J_{2,1}+\frac{3}{2}x_1^2\dot{J}_{2,1} &
-%(3x_2f_1+3x_1f_2)J_{1,2}+(-2+3x_1x_2)\dot{J}_{1,2}
-%+3x_1f_1J_{2,2}+\frac{3}{2}x_1^2\dot{J}_{2,2}\\
-%(-3x_2f_1-3x_1f_2)J_{1,1}+(1-3x_1x_2)\dot{J}_{1,1}\\
-%-3x_1f_1J_{2,1}-\frac{3}{2}x_1^2\dot{J}_{2,1} & 
-%(-3x_2f_1-3x_1f_2)J_{1,2}+(1-3x_1x_2)\dot{J}_{1,2}
-%-3x_1f_1J_{2,2}-\frac{3}{2}x_1^2\dot{J}_{2,2}\end{array}\right)
-\label{secondderivative}
-\end{multline} %$$
-\noindent where $Jac_x(f^{[1]})_{11}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
-and ${Jac_x(f^{[0]})}_{21}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
-are given in Example \ref{running1}.
-%Equations (\ref{jacobian}) (they are the right hand side
-%of these equations, as Equation (\ref{eq:IVP_jac2}) shows). 
-
-For rough enclosures of $\int{r_1}_i$ and $\int{R_1}_{i,j}$ we use the interval Picard-Lindel\"of method and find : 
+Then we compute 
+``rough enclosures''
+$\intvl{\r_1}_i$ and $\intvl{\bfm{R}_1}_{i,j}$ of the $x_i(t)$ and $J_{ij}(t)$ over $t\in [0,h]$, 
+$x_1 \in \intvl{(x_1)_0}$, $x_2 \in \intvl{(x_2)_0}$. 
+%For rough enclosures of $\intvl{r_1}_i$ and $\intvl{R_1}_{i,j}$ 
+We use the interval Picard-Lindel\"of method of Section \ref{roughenc} and find : 
 %\begin{eqnarray}%{lcl}
-$\int{r_1} = \left(\begin{array}{c}
-\left[\frac{93}{50}, \frac{43}{20}\right]\\
-\left[\frac{1}{10}, \frac{579}{2500}\right]
+$\intvl{\r_1} = \left(\begin{array}{c}
+\left[ 1.8609,    2.1500 \right]\\ 
+\left[ 0.1000,    0.2316 \right] 
+%\left[\frac{93}{50}, \frac{43}{20}\right]\\
+%\left[\frac{1}{10}, \frac{579}{2500}\right]
 \end{array}\right)$, 
-$\int{R_1} =\left(\begin{array}{cc} 
-\left[\frac{116}{125}, 1\right] & \left[0, \frac{26}{75}\right]\\
-\left[-\frac{37}{1500}, \frac{1}{45}\right] & 
-\left[\frac{49}{75}, 1\right] \\
+$\intvl{\bfm{R}_1} =\left(\begin{array}{cc} 
+\left[    0.9279,    1.0000\right] & \left[    0.0000,    0.3467\right] \\
+\left[   -0.0247,    0.0221\right] & \left[    0.6533,    1.0000\right] 
+%\left[\frac{116}{125}, 1\right] & \left[0, \frac{26}{75}\right]\\
+%\left[-\frac{37}{1500}, \frac{1}{45}\right] & 
+%\left[\frac{49}{75}, 1\right] \\
 \end{array}\right)$
+%Finally, we apply any ...
 %\label{roughenclosures}
 %\end{eqnarray}%$$
 %HIPHOP
-\ForAuthors{Je vais remettre les valeurs flottantes ;-)}
+%\ForAuthors{Je vais remettre les valeurs flottantes ;-)}
 \end{example}
 
 
@@ -1199,6 +1209,12 @@ same system but with uncertain $z(t_0) \in \z_0$, used to compute the Taylor coe
 with respect to the initial condition $z_0$. 
 %\end{remark}
 
+\begin{example}
+\ForAuthors{Je vais completer}
+$\left(\left[    2.0750,    2.0751\right],  
+\left[    0.1249,    0.1251\right]\right)$ 
+\end{example}
+
 %\begin{remark}
 \paragraph{Calculations of coefficients of the Taylor models}
 
@@ -1223,13 +1239,13 @@ Equations (\ref{eq:inner_cont})
 \begin{example}
 \label{running3}
 We compute a first-order Taylor model for the Brusselator, using Equation
-(\ref{eq:TM}) with $k=2$, and using affine arithmetic to compute $f^{[i]}([{\z}_j])$
+(\ref{eq:TM}) with $k=2$, and using affine arithmetic to compute $f^{[i]}([{\z}_j])$. 
 and $\mbox{Jac}_x(f^{[i]})([\r_{j+1}])[\J_j]$ 
 \ForAuthors{Tout a coup j'ai un doute, ce n'est pas 
-$\mbox{Jac}_x(f^{[i]}([\z_j])[\J_j]$ plutot?}. We start with 
-$(x_1)_0\in [2,2.5]$ and $(x_2)_0 \in [0.1,0.15]$, hence, in affine arithmetic,
-$(x_1)_0 = \frac{83}{40}+\frac{3}{40}\epsilon_1$ and 
-$(x_2)_0 = \frac{1}{8}+\frac{1}{40}\epsilon_2$. Evaluating $f^{[1]}=f$ using
+$\mbox{Jac}_x(f^{[i]}([\z_j])[\J_j]$ plutot?} We start with 
+$x_0=\left([2,2.5],[0.1,0.15]\right)$, hence, in affine arithmetic,
+$x_0=\left(\frac{83}{40}+\frac{3}{40}\epsilon_1,
+\frac{1}{8}+\frac{1}{40}\epsilon_2\right)$. Evaluating $f^{[1]}=f$ using
 simple rules from affine arithmetic, we find~: 
 
 \begin{eqnarray}%{lcl}
@@ -1246,13 +1262,78 @@ f^{[1]}(x_0) & = & \left(\begin{array}{c}
 -\frac{3015}{256000}\eta_2 \right) 
 \end{array}\right)
 \end{eqnarray}
-\begin{eqnarray}
-\mbox{Jac}_x(f^{[1]})([x_0])_{11} & = & -\frac{391}{320}+\frac{9}{320}\epsilon_1+\frac{249}{1600}\epsilon_2+\frac{9}{1600}\eta_3\\
-\mbox{Jac}_x(f^{[1]})([x_0])_{12} & = & \frac{41361}{6400}+\frac{747}{1600}\epsilon_1+\frac{27}{6400}\eta_1\\
-\mbox{Jac}_x(f^{[1]})([x_0])_{21} & = & \frac{71}{320}-\frac{9}{320}\epsilon_1-\frac{249}{1600}\epsilon_2-\frac{9}{1600}\eta_3\\
-\mbox{Jac}_x(f^{[1]})([x_0])_{2é2} & = & -\frac{41361}{6400}-\frac{747}{1600}\epsilon_1-\frac{27}{6400}\eta_1
+\begin{equation}
+\mbox{Jac}_x(f^{[1]})([x_0])_{11} %& 
+= 
+%& 
+-\frac{391}{320}+\frac{9}{320}\epsilon_1+\frac{249}{1600}\epsilon_2+\frac{9}{1600}\eta_3%\\
+\end{equation}
+%\begin{eqnarray}
+\begin{equation}
+\mbox{Jac}_x(f^{[1]})([x_0])_{12} %& 
+= 
+%& 
+\frac{41361}{6400}+\frac{747}{1600}\epsilon_1+\frac{27}{6400}\eta_1%\\
+\end{equation}
+\begin{equation}
+\mbox{Jac}_x(f^{[1]})([x_0])_{21} %& 
+= 
+%& 
+\frac{71}{320}-\frac{9}{320}\epsilon_1-\frac{249}{1600}\epsilon_2-\frac{9}{1600}\eta_3%\\
+\end{equation}
+\begin{equation}
+\mbox{Jac}_x(f^{[1]})([x_0])_{2é2} %& 
+= 
+%& 
+-\frac{41361}{6400}-\frac{747}{1600}\epsilon_1-\frac{27}{6400}\eta_1
 \label{firstderivative}
-\end{eqnarray}
+\end{equation}
+%\end{eqnarray}
+
+To determine the remainders, we first compute
+$f_i^{[2]}$ and then 
+$Jac_x(f_i^{[2]})$. For instance we have : 
+
+\begin{multline}
+{f}_1^{[2]} = -2+4x_1+3x_1x_2+\frac{3}{2}x_1^3-9x_1^2x_2\\
++\frac{9}{2}x_1^3x_2^2-\frac{9}{4}x_1^4x_2
+\end{multline}
+%f_2^{[1]} & = & 1-2x_1-3x_1x_2+\frac{15}{2}x_1^2x_2-\frac{3}{2}x_1^3\\
+%& & \ \ \ -\frac{9}{2}x_1^3x_2^2+\frac{9}{4}x_1^4x_2 \\
+\begin{multline}
+\mbox{Jac}_x(f^{[2]})_{11}(x_1,x_2)(J_{11},J_{21}) = (3x_2f_1+3x_1f_2)J_{11}\\
++(-2+3x_1x_2)\mbox{Jac}_x(f^{[1]})_{11}(x_1,x_2)(J_{11},J_{21}) \\ 
++3x_1f_1J_{21}+\frac{3}{2}x_1^2{\mbox{Jac}_x(f^{[1]})}_{21}(x_1,x_2)(J_{11},J_{21}) 
+%Jac_x(f^{[1]}) & = & \left(\begin{array}{cc}
+%(3x_2f_1+3x_1f_2)J_{1,1}+(-2+3x_1x_2)\dot{J}_{1,1}+3x_1f_1J_{2,1}+\frac{3}{2}x_1^2\dot{J}_{2,1} &
+%(3x_2f_1+3x_1f_2)J_{1,2}+(-2+3x_1x_2)\dot{J}_{1,2}
+%+3x_1f_1J_{2,2}+\frac{3}{2}x_1^2\dot{J}_{2,2}\\
+%(-3x_2f_1-3x_1f_2)J_{1,1}+(1-3x_1x_2)\dot{J}_{1,1}\\
+%-3x_1f_1J_{2,1}-\frac{3}{2}x_1^2\dot{J}_{2,1} & 
+%(-3x_2f_1-3x_1f_2)J_{1,2}+(1-3x_1x_2)\dot{J}_{1,2}
+%-3x_1f_1J_{2,2}-\frac{3}{2}x_1^2\dot{J}_{2,2}\end{array}\right)
+\label{secondderivative}
+\end{multline} %$$
+\noindent where $Jac_x(f^{[1]})_{11}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
+and ${Jac_x(f^{[1]})}_{21}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
+are given in Example \ref{running1}.
+
+Now again, we are applying affine arithmetic to compute 
+$f^{[2]}([{\r}_{1}])$ and $\mbox{Jac}_x(f^{[2]})([{\r}_{1}]) [\bfm{R}_{1}]$
+given the rough enclosures $\r_1$ and $\bfm{R}_1$ computed in Example
+\ref{running2} and we find : 
+$$\begin{array}{rcl}
+f^{[2]}([{\r}_{1}]) & = & \left(\begin{array}{c}
+A \ completer
+\end{array}\right)
+\end{array}$$
+$$\begin{array}{rcl}
+\mbox{Jac}_x(f^{[2]})([{\r}_{1}]) [\bfm{R}_{1}] & = & \left(\begin{array}{cc}
+A \ completer
+\end{array}\right)
+\end{array}$$
+%Equations (\ref{jacobian}) (they are the right hand side
+%of these equations, as Equation (\ref{eq:IVP_jac2}) shows). 
 %\ForAuthors{Calculs pratiques de sous- et sur- approx des variables pour le Brusselator au first
 %time step, detailles - je complete sous peu}
 \end{example}
@@ -1288,6 +1369,11 @@ we can bound the approximation error at each instant, and use this information t
 when this error becomes larger than some threshold: indeed, nothing prevents us from using different orders of the Taylor models 
 at different time steps.  
 %\end{remark}
+
+\begin{example}
+
+\ForAuthors{Eric, completer (calcul final d'une sous-approx}
+\end{example}
 
 %******************************************************************************
 \section{Experiments and Benchmarks}
