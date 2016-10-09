@@ -1276,11 +1276,12 @@ f^{[1]}(x_0) & = & \left(\begin{array}{c}
 \label{practicalissues}
 
 %\paragraph{On the effect of the precision of outer-approximations on inner-approximations}
+It must be noted that the algorithm described in Section~\ref{principle} fully relies on outer-approximations in each step, 
+to deduce an inner-approximation at Step 3. This means that we can soundly compute and implement our approach using interval-based 
+methods with outward rounding as classically. 
 
-Note that 
-the wider the outer-approximation in Taylor models~(\ref{eq:TM1}-\ref{eq:TM3}), the tighter thus the less accurate the inner-approximation~(\ref{eq:inner_cont}): 
-it can even potentially lead to an empty inner-approximation if the result of Equation~(\ref{eq:inner_cont}) in Kaucher arithmetic is not an improper interval. Hence the
-precision of the inner-approximation is strongly tied to the one of the outer-appro\-ximation and the order we choose for it. 
+Also, the wider the outer-approximation in Taylor models~(\ref{eq:TM1}-\ref{eq:TM3}), the tighter thus the less accurate the inner-approximation~(\ref{eq:inner_cont}): 
+it can even  lead to an empty inner-approximation if the result of Equation~(\ref{eq:inner_cont}) in Kaucher arithmetic is not an improper interval. 
 
 The phenomenom we mentionned above can occur in two ways. First, note that $[\overline{z_0},\underline{z_0}]-\tilde{z_0}$ is an improper interval that belongs to $\dual {\cal Z}$ as defined 
 in Section~\ref{generalized}. The outer-approximation of the Jacobian matrix,  $[\J](t,t_j,[{\z}_j])$ is a proper interval. The Kaucher multiplication as defined in Table~\ref{tabmult}
@@ -1292,9 +1293,13 @@ Suppose now that the Kaucher multiplication indeed yields an improper interval. 
 of the solution at time $t$ of the solution of the system starting from point $\tilde{\z}_0$. Ideally, this should be tight, but if this interval is wider than the improper 
 interval resulting from the Kaucher multiplication, then the sum of the two intervals - computed using the extension of interval addition - will be proper, 
 and the inner-approximation empty. This will be examplified in the experiments. 
+
+
+It must be noted that the quality of the inner-approximation is strongly tied to the quality of the outer-approximation. 
+In particular, as we rely on Taylor models, if necessary we can improve the quality by using higher-order models. 
+And as we know that the exact enclosure of the uncertain system lies between the inner and outer-approximated flows, 
+we can bound the approximation error at each instant, and use this information to refine the appproximation when this error becomes larger than some threshold. 
 %\end{remark}
-
-
 
 %******************************************************************************
 \section{Experiments and Benchmarks}
@@ -1340,6 +1345,8 @@ toolbox.
 \end{figure}
 
 In the following experiments, we now use Taylor models of order 4, and represent respectively in Figures~\ref{fig:brusselator_order4_x1_t10} and~\ref{fig:brusselator_order4_x2_t10}, the inner and outer approximated flowpipes for variables $x1$ and $x2$, with an evaluation in affine arithmetic, up to a maximum time $t=10$.   
+\ForAuthors{commenter que la sous-approx devient vide puis re-apparait} 
+%(cf \ref~{practicalissues})
 
 \begin{figure}[htbp]
 \begin{center}
@@ -1356,8 +1363,7 @@ In the following experiments, we now use Taylor models of order 4, and represent
 \caption{Brusselator (x2), evaluation of the Taylor models (order 4) with affine arithmetic \label{fig:brusselator_order4_x2_t10}}
 \end{figure}
 
-\SP{commenter que la sous-approx devient vide puis re-apparait, mais aussi reflechir a ce qu'on peut en deduire sur le systeme (cycle?), et si on veut 
-que je fasse d'autres experiences}
+\SP{reflechir a ce qu'on peut en deduire sur le systeme (cycle?), et si on veut que je fasse d'autres experiences ?}
 
 %------------------------------------------------------------------------------------------------------------------------------------------------
 
