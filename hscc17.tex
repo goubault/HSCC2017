@@ -838,19 +838,27 @@ a range $]\z[(t,t_j,[\z_j])$ such that all values inside that range are sure to 
 For that, we will apply Theorem~\ref{thm1}, at all time $t$, to the function $z$ from $\R^n$ to $R^n$, defined by 
 $z_0 \mapsto z(t,z_0)$, solution to the IVP (\ref{eq:flowb}). 
 
-In what follows, we begin to present our algorithm in Section
-\ref{principle}, and explain its principle. 
-If its principle is simple to grasp, there are a number of subtleties. 
-First, we show in Section \ref{efficientLieJacobian} that we can compute
-the Taylor model of the Jacobian as if we were simply derivating the Taylor model 
-for the solution of the initial ODE, which makes things much more efficient. 
-The remainder part of the Taylor model for the Jacobian cannot be easily estimated
-from the remainder of the Taylor model of the original solution : we use in both
-case the classical interval Picard-Lindel\"of iteration method to get ``rough
-enclosures'' that we use for computing the remainders, in Section \ref{roughenc}.
+In Section~\ref{principle}, we give the main lines of the computation of inner-approximated flowpipes, 
+and state the algorithm. We then detail and comment each of its steps. In Section~\ref{roughenc}, we
+show how we use the classical interval Picard-Lindel\"of iteration method to get rough
+enclosures of the solution and its Jacobian  on each time step, that we use for computing the remainders of the Taylor models.
+In Section~\ref{efficientLieJacobian}, we build the Taylor models, and show that  we can compute
+the Taylor model of the Jacobian as if we were simply derivating the Taylor model for the solution of the initial ODE, 
+which makes its construction very simple and efficient. Finally, in Section~\ref{practicalissues}, we comment the actual 
+computation of the inner-approximation flow-pipe, and show how a loss of accuracy in the outer-approximation results in 
+a loss of accuracy in the inner-approximation, and even possibly to an empty inner-approximation.
+%for the solution of the initial ODE, which makes things much more efficient. 
+%If its principle is simple to grasp, there are a number of subtleties. 
+%First, we show in Section \ref{efficientLieJacobian} that we can compute
+%the Taylor model of the Jacobian as if we were simply derivating the Taylor model 
+%for the solution of the initial ODE, which makes things much more efficient. 
+%The remainder part of the Taylor model for the Jacobian cannot be easily estimated
+%from the remainder of the Taylor model of the original solution : we use in both
+%case the classical interval Picard-Lindel\"of iteration method to get ``rough
+%enclosures'' that we use for computing the remainders, in Section \ref{roughenc}.
 
-Finally, we discuss some practical numerical issues in Section \ref{practicalissues}, 
-that we had to solve, and that we observed, when implementing our Algorithm. 
+%Finally, we discuss some practical numerical issues in Section \ref{practicalissues}, 
+%that we had to solve, and that we observed, when implementing our Algorithm. 
 
 \subsection{Principle of the algorithm}
 
@@ -955,14 +963,14 @@ an initial range $\z_0$, and some $\tilde{z_0} \in \z_0$, is as follows~:
    \fbox%                            %    --------
    {\parbox{1.\linewidth}%          %    |  #1  |
     { %\raggedright\sc  
-Initialize: $j=0$, $t_j=t_0$, $[\z_j]=\z_0$, $[\tilde{z}_j]=\tilde{z}_0$, $[\J_j] = Id$
+\underline{Initialize}: $j=0$, $t_j=t_0$, $[\z_j]=\z_0$, $[\tilde{z}_j]=\tilde{z}_0$, $[\J_j] = Id$
 
 Then on each time interval $[t_j,t_{j+1}]$ do:
 
-1) compute a priori enclosures $[\r_{j+1}]$  of  ${\cal Z}(t;t_j,\z_j)$ for all $t$ in $[t_j,t_{j+1}]$, $[\tilde{\r}_{j+1}]$  of  ${\cal Z}(t;t_j,\tilde{z}_j)$ for all $t$ in $[t_j,t_{j+1}]$,
+\underline{Step 1}. compute a priori enclosures $[\r_{j+1}]$  of  ${\cal Z}(t;t_j,\z_j)$ for all $t$ in $[t_j,t_{j+1}]$, $[\tilde{\r}_{j+1}]$  of  ${\cal Z}(t;t_j,\tilde{z}_j)$ for all $t$ in $[t_j,t_{j+1}]$,
 and $[\bfm{R}_{j+1}]$ of ${\cal J}(t;t_j,\z_j)$
 
-2) compute the Taylor Models valid on $[t_j,t_{j+1}]$:
+\underline{Step 2}. build the Taylor Models valid on $[t_j,t_{j+1}]$:
 \begin{multline}
 [\z](t,t_j,[{\z}_j]) = [{\z}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} f^{[i]}([{\z}_j])\\+ 
 \frac{(t-t_j)^k}{k !} f^{[k]}([{\r}_{j+1}]).
@@ -977,7 +985,7 @@ and $[\bfm{R}_{j+1}]$ of ${\cal J}(t;t_j,\z_j)$
 \label{eq:TM3}
 \end{multline}
 
-3) deduce an inner-approximation valid for $t$ in $[t_j,t_{j+1}]$~: if $]\z[(t,t_j)$ defined by Equation~(\ref{eq:inner_cont}) is an improper interval\\
+\underline{Step 3}. deduce an inner-approximation valid for $t$ in $[t_j,t_{j+1}]$~: if $]\z[(t,t_j)$ defined by Equation~(\ref{eq:inner_cont}) is an improper interval\\
 \begin{equation} 
 ]\z[(t,t_j) = [\tilde{\z}](t,t_j,[\tilde{\z}_j]) + [\J](t,t_j,[{\z}_j])*([\overline{z_0},\underline{z_0}]-\tilde{z_0}) 
 \label{eq:inner_cont}
@@ -986,14 +994,112 @@ and $[\bfm{R}_{j+1}]$ of ${\cal J}(t;t_j,\z_j)$
 then interval $\pro]\z[(t,t_j)$ is an inner-approximation of  the set of solutions $\{ z(t,z_0), \, z_0(t_0) \in \z_0 \}$ of  (\ref{eq:flowb}) at time $t$,
 otherwise the inner-approximation is empty.\\
 
-4) compute $[{\z}_{j+1}]=[\z](t_{j+1},t_j,[{\z}_j])$, $[\tilde{\z}_{j+1}]=[\tilde{\z}](t_{j+1},t_j,$ $[\tilde{\z}_j])$, $[\J_{j+1}] = [\J](t,t_j,[{\z}_j]) $\\
+\underline{Step 4}. initialize the next iteration by computing $[{\z}_{j+1}]=[\z](t_{j+1},t_j,[{\z}_j])$, $[\tilde{\z}_{j+1}]=[\tilde{\z}](t_{j+1},t_j,$ $[\tilde{\z}_j])$, $[\J_{j+1}] = [\J](t,t_j,[{\z}_j]) $\\
  }%         %    --------
    }%                                %
   \end{center}%                      %
   \par\smallskip                     %
  }        
 
-\subsection{Efficient computations of the Lie derivatives of the Jacobian}
+
+\subsection{Step 1: computating the rough enclosures}
+% HOP
+\label{roughenc}
+
+\ForAuthors{Rappel ultra rapide de Picard-Lindel\"of}
+
+%\ForAuthors{Je pense qu'il faut dire un mot rapide sur comment on calcule le rough
+%enclosure au moins de la Jacobienne, car on dit au debut qu'on n'utilise pas la meme que Goldstejn ;-)}
+%\ForAuthors{Oui, de touet facon on a sasn doute interet a structurer la section, peut-etre en 
+%utilisant des paragraphes: introduction sur l'idee generale et algo, en en numerotatnt par exemple les etapes, 
+%puis eventuellemnt un paragraphe pour commenter chaque etape; ce qui nous permet d'eviter d'utiliser trop systematiquement
+%le style ``remarque'' en italique, ce uqi estdesagreable, d'autant qu'ensuite les preuves ne ressortent pas, etc. 
+%Apres, faut voir si on trouve qqchsoe a dire sur chaque ``etape'' mais bon pas oblige d'en mettre des tonnes; qu'en penses tu?}
+\begin{example}
+\label{running2}
+We carry on with the computation of outer-approximations for solutions and Jacobians for 
+the Brusselator, on the first time
+step, using affine arithmetic for estimating the images of functions on initial intervals.
+
+%First, we use the Picard-Lindel\"of operator to compute rough enclosures $[r_2]$ and
+%$[R_2]$ for, respectively, the states $x_1$ and $x_2$, and the entries of the Jacobian
+%$J_{1,1}$, $J_{1,2}$, $J_{2,1}$ and $J_{2,2}$. 
+
+%We will have, as outer-approximations of order 1 with respect to time, the formulas (for $i=1, 2$, $j=1, 2$
+%and $t \in [0,h]$ (Equations (\ref{eq:TM1}) and (\ref{eq:TM3})) the following. 
+Note that
+as we only consider one time step here, we write $\int{x_i}(t)$ instead of $\int{x_i}(t,0,\int{x_0})$. We first need to determine the rough enclosures, and remainders
+for $k=2$ (first order Taylor model for Equations (\ref{eq:TM1}) and (\ref{eq:TM3}).
+
+%\ForAuthors{Je reprends l'exemple plus bas, j'ai a revoir un peu les notations/ecriture}
+
+%\begin{equation}
+%\int{x_i}(t) = \int{(x_i)_0} + {f_i}^{[0]}(\int{x_0}) t + f_i^{[1]}(\int{r_1}) \frac{t^2}{2}
+%\end{equation}
+%\begin{multline}
+%\int{J_{i,j}}(t) =  \int{(J_{i,j})_0}+Jac_x(f_{i}^{[0]})(\int{r_1})\int{R_1}^j t \\
+%+ Jac_x(f_{i}^{[1]})(\int{r_1})\int{R_1}^j \frac{t^2}{2} 
+%\label{TaylorJ}
+%\end{multline}
+
+%\ForAuthors{C'est compliqu\'e si on veut d\'ecrire toutes les entrees de la Jacobienne
+%separement ; $\int{R_1}^j$ c'est la colonne avec que les outer-approx des $J_{*,j}$...mais en
+%m\^emes temps pour pr\'esenter des calculs dans des exemples, je prefere avec les entrees
+%de la jacobienne separement. Non? ;-)}
+%\noindent where $R_i$ (resp. $R_{i,j}$) are outer-approximations of the second Lie derivatives of
+%$x_i$ (resp. $J_{i,j}$), over the time interval $[0,h]$. 
+
+To determine $Jac_x(f_i^{[2]})$ and $f_i^{[2]}$, we compute the first Lie derivatives, as well ``rough enclosures''
+$\int{r_1}_i$ and $\int{R_1}_{i,j}$ of the $x_i(t)$ and $J_{i,j}(t)$ over $t\in [0,h]$, 
+$x_1 \in \int{(x_1)_0}$, $x_2 \in \int{(x_2)_0}$. For instance, we have : 
+
+\begin{multline}
+{f}_1^{[1]} = -2+4x_1+3x_1x_2+\frac{3}{2}x_1^3-9x_1^2x_2\\
++\frac{9}{2}x_1^3x_2^2-\frac{9}{4}x_1^4x_2
+\end{multline}
+%f_2^{[1]} & = & 1-2x_1-3x_1x_2+\frac{15}{2}x_1^2x_2-\frac{3}{2}x_1^3\\
+%& & \ \ \ -\frac{9}{2}x_1^3x_2^2+\frac{9}{4}x_1^4x_2 \\
+\begin{multline}
+\mbox{Jac}_x(f^{[1]})_{11}(x_1,x_2)(J_{11},J_{21}) = (3x_2f_1+3x_1f_2)J_{11}\\
++(-2+3x_1x_2)\mbox{Jac}_x(f^{[0]})_{11}(x_1,x_2)(J_{11},J_{21}) \\ 
++3x_1f_1J_{21}+\frac{3}{2}x_1^2{\mbox{Jac}_x(f^{[0]})}_{21}(x_1,x_2)(J_{11},J_{21}) 
+%Jac_x(f^{[1]}) & = & \left(\begin{array}{cc}
+%(3x_2f_1+3x_1f_2)J_{1,1}+(-2+3x_1x_2)\dot{J}_{1,1}+3x_1f_1J_{2,1}+\frac{3}{2}x_1^2\dot{J}_{2,1} &
+%(3x_2f_1+3x_1f_2)J_{1,2}+(-2+3x_1x_2)\dot{J}_{1,2}
+%+3x_1f_1J_{2,2}+\frac{3}{2}x_1^2\dot{J}_{2,2}\\
+%(-3x_2f_1-3x_1f_2)J_{1,1}+(1-3x_1x_2)\dot{J}_{1,1}\\
+%-3x_1f_1J_{2,1}-\frac{3}{2}x_1^2\dot{J}_{2,1} & 
+%(-3x_2f_1-3x_1f_2)J_{1,2}+(1-3x_1x_2)\dot{J}_{1,2}
+%-3x_1f_1J_{2,2}-\frac{3}{2}x_1^2\dot{J}_{2,2}\end{array}\right)
+\label{secondderivative}
+\end{multline} %$$
+\noindent where $Jac_x(f^{[1]})_{11}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
+and ${Jac_x(f^{[0]})}_{21}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
+are given in Example \ref{running1}.
+%Equations (\ref{jacobian}) (they are the right hand side
+%of these equations, as Equation (\ref{eq:IVP_jac2}) shows). 
+
+For rough enclosures of $\int{r_1}_i$ and $\int{R_1}_{i,j}$ we use the interval Picard-Lindel\"of method and find : 
+%\begin{eqnarray}%{lcl}
+$\int{r_1} = \left(\begin{array}{c}
+\left[\frac{93}{50}, \frac{43}{20}\right]\\
+\left[\frac{1}{10}, \frac{579}{2500}\right]
+\end{array}\right)$, 
+$\int{R_1} =\left(\begin{array}{cc} 
+\left[\frac{116}{125}, 1\right] & \left[0, \frac{26}{75}\right]\\
+\left[-\frac{37}{1500}, \frac{1}{45}\right] & 
+\left[\frac{49}{75}, 1\right] \\
+\end{array}\right)$
+%\label{roughenclosures}
+%\end{eqnarray}%$$
+%HIPHOP
+\ForAuthors{Je vais remettre les valeurs flottantes ;-)}
+\end{example}
+
+
+\subsection{Step 2: building the Taylor models}
+
+\paragraph{Efficient computations of the Lie derivatives of the Jacobian}
 
 \label{efficientLieJacobian}
 
@@ -1094,109 +1200,7 @@ itself rather
 inexpensive. 
 %\end{remark}
 
-\subsection{Computation of the rough enclosures}
-% HOP
-\label{roughenc}
-
-\ForAuthors{Rappel ultra rapide de Picard-Lindel\"of}
-
-%\ForAuthors{Je pense qu'il faut dire un mot rapide sur comment on calcule le rough
-%enclosure au moins de la Jacobienne, car on dit au debut qu'on n'utilise pas la meme que Goldstejn ;-)}
-%\ForAuthors{Oui, de touet facon on a sasn doute interet a structurer la section, peut-etre en 
-%utilisant des paragraphes: introduction sur l'idee generale et algo, en en numerotatnt par exemple les etapes, 
-%puis eventuellemnt un paragraphe pour commenter chaque etape; ce qui nous permet d'eviter d'utiliser trop systematiquement
-%le style ``remarque'' en italique, ce uqi estdesagreable, d'autant qu'ensuite les preuves ne ressortent pas, etc. 
-%Apres, faut voir si on trouve qqchsoe a dire sur chaque ``etape'' mais bon pas oblige d'en mettre des tonnes; qu'en penses tu?}
-\begin{example}
-\label{running2}
-We carry on with the computation of outer-approximations for solutions and Jacobians for 
-the Brusselator, on the first time
-step, using affine arithmetic for estimating the images of functions on initial intervals.
-
-%First, we use the Picard-Lindel\"of operator to compute rough enclosures $[r_2]$ and
-%$[R_2]$ for, respectively, the states $x_1$ and $x_2$, and the entries of the Jacobian
-%$J_{1,1}$, $J_{1,2}$, $J_{2,1}$ and $J_{2,2}$. 
-
-%We will have, as outer-approximations of order 1 with respect to time, the formulas (for $i=1, 2$, $j=1, 2$
-%and $t \in [0,h]$ (Equations (\ref{eq:TM1}) and (\ref{eq:TM3})) the following. 
-Note that
-as we only consider one time step here, we write $\int{x_i}(t)$ instead of $\int{x_i}(t,0,\int{x_0})$. We first need to determine the rough enclosures, and remainders
-for $k=2$ (first order Taylor model for Equations (\ref{eq:TM1}) and (\ref{eq:TM3}).
-
-%\ForAuthors{Je reprends l'exemple plus bas, j'ai a revoir un peu les notations/ecriture}
-
-%\begin{equation}
-%\int{x_i}(t) = \int{(x_i)_0} + {f_i}^{[0]}(\int{x_0}) t + f_i^{[1]}(\int{r_1}) \frac{t^2}{2}
-%\end{equation}
-%\begin{multline}
-%\int{J_{i,j}}(t) =  \int{(J_{i,j})_0}+Jac_x(f_{i}^{[0]})(\int{r_1})\int{R_1}^j t \\
-%+ Jac_x(f_{i}^{[1]})(\int{r_1})\int{R_1}^j \frac{t^2}{2} 
-%\label{TaylorJ}
-%\end{multline}
-
-%\ForAuthors{C'est compliqu\'e si on veut d\'ecrire toutes les entrees de la Jacobienne
-%separement ; $\int{R_1}^j$ c'est la colonne avec que les outer-approx des $J_{*,j}$...mais en
-%m\^emes temps pour pr\'esenter des calculs dans des exemples, je prefere avec les entrees
-%de la jacobienne separement. Non? ;-)}
-%\noindent where $R_i$ (resp. $R_{i,j}$) are outer-approximations of the second Lie derivatives of
-%$x_i$ (resp. $J_{i,j}$), over the time interval $[0,h]$. 
-
-To determine $Jac_x(f_i^{[2]})$ and $f_i^{[2]}$, we compute the first Lie derivatives, as well ``rough enclosures''
-$\int{r_1}_i$ and $\int{R_1}_{i,j}$ of the $x_i(t)$ and $J_{i,j}(t)$ over $t\in [0,h]$, 
-$x_1 \in \int{(x_1)_0}$, $x_2 \in \int{(x_2)_0}$. For instance, we have : 
-
-\begin{multline}
-{f}_1^{[1]} = -2+4x_1+3x_1x_2+\frac{3}{2}x_1^3-9x_1^2x_2\\
-+\frac{9}{2}x_1^3x_2^2-\frac{9}{4}x_1^4x_2
-\end{multline}
-%f_2^{[1]} & = & 1-2x_1-3x_1x_2+\frac{15}{2}x_1^2x_2-\frac{3}{2}x_1^3\\
-%& & \ \ \ -\frac{9}{2}x_1^3x_2^2+\frac{9}{4}x_1^4x_2 \\
-\begin{multline}
-\mbox{Jac}_x(f^{[1]})_{11}(x_1,x_2)(J_{11},J_{21}) = (3x_2f_1+3x_1f_2)J_{11}\\
-+(-2+3x_1x_2)\mbox{Jac}_x(f^{[0]})_{11}(x_1,x_2)(J_{11},J_{21}) \\ 
-+3x_1f_1J_{21}+\frac{3}{2}x_1^2{\mbox{Jac}_x(f^{[0]})}_{21}(x_1,x_2)(J_{11},J_{21}) 
-%Jac_x(f^{[1]}) & = & \left(\begin{array}{cc}
-%(3x_2f_1+3x_1f_2)J_{1,1}+(-2+3x_1x_2)\dot{J}_{1,1}+3x_1f_1J_{2,1}+\frac{3}{2}x_1^2\dot{J}_{2,1} &
-%(3x_2f_1+3x_1f_2)J_{1,2}+(-2+3x_1x_2)\dot{J}_{1,2}
-%+3x_1f_1J_{2,2}+\frac{3}{2}x_1^2\dot{J}_{2,2}\\
-%(-3x_2f_1-3x_1f_2)J_{1,1}+(1-3x_1x_2)\dot{J}_{1,1}\\
-%-3x_1f_1J_{2,1}-\frac{3}{2}x_1^2\dot{J}_{2,1} & 
-%(-3x_2f_1-3x_1f_2)J_{1,2}+(1-3x_1x_2)\dot{J}_{1,2}
-%-3x_1f_1J_{2,2}-\frac{3}{2}x_1^2\dot{J}_{2,2}\end{array}\right)
-\label{secondderivative}
-\end{multline} %$$
-\noindent where $Jac_x(f^{[1]})_{11}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
-and ${Jac_x(f^{[0]})}_{21}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
-are given in Example \ref{running1}.
-%Equations (\ref{jacobian}) (they are the right hand side
-%of these equations, as Equation (\ref{eq:IVP_jac2}) shows). 
-
-For rough enclosures of $\int{r_1}_i$ and $\int{R_1}_{i,j}$ we use the interval Picard-Lindel\"of method and find : 
-%\begin{eqnarray}%{lcl}
-$\int{r_1} = \left(\begin{array}{c}
-\left[\frac{93}{50}, \frac{43}{20}\right]\\
-\left[\frac{1}{10}, \frac{579}{2500}\right]
-\end{array}\right)$, 
-$\int{R_1} =\left(\begin{array}{cc} 
-\left[\frac{116}{125}, 1\right] & \left[0, \frac{26}{75}\right]\\
-\left[-\frac{37}{1500}, \frac{1}{45}\right] & 
-\left[\frac{49}{75}, 1\right] \\
-\end{array}\right)$
-%\label{roughenclosures}
-%\end{eqnarray}%$$
-%HIPHOP
-\ForAuthors{Je vais remettre les valeurs flottantes ;-)}
-\end{example}
-
-%\begin{remark}
-\subsection{Practical numerical calculations}
-\label{practicalissues}
-
-\ForAuthors{J'ai mis une subsection pour ``Computation of the rough
-enclosures'' mais c'est peut-\^etre discutable, ptet mieux dans practical
-numerical calculations? Mais apres ca fait trop fourre-tout...Qu'en penses-tu?}
-
-\paragraph{Calculation of the center of the inner-approximation}
+\paragraph{Computing the center of the inner-approximation}
 
 Note that Equation (\ref{eq:TM2}) is required for estimating the inner-approximations as in Equation (\ref{eq:inner_cont}) : we need to propagate a ``center'' in 
 a flowpipe of solutions of ODE (\ref{eq:flow}), at each time step $t_j$ in our time
@@ -1210,26 +1214,6 @@ with respect to the initial condition $z_0$.
 %\end{remark}
 
 %\begin{remark}
-
-\paragraph{On the effect of the precision of outer-approximations on inner-approximations}
-
-As the experiments will show, note also that 
-the wider the outer-approximation in Taylor models~(\ref{eq:TM1}-\ref{eq:TM3}), the tighter thus the less accurate the inner-approximation~(\ref{eq:inner_cont}): 
-it can even potentially lead to an empty inner-approximation if the result of Equation~(\ref{eq:inner_cont}) in Kaucher arithmetic is not an improper interval. Hence the
-precision of the inner-approximation is strongly tied to the one of the outer-appro\-ximation and the order we choose for it. 
-
-The phenomenom we mentionned above can occur in two ways. First, note that $[\overline{z_0},\underline{z_0}]-\tilde{z_0}$ is an improper interval that belongs to $\dual {\cal Z}$ as defined 
-in Section~\ref{generalized}. The outer-approximation of the Jacobian matrix,  $[\J](t,t_j,[{\z}_j])$ is a proper interval. The Kaucher multiplication as defined in Table~\ref{tabmult}
-will yield a non-zero improper interval only if$[\J](t,t_j,[{\z}_j])$ does not contain $0$. And, in this case, the result of this multiplication will depend on the 
-lower bound of the absolute value of the Jacobian (while the same mean-value theorem used for outer-approximation would imply a multiplication of proper intervals that would, 
-in the same case, depend on the upper bound of the absolute value of the Jacobian). The larger this lower bound, the wider the inner-approximation. 
-
-Suppose now that the Kaucher multiplication indeed yields an improper interval. It will then be added to (proper) outer-approximation  $[\tilde{\z}](t,t_j,[\tilde{\z}_j])$ 
-of the solution at time $t$ of the solution of the system starting from point $\tilde{\z}_0$. Ideally, this should be tight, but if this interval is wider than the improper 
-interval resulting from the Kaucher multiplication, then the sum of the two intervals - computed using the extension of interval addition - will be proper, 
-and the inner-approximation empty. 
-%\end{remark}
-
 \paragraph{Calculations of coefficients of the Taylor models}
 
 We need to outer-approximate the values of some functions (in particular, all Lie
@@ -1287,6 +1271,31 @@ f^{[1]}(x_0) & = & \left(\begin{array}{c}
 %time step, detailles - je complete sous peu}
 \end{example}
 
+%\begin{remark}
+\subsection{Step 3: computing the inner-approximation}
+\label{practicalissues}
+
+%\paragraph{On the effect of the precision of outer-approximations on inner-approximations}
+
+Note that 
+the wider the outer-approximation in Taylor models~(\ref{eq:TM1}-\ref{eq:TM3}), the tighter thus the less accurate the inner-approximation~(\ref{eq:inner_cont}): 
+it can even potentially lead to an empty inner-approximation if the result of Equation~(\ref{eq:inner_cont}) in Kaucher arithmetic is not an improper interval. Hence the
+precision of the inner-approximation is strongly tied to the one of the outer-appro\-ximation and the order we choose for it. 
+
+The phenomenom we mentionned above can occur in two ways. First, note that $[\overline{z_0},\underline{z_0}]-\tilde{z_0}$ is an improper interval that belongs to $\dual {\cal Z}$ as defined 
+in Section~\ref{generalized}. The outer-approximation of the Jacobian matrix,  $[\J](t,t_j,[{\z}_j])$ is a proper interval. The Kaucher multiplication as defined in Table~\ref{tabmult}
+will yield a non-zero improper interval only if$[\J](t,t_j,[{\z}_j])$ does not contain $0$. And, in this case, the result of this multiplication will depend on the 
+lower bound of the absolute value of the Jacobian (while the same mean-value theorem used for outer-approximation would imply a multiplication of proper intervals that would, 
+in the same case, depend on the upper bound of the absolute value of the Jacobian). The larger this lower bound, the wider the inner-approximation. 
+
+Suppose now that the Kaucher multiplication indeed yields an improper interval. It will then be added to (proper) outer-approximation  $[\tilde{\z}](t,t_j,[\tilde{\z}_j])$ 
+of the solution at time $t$ of the solution of the system starting from point $\tilde{\z}_0$. Ideally, this should be tight, but if this interval is wider than the improper 
+interval resulting from the Kaucher multiplication, then the sum of the two intervals - computed using the extension of interval addition - will be proper, 
+and the inner-approximation empty. This will be examplified in the experiments. 
+%\end{remark}
+
+
+
 %******************************************************************************
 \section{Experiments and Benchmarks}
 \label{sec:experiments}
@@ -1309,8 +1318,8 @@ $$\left\{\begin{array}{rcl}
 \end{array}\right.$$
 \noindent with $x_1(0) \in [0.9,1]$ and $x_2(0) \in [0,0.1]$.
 
-\paragraph{Control of the wrapping effect}
-We first use Taylor models of order 3 in t, which we first evaluate for inner and outer-approximations 
+%\paragraph{Control of the wrapping effect}
+We first use Taylor models of order 3 in time, which we first evaluate for inner and outer-approximations 
 with plain interval arithmetic. When computing flowpipes for time ranging between $0$ and $1$, 
 we see, in Figure~\ref{fig:brusselator_order3_t1}, that the width of the outer-approximation 
 (external dashed lines) quickly increases, while the 
@@ -1319,34 +1328,35 @@ until it disappears at time 0.6: after this time, the inner-approximation is emp
 known that effective methods should be used to control this wrapping effect, for instance mean-value 
 forms or matrix preconditioning. In our implementation, we control wrapping by using 
 affine arithmetic to evaluate these models. While accurate, it will be more costly than using 
-a method specially optimized for these Taylor model. However, this was convenient for prototyping, 
-as we relied for this on the implementation of affine arithmetic present in the Intlab 
+a method specially optimized for these Taylor model. However, this is convenient for prototyping, 
+as we rely on the implementation of affine arithmetic present in the Intlab 
 toolbox.
  
 \begin{figure}[htbp]
 \begin{center}
-\epsfig{file=brusselator_x1_IA_AA.png,clip=,width=8cm}
+\epsfig{file=brusselator_x1_IA_AA.png,clip=,width=9cm}
 \end{center}
-\caption{Brusselator (order 3), evaluation of the Taylor models with interval vs affine arithmetic \label{fig:brusselator_order3_t1}}
+\caption{Brusselator, evaluation of the Taylor models (order 3) with interval vs affine arithmetic \label{fig:brusselator_order3_t1}}
 \end{figure}
 
+In the following experiments, we now use Taylor models of order 4, and represent respectively in Figures~\ref{fig:brusselator_order4_x1_t10} and~\ref{fig:brusselator_order4_x2_t10}, the inner and outer approximated flowpipes for variables $x1$ and $x2$, with an evaluation in affine arithmetic, up to a maximum time $t=10$.   
 
-
-The Brusselator (x1): Taylor model of order 4 in t, up to t=10
-
+\begin{figure}[htbp]
 \begin{center}
-\epsfig{file=brusselator_x1_t10.png,clip=,width=10cm}
+\epsfig{file=brusselator_x1_t10.png,clip=,width=9cm}
 % ou version non commentée : \epsfig{file=brusselator_x1_t10_comment.png,clip=,width=10cm}
 \end{center}
+\caption{Brusselator (x1), evaluation of the Taylor models (order 4) with affine arithmetic \label{fig:brusselator_order4_x1_t10}}
+\end{figure}
 
-The Brusselator (x2): Taylor model of order 4 in t, up to t=10
-
+\begin{figure}[htbp]
 \begin{center}
-\epsfig{file=brusselator_x2_t10.png,clip=,width=10cm}
+\epsfig{file=brusselator_x2_t10.png,clip=,width=9cm}
 \end{center}
+\caption{Brusselator (x2), evaluation of the Taylor models (order 4) with affine arithmetic \label{fig:brusselator_order4_x2_t10}}
+\end{figure}
 
-
-\SP{Deja c'est joli - meme si il faudra sans doute que je refasse les figures - commenter que la sous-approx devient vide puis re-apparait, mais aussi reflechir a ce qu'on peut en deduire sur le systeme (cycle?), et si on veut 
+\SP{commenter que la sous-approx devient vide puis re-apparait, mais aussi reflechir a ce qu'on peut en deduire sur le systeme (cycle?), et si on veut 
 que je fasse d'autres experiences}
 
 %------------------------------------------------------------------------------------------------------------------------------------------------
