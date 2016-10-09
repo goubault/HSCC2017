@@ -509,20 +509,6 @@ differences since the description in \cite{Gold06} is sketchy, and contains no r
 %symbolic representation.
 
 
-%Definir qq part les differentes notions/definitions: set inversion, etc 
-
-%Actually, most existing inner-approximating approaches solve this dual problem, which does not permit to prove such property as 
-%(reflechir/verifier et elaborer ou supprimer...).
-
-%\ForAuthors{Je ne sais pas quoi faire des deux references en dessous.}
-
-%Under-approximate bounded vertex representation of polyhedra 
-%have been proposed for the analysis of Simulink/Stateflow models~\cite{Kanade09}, 
-%\SP{Idem c'est backward a priori?}
-%but they are restricted to linear transformers. Hybrid systems falsification~\cite{Nghiem10}, 
-%relies on simulation-based local inner-approximations.  
-%\SP{Enrichir en ref plus recentes. Parler de falsification comme exemple? Aussi
-%l'exemple \cite{Circuits06} non?}
 
 \begin{example}
 \label{running0}
@@ -1296,9 +1282,11 @@ and the inner-approximation empty. This will be examplified in the experiments.
 
 
 It must be noted that the quality of the inner-approximation is strongly tied to the quality of the outer-approximation. 
-In particular, as we rely on Taylor models, if necessary we can improve the quality by using higher-order models. 
+In particular, as we rely on Taylor models, if necessary we can locally improve the quality by using higher-order models. 
 And as we know that the exact enclosure of the uncertain system lies between the inner and outer-approximated flows, 
-we can bound the approximation error at each instant, and use this information to refine the appproximation when this error becomes larger than some threshold. 
+we can bound the approximation error at each instant, and use this information to dynamically refine the appproximation 
+when this error becomes larger than some threshold: indeed, nothing prevents us from using different orders of the Taylor models 
+at different time steps.  
 %\end{remark}
 
 %******************************************************************************
@@ -1390,7 +1378,8 @@ using optimized solvers such as VNode.
 
 \ForAuthors{J'aime bien l'idee de comparer le cout du calcul sous-approx
 a celui de l'outer-approx du meme degre avec ton implem - tu le mets en
-remarque plus loin. Je pense qu'il faut l'expliquer un peu ici?}
+remarque plus loin. Je pense qu'il faut l'expliquer un peu ici?
+Ok je ferai quand j'aurai integre ces resultats}
 
 Among the examples studied in ~\cite{Underapproxflowpipes,underapprox16}, we selected
 the Brusselator as a representative of the systems of low degree. 
@@ -1433,18 +1422,21 @@ but we did not investigate this here.
 In ~\cite{Underapproxflowpipes}, the authors study the result for T = 3 and T = 4. We choose, as they do, 4th order Taylor models, and a time step $h=0.02$. 
 Our implementation takes a total of 3400 secs (for computing both outer and inner approximations).
 
-\begin{center}
-\epsfig{file=sriram_bruss_order4_t4_x1.png,clip=,width=8cm}
-\end{center}
-\begin{center}
-\epsfig{file=sriram_bruss_order4_t4_x2.png,clip=,width=8cm}
-\end{center}
-\begin{center}
-\epsfig{file=sriram_bruss_order4_t4_widthx1.png,clip=,width=8cm}
-\end{center}
-\begin{center}
-\epsfig{file=sriram_bruss_order4_t4_widthx2.png,clip=,width=8cm}
-\end{center}
+%\begin{center}
+%\epsfig{file=sriram_bruss_order4_t4_x1.png,clip=,width=8cm}
+%\end{center}
+%\begin{center}
+%\epsfig{file=sriram_bruss_order4_t4_x2.png,clip=,width=8cm}
+%\end{center}
+\begin{figure}
+\begin{tabular}{cc}
+\epsfig{file=sriram_bruss_order4_t4_widthx1.png,clip=,width=4.cm}
+&
+\epsfig{file=sriram_bruss_order4_t4_widthx2.png,clip=,width=4.cm}
+\end{tabular}
+\caption{Width of the inner- and outer-approximations of x1 and x2 with time (order 4, h=0.02)}
+\end{figure}
+
 \begin{figure}
 \begin{center}
 \epsfig{file=sriram_bruss_order4_t4_minwidth.png,clip=,width=8cm}
@@ -1475,7 +1467,7 @@ parfaitement marcher. Dans tous les cas, comparer le temps sur et sous
 approx, ca permet de donner un facteur pour le temps, du essentiellement
 a l'implem.}
 
-\SP{Add elements allowing to compare the cost of inner-approx comapred to inner-approx of same degree: where to put this and on which example, see later}  
+\ForAuthors{Add elements allowing to compare the cost of inner-approx comapred to over-approx of same degree: where to put this and on which example, see later}  
 
 \paragraph{Comparison to \cite{underapprox16} (Brusselator)}
 In \cite{underapprox16} they take $X=[0.3, 0.4] \times [0.5, 0.7]$ for a time frame in [0,1.1], and a time step h=0.05. 
@@ -1538,92 +1530,85 @@ x_2-5x_3x_4 \\
 \end{array}\right)
 \end{equation}
 
-\subsection{Conclusion}
-Resultats preliminaires qui peuvent ne pas sembler que positif mais a priori essentiellement dus a la presente implem
-\ForAuthors{
-- comparaison sur / sous-approx => sous-approx competitive en complexite par rapport aux modeles de Taylor classiques\\
-- bon passage a l'echelle sur degre 7 ? \\
-- IA / AA laissant etendre que implem AA utilisee tres sous-optimale
-- un des interets est qu'on peut raffiner la precision en montant en ordre a la demande
-}
+
 
 \subsection{Other examples}
-\paragraph{Moore-Greitzer model of a jet engine}
-\begin{equation}
-\dot{\left(\begin{array}{c}
-x \\
-y
-\end{array}\right)} = \left(\begin{array}{c}
--y-1.5x^2-0.5x^3-0.5 \\
-3x-y
-\end{array}\right)
-\end{equation}
-The initial set is given by the simplex 
-$$X_0=\{(x,y) \in \R^2 | -x \leq -0.9 \wedge -y \leq -0.9\wedge x+y-2 \leq 0\}$$
+%\paragraph{Moore-Greitzer model of a jet engine}
+%\begin{equation}
+%\dot{\left(\begin{array}{c}
+%x \\
+%y
+%\end{array}\right)} = \left(\begin{array}{c}
+%-y-1.5x^2-0.5x^3-0.5 \\
+%3x-y
+%\end{array}\right)
+%\end{equation}
+%The initial set is given by the simplex 
+%$$X_0=\{(x,y) \in \R^2 | -x \leq -0.9 \wedge -y \leq -0.9\wedge x+y-2 \leq 0\}$$
 
-In \cite{Underapproxflowpipes}, two cases are considered : 
-\begin{itemize}
-\item computation of the inner and outer approximations of the reachable set at time
-$t=0.04$
-\item computation of the inner and outer approximations of the reachable set at times
-in [0,3] (using a step-size $\delta=0.02$)
-\end{itemize}
+%In \cite{Underapproxflowpipes}, two cases are considered : 
+%\begin{itemize}
+%\item computation of the inner and outer approximations of the reachable set at time
+%$t=0.04$
+%\item computation of the inner and outer approximations of the reachable set at times
+%in [0,3] (using a step-size $\delta=0.02$)
+%\end{itemize}
 
-\ForAuthors{Je rajoute les equations plus tard}
+%\ForAuthors{Je rajoute les equations plus tard}
 
-\paragraph{Shimizu-Morioka}
+%\paragraph{Shimizu-Morioka}
 
-\paragraph{Steam governor}
+%\paragraph{Steam governor}
 
-\paragraph{R\"ossler}
+%\paragraph{R\"ossler}
 
 
-\paragraph{Lorenz}
+%\paragraph{Lorenz}
 
-\paragraph{Lotka-Volterra}
-(also from \cite{underapprox16}?)
+%\paragraph{Lotka-Volterra}
+%(also from \cite{underapprox16}?)
 
-\begin{equation}
-\dot{\left(\begin{array}{c}
-x_1 \\
-x_2 \\
-x_3
-\end{array}\right)} = \left(\begin{array}{c}
-x_1x_2-x_1x_3 \\
-x_2x_3-x_2x_1 \\
-x_3x_1-x_3x_2
-\end{array}\right)
-\end{equation}
+%\begin{equation}
+%\dot{\left(\begin{array}{c}
+%x_1 \\
+%x_2 \\
+%x_3
+%\end{array}\right)} = \left(\begin{array}{c}
+%x_1x_2-x_1x_3 \\
+%x_2x_3-x_2x_1 \\
+%x_3x_1-x_3x_2
+%\end{array}\right)
+%\end{equation}
 
-\paragraph{Coupled Van der Pol}
+%\paragraph{Coupled Van der Pol}
 
-The next set of examples is taken from \cite{underapprox16}. 
+%The next set of examples is taken from \cite{underapprox16}. 
 
-\paragraph{Electromechanical oscillation}
+%\paragraph{Electromechanical oscillation}
 
-\begin{equation}
-\dot{\left(\begin{array}{c}
-x \\
-y
-\end{array}\right)} = \left(\begin{array}{c}
-y \\
-0.2-0.7sin(x)-0.05y
-\end{array}\right)
-\end{equation}
-The initial set is given by $[-0.1,0.1]\times [2.9,3.1]$. We are looking at an 
-inner-approximation at times $t=0.5$ and $t=3$. 
+%\begin{equation}
+%\dot{\left(\begin{array}{c}
+%x \\
+%y
+%\end{array}\right)} = \left(\begin{array}{c}
+%y \\
+%0.2-0.7sin(x)-0.05y
+%\end{array}\right)
+%\end{equation}
+%The initial set is given by $[-0.1,0.1]\times [2.9,3.1]$. We are looking at an 
+%inner-approximation at times $t=0.5$ and $t=3$. 
 
-\paragraph{Van der Pol}
+%\paragraph{Van der Pol}
 
-\begin{equation}
-\dot{\left(\begin{array}{c}
-x_1 \\
-x_2
-\end{array}\right)} = \left(\begin{array}{c}
-x_2 \\
--0.2(x^2_1-1)x_2-x_1
-\end{array}\right)
-\end{equation}
+%\begin{equation}
+%\dot{\left(\begin{array}{c}
+%x_1 \\
+%x_2
+%\end{array}\right)} = \left(\begin{array}{c}
+%x_2 \\
+%-0.2(x^2_1-1)x_2-x_1
+%\end{array}\right)
+%\end{equation}
 
 \paragraph{Integrable systems}
 To make precision estimates of our method. 
@@ -1646,6 +1631,15 @@ $$\dot{y} = \frac{a}{\sqrt{y}}+y$$
 Solution is :
 $$y(t)=\left(exp\left(\frac{3t}{2} - \frac{3a}{2} + log(a + 1)\right) - a\right)^{\frac{2}{3}}$$
 (from Mathworks - can find $y(0)$ and translate it into polynomial system?)
+
+\subsection{Conclusion}
+Resultats preliminaires qui peuvent ne pas sembler que positif mais a priori essentiellement dus a la presente implem
+\ForAuthors{
+- comparaison sur / sous-approx => sous-approx competitive en complexite par rapport aux modeles de Taylor classiques\\
+- bon passage a l'echelle sur degre 7 ? \\
+- IA / AA laissant etendre que implem AA utilisee tres sous-optimale
+- un des interets est qu'on peut raffiner la precision en montant en ordre a la demande
+}
 
 %------------------------------------------------------------------------------------------------------------------------------------------------
 
