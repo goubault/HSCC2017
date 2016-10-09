@@ -1471,18 +1471,27 @@ a l'implem.}
 
 \paragraph{Comparison to \cite{underapprox16} (Brusselator)}
 In \cite{underapprox16} they take $X=[0.3, 0.4] \times [0.5, 0.7]$ for a time frame in [0,1.1], and a time step h=0.05. 
-We compute the inner and outer-approximations, with order 4 Taylor Models, evaluated in AA, in 118.12 seconds, 
-and get the following results:
-\begin{center}
-\epsfig{file=cav16_bruss_order4_x1.png,clip=,width=8cm}
-\end{center}
-\begin{center}
-\epsfig{file=cav16_bruss_order4_x2.png,clip=,width=8cm}
-\end{center}
+We compute the inner and outer-approximations, with order 4 Taylor Models, evaluated in AA, in 118.12 seconds.
+In Figure~\ref{fig:bruss_cav16}, we represent the inner and outer-approximations obtained for $x_1$ and $x_2$.  
+\begin{figure}[htbp]
+\begin{tabular}{cc}
+\epsfig{file=cav16_bruss_order4_x1.png,clip=,width=4cm}
+&
+\epsfig{file=cav16_bruss_order4_x2.png,clip=,width=4cm}
+\end{tabular}
+\caption{Inner and outer approximations (order 4) for $x_1$ and $x_2$ \label{fig:bruss_cav16}}
+\end{figure}
+In Figure~\ref{fig:bruss_cav16_dist}, we represent the maximum distance between points in the inner 
+and the outer approximations, for each variable $x_1$ and $x_2$.
+\begin{figure}[htbp]
 \begin{center}
 \epsfig{file=cav16_bruss_order4_distance.png,clip=,width=8cm}
 \end{center}
-\ForAuthors{Eric, tu sais comprendre par rapport aux Chinois ce que ca donne en precision ?}
+\caption{Inner and outer approximations (order 4) for x1 and x2 \label{fig:bruss_cav16_dist}}
+\end{figure}
+This distance is somehow comparable to parameter  $\epsilon_M$ which is used to estimate the precision in \cite{underapprox16}.
+\ForAuthors{Sylvie. Continuer}
+
 \ForAuthors{De ce que je comprends, leur $\epsilon_M$ est la pr\'ecision
 avec laquelle ils donnent une surapprox de la frontiere du reachable set.
 Leur precision c'est la taille (en chaque coordonnee) des boites qui 
