@@ -335,6 +335,8 @@ of cyber-physical systems.
 \section{Introduction}
 %******************************************************************************
 %
+\ForAuthors{Intro a reprendre: d'abord il manque les ref, mais surtout elle etait pas mal orientee systemes hybrides et prop temporelles, 
+on veut sans doute affaiblir ca}
 The verification of software-enabled real-time control systems requires reasoning about non-linear hybrid systems, 
 that exhibit both discrete and continuous behavior. Computing the reachable set of such systems is a central component 
 of model-checking. While the exact reachability problem for hybrid systems is generally undecidable, in the recent 
@@ -342,14 +344,37 @@ years there has been much progress in the computation of outer-approximations of
 verification of affine hybrid systems~\cite{}, but also for the more general class of non-linear hybrid systems~\cite{}. 
 An outer-approximation makes possible the verification of safety properties of such systems. However, the verification 
 of more general temporal properties, such as viability~\cite{} properties for instance, or the falsification of safety properties, 
-also require inner-approximating the reachable set, that is computing states that are definitely reached.
+also require inner-approximating the reachable set, that is computing set of states that are definitely reached, or put differently 
+flowpipes that contain only solutions of the uncertain system.
      
 Methods for inner-approximated reachability are far less developed, and especially in the non-linear case, 
 since most methods in the non-linear case rely on conservative linearizations, which necessarily produce outer approximations.
 
-In this paper, we concentrate on the inner-approximation of the reachable sets of
-the continuous part of hybrid systems. The discrete part has been treated elsewhere \cite{hscc14}
-and we intend to treat guards in subsequent work. 
+In this work, we concentrate on the inner-approximation of the reachable sets of
+the continuous part of hybrid systems. We intend to handle guard conditions in subsequent work.
+%The discrete part has been treated elsewhere \cite{hscc14}
+%and we intend to treat guards in subsequent work. 
+We consider general systems of parametric ODEs, i.e. possibly non-linear, or
+even non-polyno\-mial, of the form : 
+\begin{equation}
+\dot{x}(t) = f(x,p,t)
+\label{eq:flow}
+\end{equation}
+\noindent where the continuous variables $x$ belong to a state-space domain 
+${\cal D} \subseteq \R^n$, the (constant) parameters $p$ belong to the uncertainty domain
+${\cal P} \subseteq \R^p$, and 
+$f: {\cal D} \times {\cal P} \times \R^+ \rightarrow {\cal D}$ is assumed sufficiently smooth 
+on ${\cal D} \subseteq \R^n$ (at least ${\cal C}^1$, and sometimes more when we will use higher
+Taylor models, see Section \ref{sec:Taylor}).
+
+Introducing the new state variable $z=(x,p,t)$ with $\dot z = (\dot x,0,1)$, and defining ${\cal Z} = {\cal D} \times {\cal P} \times \R^+$,
+the equation (\ref{eq:flow}) can be rewritten with all uncertainties embedded in the initial state vector~:
+\begin{equation} \dot z(t) = f(z)
+\label{eq:flowb}
+\end{equation}
+
+In the sequel, we will write $x_i$ and $f_i$ for the $i$th component ($i=1,\ldots,n$) of
+the state vector $x$ and of the function $f$. 
 
 \paragraph{Contributions:}
 
@@ -397,46 +422,9 @@ experiments with a matlab implementation and make tentative comparisons to exist
 
 %\paragraph{Related work}
 
-%******************************************************************************
-\section{Problem statement}
-%******************************************************************************
 
-We will consider in this article, general systems of parametric ODEs, i.e. possibly non-linear, or
-even non-polyno\-mial, of the form : 
-\begin{equation}
-\dot{x}(t) = f(x,p,t)
-\label{eq:flow}
-\end{equation}
-\noindent where the continuous variables $x$ belong to a state-space domain 
-${\cal D} \subseteq \R^n$, the (constant) parameters $p$ belong to the uncertainty domain
-${\cal P} \subseteq \R^p$, and 
-$f: {\cal D} \times {\cal P} \times \R^+ \rightarrow {\cal D}$ is assumed sufficiently smooth 
-on ${\cal D} \subseteq \R^n$ (at least ${\cal C}^1$, and sometimes more when we will use higher
-Taylor models, see Section \ref{sec:Taylor}).
-
-Introducing the new state variable $z=(x,p,t)$ with $\dot z = (\dot x,0,1)$, and defining ${\cal Z} = {\cal D} \times {\cal P} \times \R^+$,
-the equation (\ref{eq:flow}) can be rewritten with all uncertainties embedded in the initial state vector~:
-\begin{equation} \dot z(t) = f(z)
-\label{eq:flowb}
-\end{equation}
-
-In the sequel, we will write $x_i$ and $f_i$ for the $i$th component ($i=1,\ldots,n$) of
-the state vector $x$ and of the function $f$. 
-
-%\ForAuthors{On veut ptet un paragraph notations?}
-
-\ForAuthors{Def de forward inner approximation}
-
-%\SP{Mettre le related work ici? : Ptet mieux en effet! Plus le brusselator comme running ex?}
-
-%HOP
 \paragraph{Related work:}
 \label{relatedwork}
-
-%\SP{Pour le moment ci-dessous = surtout du copie-coller de HSCC2014 + des trucs en vrac, je vais reprendre/enrichir bien sur, 
-%mais j'attends de savoir jusqu'ou on va et comment sur les gardes car ca risque d'orienter la biblio...}
-
-%\ForAuthors{Je ne fais la partie related work que des articles que je connais ;-)}
 
 Outer-approximations of non-linear systems are well studied, using in particular Taylor
 models, see \cite{Taylor07} for instance. Inner-approximations have been far less studied, 
@@ -510,18 +498,8 @@ differences since the description in \cite{Gold06} is sketchy, and contains no r
 
 
 
-\begin{example}
-\label{running0}
-We will consider throughout the paper, the Brusselator equation \cite{RamdaniMCS14} : 
-$$ f(x) = \left(\begin{array}{l}
-1-2 x_1+\frac{3}{2} x_1^2 x_2 \\
-x_1-\frac{3}{2} x_1^2x_2
-\end{array}\right)$$
-\noindent with $x=(x_1,x_2)$, over the time interval $\left[0,h\right]$ 
-$\left(h=\frac{1}{20}\right)$, and with initial conditions
-$x_0=\left([2, 2.15],[0.1, 0.15]\right)$.
-%(...)
-\end{example}
+
+
 
 %******************************************************************************
 \section{Preliminaries}
@@ -834,6 +812,21 @@ the Taylor model of the Jacobian as if we were simply derivating the Taylor mode
 which makes its construction very simple and efficient. Finally, in Section~\ref{practicalissues}, we comment the actual 
 computation of the inner-approximation flow-pipe, and show how a loss of accuracy in the outer-approximation results in 
 a loss of accuracy in the inner-approximation, and even possibly to an empty inner-approximation.
+
+We will illustrate the computations on the following example:
+\begin{example}
+\label{running0}
+We consider the Brusselator equation: 
+$$ f(x) = \left(\begin{array}{l}
+1-2 x_1+\frac{3}{2} x_1^2 x_2 \\
+x_1-\frac{3}{2} x_1^2x_2
+\end{array}\right)$$
+\noindent with $x=(x_1,x_2)$, over the time interval $\left[0,h\right]$ 
+$\left(h=\frac{1}{20}\right)$, and with initial conditions
+$x_0=\left([2, 2.15],[0.1, 0.15]\right)$.
+%(...)
+\end{example}
+
 %for the solution of the initial ODE, which makes things much more efficient. 
 %If its principle is simple to grasp, there are a number of subtleties. 
 %First, we show in Section \ref{efficientLieJacobian} that we can compute
@@ -1546,12 +1539,12 @@ dans la sous-approx.}
 \ForAuthors{Oui ordre 5 je voulais le faire c'etait prevu mais comme c'est long a calculer j'ai pas eu le temps vendredi;
 et je suis d'accord pour l'ordre car en fait ce que je calcule actuellement c'est il me semble des TM a l'ordre 3 
 sur la jacobienne - car j'ai pour cela besoin des coeff des TM a l'ordre 4 des TM sur le flot. Si ca marche bien a l'ordre 5 je raconterai ca - evidemment ca va etre encore plus couteux ... 
-Ce que je veux faire aussi lundi c'est d'essayer avec un pas plus grand, je ne crois pas qu'il y a besoin d'un si petit pas, enfin je ferai ca apres, d'abord les urgences...
 
-Oui bien sur pour les urgences ;-) Mais oui un pas plus grand peut 
-parfaitement marcher. Dans tous les cas, comparer le temps sur et sous
+Dans tous les cas, comparer le temps sur et sous
 approx, ca permet de donner un facteur pour le temps, du essentiellement
 a l'implem.}
+
+order 5 (4 in the Jacobian), h=0.02, 
 
 \ForAuthors{Add elements allowing to compare the cost of inner-approx comapred to over-approx of same degree: where to put this and on which example, see later}  
 
