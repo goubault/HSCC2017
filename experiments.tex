@@ -78,12 +78,14 @@ In the following experiments, we now use Taylor models of order 4, and represent
 We provide in this section some elements of comparisons to the experimental results given in the related work~\cite{Underapproxflowpipes,underapprox16}.
 Let us highlight that is difficult to have a fair comparison, as on the one hand, evaluating the compared accuracy of these methods is difficult, 
 and on the other hand we only used a very basic Matlab implementation of our approach, whereas the related work relies on actual implementations,
-using optimized solvers such as VNode. 
+using optimized solvers such as VNode. In order to partially account for this overhead of our preliminary implementation, we will also compare in our experiments 
+the computation time of our inner (and outer-) approximated flowpipes, with the time taken by our implementation for the classical outer-approximation 
+of Taylor model flowpipes. 
 
-\ForAuthors{J'aime bien l'idee de comparer le cout du calcul sous-approx
-a celui de l'outer-approx du meme degre avec ton implem - tu le mets en
-remarque plus loin. Je pense qu'il faut l'expliquer un peu ici?
-Ok je ferai quand j'aurai integre ces resultats}
+%\ForAuthors{J'aime bien l'idee de comparer le cout du calcul sous-approx
+%a celui de l'outer-approx du meme degre avec ton implem - tu le mets en
+%remarque plus loin. Je pense qu'il faut l'expliquer un peu ici?
+%Ok je ferai quand j'aurai integre ces resultats}
 
 Among the examples studied in both ~\cite{Underapproxflowpipes} and \cite{underapprox16}, we first selected
 the Brusselator already define in Example~\ref{running0} as a representative of the systems of low degree. 
