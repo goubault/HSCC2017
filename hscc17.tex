@@ -1189,25 +1189,6 @@ itself rather
 inexpensive. 
 %\end{remark}
 
-\paragraph{Computing the center of the inner-approximation}
-
-Note that Equation (\ref{eq:TM2}) is required for estimating the inner-approximations as in Equation (\ref{eq:inner_cont}) : we need to propagate a ``center'' in 
-a flowpipe of solutions of ODE (\ref{eq:flow}), at each time step $t_j$ in our time
-grid, and this central solution is certainly not in general derivable from the 
-outer-approximation of the flowpipe, e.g. as its midpoint. 
- 
-We then use the same Taylor expansion, but with different initial conditions, to compute in~(\ref{eq:TM1}) an outer-approximation of the solution of system(\ref{eq:flowb}) 
-with $z(t_0)=\tilde{z_0}$, used as the center in inner-approximation~(\ref{eq:inner_cont}), and  in~(\ref{eq:TM2}) an outer-approximation of the solution of the 
-same system but with uncertain $z(t_0) \in \z_0$, used to compute the Taylor coefficients in Equation~(\ref{eq:TM3}) which outer-approximates the Jacobian of the flow 
-with respect to the initial condition $z_0$. 
-%\end{remark}
-
-\begin{example}
-\ForAuthors{Je vais completer}
-$\left(\left[    2.0750,    2.0751\right],  
-\left[    0.1249,    0.1251\right]\right)$ 
-\end{example}
-
 %\begin{remark}
 \paragraph{Calculations of coefficients of the Taylor models}
 
@@ -1232,19 +1213,20 @@ Equations (\ref{eq:inner_cont})
 \begin{example}
 \label{running3}
 We compute a first-order Taylor model for the Brusselator, using Equation
-(\ref{eq:TM}) with $k=2$, and using affine arithmetic to compute $f^{[i]}([{\z}_j])$. 
-and $\mbox{Jac}_x(f^{[i]})([\r_{j+1}])[\J_j]$ 
+(\ref{eq:TM}) with $k=2$, and using affine arithmetic to compute 
+$\mbox{Jac}_x(f^{[i]})([\r_{j+1}])[\J_j]$ and $f^{[i]}([{\z}_j])$.
 \ForAuthors{Tout a coup j'ai un doute, ce n'est pas 
 $\mbox{Jac}_x(f^{[i]}([\z_j])[\J_j]$ plutot?} We start with 
-$x_0=\left([2,2.5],[0.1,0.15]\right)$, hence, in affine arithmetic,
-$x_0=\left(\frac{83}{40}+\frac{3}{40}\epsilon_1,
+$\intvl{x_0}=\left([2,2.5],[0.1,0.15]\right)$, hence, in affine arithmetic,
+$\intvl{x_0}=\left(\frac{83}{40}+\frac{3}{40}\epsilon_1,
 \frac{1}{8}+\frac{1}{40}\epsilon_2\right)$. Evaluating $f^{[1]}=f$ using
 simple rules from affine arithmetic, we find~: 
 
 \begin{eqnarray}%{lcl}
-f^{[1]}(x_0) & = & \left(\begin{array}{c}
+f^{[1]}(\intvl{x_0}) & = & \left(\begin{array}{c}
 \left(-\frac{119919}{51200}-\frac{1173}{12800} \epsilon_1+\frac{41361}{256000}\epsilon_2
 \right.
+\label{firstcompf1}
 \\
 \ \left.+\frac{27}{51200}\eta_1+\frac{3015}{256000}\eta_2\right) \\ 
 %on peut tout mettre dans un \eta, mais ils ont une signification, partagee avec la suite, a voir
@@ -1275,15 +1257,21 @@ f^{[1]}(x_0) & = & \left(\begin{array}{c}
 \frac{71}{320}-\frac{9}{320}\epsilon_1-\frac{249}{1600}\epsilon_2-\frac{9}{1600}\eta_3%\\
 \end{equation}
 \begin{equation}
-\mbox{Jac}_x(f^{[1]})([x_0])_{2é2} %& 
+\mbox{Jac}_x(f^{[1]})([x_0])_{22} %& 
 = 
 %& 
 -\frac{41361}{6400}-\frac{747}{1600}\epsilon_1-\frac{27}{6400}\eta_1
 \label{firstderivative}
 \end{equation}
 %\end{eqnarray}
+Note that the non-linearity of $f$ and its Jacobian produces new noise symbols than just $\epsilon_1$,
+$\epsilon_2$ : we noted them using the $\eta$ letter, instead of $\epsilon$, to make apparent the uncertainty
+produced by the interpretation in affine arithmetic. 
+As an example, the first component of $f^{[1]}(\intvl{x_0})$ computed in Equation (\ref{firstcompf1})
+gives the interval $\left[-2.6077,-2.0766\right]$.
+%-2.607679688, -2.076656250 
 
-To determine the remainders, we first compute
+Now, to determine the remainders, we first compute
 $f_i^{[2]}$ and then 
 $Jac_x(f_i^{[2]})$. For instance we have : 
 
@@ -1307,29 +1295,83 @@ $Jac_x(f_i^{[2]})$. For instance we have :
 %-3x_1f_1J_{2,2}-\frac{3}{2}x_1^2\dot{J}_{2,2}\end{array}\right)
 \label{secondderivative}
 \end{multline} %$$
-\noindent where $Jac_x(f^{[1]})_{11}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
-and ${Jac_x(f^{[1]})}_{21}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
-are given in Example \ref{running1}.
+\noindent where $\mbox{Jac}_x(f^{[1]})_{11}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
+and ${\mbox{Jac}_x(f^{[1]})}_{21}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
+are just the $\mbox{Jac}_z f(z(t,z_0)_{11}$ and $\mbox{Jac}_z f(z(t,z_0))_{21}$ given in Example \ref{running1}.
 
 Now again, we are applying affine arithmetic to compute 
 $f^{[2]}([{\r}_{1}])$ and $\mbox{Jac}_x(f^{[2]})([{\r}_{1}]) [\bfm{R}_{1}]$
 given the rough enclosures $\r_1$ and $\bfm{R}_1$ computed in Example
 \ref{running2} and we find : 
-$$\begin{array}{rcl}
+\begin{eqnarray}
 f^{[2]}([{\r}_{1}]) & = & \left(\begin{array}{c}
-A \ completer
+\left[    3.5371,   13.7617\right] \\
+\left[  -11.1499,   -1.5368\right]
 \end{array}\right)
-\end{array}$$
-$$\begin{array}{rcl}
-\mbox{Jac}_x(f^{[2]})([{\r}_{1}]) [\bfm{R}_{1}] & = & \left(\begin{array}{cc}
-A \ completer
+\label{secondcompf1}
+\end{eqnarray}
+and $\mbox{Jac}_x(f^{[2]})([{\r}_{1}]) [\bfm{R}_{1}]$ is the matrix~: 
+$$
+\left(\begin{array}{cc}
+\left[   -3.1897,   15.7653\right] & \left[  -74.8884,  -19.3243\right] \\
+\left[  -14.0978,    3.5433\right] & \left[   16.4500,   68.0696\right]
 \end{array}\right)
-\end{array}$$
+$$
+As a direct consequence, we have the outer-approximation of $z$ and $J$ at time $h$ by Equations 
+(\ref{eq:TM1}) and (\ref{eq:TM3})~: 
+\begin{equation}
+\intvl{\z}(h,t_0,[{\z}_0]) = \left(\left[1.88320, 2.05421\right], \left[0.15728, 0.20358\right]\right) 
+\label{outerapprox}
+\end{equation}
+\begin{equation}
+\intvl{\J}(h,t_0,[{\z}_0]) = \left(\begin{array}{cc}
+\left[0.92545, 0.96808\right] & \left[0.20597, 0.32253\right] \\
+\left[-0.016, 0.02499\right] & \left[0.67388, 0.78551\right]
+\end{array}\right)
+\label{outerapproxJ}
+\end{equation}
+For instance, the first component in Equation (\ref{outerapprox}) is found by using Equation (\ref{eq:TM1}) with
+$k=2$ and by instantiating the Taylor coefficient in degree zero in $t$ with
+$\intvl{x_0}=\left(\left[2,2.5\right], \left[0.1,0.15\right]\right)$, the Taylor coefficient in degree one in $t$ 
+that we found in Equation (\ref{firstcompf1}) and in degree two in $t$ that we found in Equation 
+(\ref{secondcompf1})~: 
+\begin{equation}
+\intvl{\z_1}(h,t_0,[{\z}_0]) = \left[2,2.5\right]+\left[-2.6077,-2.0766\right]t+\left[    3.5371,   13.7617\right]
+\frac{t^2}{2}
+\end{equation}
+hence the result of Equation (\ref{outerapprox}) for $t=h=0.2$. 
+\ForAuthors{Erreur de calcul ici? 1.549202?}
 %Equations (\ref{jacobian}) (they are the right hand side
 %of these equations, as Equation (\ref{eq:IVP_jac2}) shows). 
 %\ForAuthors{Calculs pratiques de sous- et sur- approx des variables pour le Brusselator au first
 %time step, detailles - je complete sous peu}
 \end{example}
+
+\paragraph{Computing the center of the inner-approximation}
+
+Note that Equation (\ref{eq:TM2}) is required for estimating the inner-approximations as in Equation (\ref{eq:inner_cont}) : we need to propagate a ``center'' in 
+a flowpipe of solutions of ODE (\ref{eq:flow}), at each time step $t_j$ in our time
+grid, and this central solution is certainly not in general derivable from the 
+outer-approximation of the flowpipe, e.g. as its midpoint. 
+ 
+We then use the same Taylor expansion, but with different initial conditions, to compute in~(\ref{eq:TM1}) an outer-approximation of the solution of system(\ref{eq:flowb}) 
+with $z(t_0)=\tilde{z_0}$, used as the center in inner-approximation~(\ref{eq:inner_cont}), and  in~(\ref{eq:TM2}) an outer-approximation of the solution of the 
+same system but with uncertain $z(t_0) \in \z_0$, used to compute the Taylor coefficients in Equation~(\ref{eq:TM3}) which outer-approximates the Jacobian of the flow 
+with respect to the initial condition $z_0$. 
+%\end{remark}
+
+\begin{example}
+%\ForAuthors{Je vais completer}
+Starting with the center $\tilde{x}_0=(2.075,0.125)$ of the initial condition $\intvl{x_0}=\left(
+\left[2,2.15\right],\left[0.1,0.15\right]\right)$, and applying the interval Picard-Lindel\"of method
+of Section \ref{roughenc}, 
+we find $x=\left(\left[1.9655, 1.9718\right], 
+\left[0.1774, 0.1831\right]
+%    2.0750,    2.0751\right],  
+%\left[    0.1249,    0.1251\right]
+\right)$ at time $h$.  
+\end{example}
+
 
 %\begin{remark}
 \subsection{Step 3: computing the inner-approximation}
@@ -1364,8 +1406,18 @@ at different time steps.
 %\end{remark}
 
 \begin{example}
-
-\ForAuthors{Eric, completer (calcul final d'une sous-approx}
+%HIPHOP
+Now we can instantiate Equation (\ref{eq:inner_cont}) as follows, for e.g. the first component of $x$ and
+time $t=h$, using Equation (\ref{}) for the outer-approximation of the center at time $h$ and
+Equation (\ref{outerapproxJ}) for the outer-approximation of the Jacobian at time $h$~: 
+\begin{multline}
+%]\z[(t,t_j) = [\tilde{\z}](t,t_j,[\tilde{\z}_j]) + [\J](t,t_j,[{\z}_j])*([\overline{z_0},\underline{z_0}]-\tilde{z_0}) 
+]\z[(h,0) = \left[1.9655, 1.9718\right]+\left[0.92545, 0.96808\right]\left[2.5,2\right]\\
++\left[0.20597, 0.32253\right]\left[0.15,0.1\right]
+\end{multline}
+Finally, using Kaucher arithmetic (see Section \ref{Kaucherar2}), we find $]\z[(h,0)=...$. 
+\ForAuthors{Peut-etre mettre la formule pour tout $t$ pour insister sur le flowpipe sous-approx/sur-approx ; a completer et comparer avec sur-approx au temps h}
+%\ForAuthors{Eric, completer (calcul final d'une sous-approx}
 \end{example}
 
 %******************************************************************************
