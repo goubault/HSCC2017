@@ -823,7 +823,7 @@ x_1-\frac{3}{2} x_1^2x_2
 \end{array}\right)$$
 \noindent with $x=(x_1,x_2)$, over the time interval $\left[0,h\right]$ 
 $\left(h=\frac{1}{20}\right)$, and with initial conditions
-$x_0=\left([2, 2.15],[0.1, 0.15]\right)$.
+$\intvl{x_0}=\left([2, 2.15],[0.1, 0.15]\right)$.
 %(...)
 \end{example}
 
@@ -908,12 +908,11 @@ $\dot{J}_{kl}$ by its expression in Equation (\ref{eq:IVP_jac}).
 
 \begin{example}
 \label{running1}
-We consider the continous system of Example \ref{running0} : 
-$$ f(x) = \left(\begin{array}{l}
-1-2 x_1+\frac{3}{2} x_1^2 x_2 \\
-x_1-\frac{3}{2} x_1^2x_2
-\end{array}\right)$$
-
+We consider again the continous system of Example \ref{running0}. 
+%$$ f(x) = \left(\begin{array}{l}
+%1-2 x_1+\frac{3}{2} x_1^2 x_2 \\
+%x_1-\frac{3}{2} x_1^2x_2
+%\end{array}\right)$$
 The Jacobian that appears in Equation (\ref{eq:IVP_jac2}) is~: 
 $$
 \mbox{Jac}_z f(z(t,z_0)) = \left(\begin{array}{cc} 
@@ -1034,12 +1033,11 @@ step.
 %as we only consider one time step here, 
 We will write $\intvl{x_i}(t)$ instead of $\intvl{x_i}(t,0,\intvl{x_0})$ as
 we are only considering the first time step. 
-We first need to determine the rough enclosures, the remainders
-for $k=2$ (first order Taylor model for Equations (\ref{eq:TM1}) and (\ref{eq:TM3}))
-will be determined in Example \ref{running3}. 
-
+We first need to determine the rough enclosures
+$\intvl{\r_1}_i$ and $\intvl{\bfm{R}_1}_{i,j}$ of the $x_i(t)$ and $J_{ij}(t)$ over $t\in [0,h]$, 
+$x \in \intvl{x_0}$ %, $x_2 \in \intvl{(x_2)_0}$
+using the interval Picard-Lindel\"of method of Section \ref{roughenc}~: 
 %\ForAuthors{Je reprends l'exemple plus bas, j'ai a revoir un peu les notations/ecriture}
-
 %\begin{equation}
 %\intvl{x_i}(t) = \intvl{(x_i)_0} + {f_i}^{[0]}(\intvl{x_0}) t + f_i^{[1]}(\intvl{r_1}) \frac{t^2}{2}
 %\end{equation}
@@ -1048,22 +1046,14 @@ will be determined in Example \ref{running3}.
 %+ Jac_x(f_{i}^{[1]})(\intvl{r_1})\intvl{R_1}^j \frac{t^2}{2} 
 %\label{TaylorJ}
 %\end{multline}
-
 %\ForAuthors{C'est compliqu\'e si on veut d\'ecrire toutes les entrees de la Jacobienne
 %separement ; $\intvl{R_1}^j$ c'est la colonne avec que les outer-approx des $J_{*,j}$...mais en
 %m\^emes temps pour pr\'esenter des calculs dans des exemples, je prefere avec les entrees
 %de la jacobienne separement. Non? ;-)}
 %\noindent where $R_i$ (resp. $R_{i,j}$) are outer-approximations of the second Lie derivatives of
 %$x_i$ (resp. $J_{i,j}$), over the time interval $[0,h]$. 
-
 %HUPHUP 
-
-Then we compute 
-``rough enclosures''
-$\intvl{\r_1}_i$ and $\intvl{\bfm{R}_1}_{i,j}$ of the $x_i(t)$ and $J_{ij}(t)$ over $t\in [0,h]$, 
-$x_1 \in \intvl{(x_1)_0}$, $x_2 \in \intvl{(x_2)_0}$. 
 %For rough enclosures of $\intvl{r_1}_i$ and $\intvl{R_1}_{i,j}$ 
-We use the interval Picard-Lindel\"of method of Section \ref{roughenc} and find : 
 %\begin{eqnarray}%{lcl}
 $\intvl{\r_1} = \left(\begin{array}{c}
 \left[ 1.8609,    2.1500 \right]\\ 
@@ -1077,12 +1067,16 @@ $\intvl{\bfm{R}_1} =\left(\begin{array}{cc}
 %\left[\frac{116}{125}, 1\right] & \left[0, \frac{26}{75}\right]\\
 %\left[-\frac{37}{1500}, \frac{1}{45}\right] & 
 %\left[\frac{49}{75}, 1\right] \\
-\end{array}\right)$
+\end{array}\right)$. 
+
 %Finally, we apply any ...
 %\label{roughenclosures}
 %\end{eqnarray}%$$
 %HIPHOP
 %\ForAuthors{Je vais remettre les valeurs flottantes ;-)}
+The remainders
+for $k=2$ (first order Taylor model for Equations (\ref{eq:TM1}) and (\ref{eq:TM3}))
+will be determined in Example \ref{running3}. 
 \end{example}
 
 
@@ -1331,16 +1325,20 @@ As a direct consequence, we have the outer-approximation of $z$ and $J$ at time 
 \label{outerapproxJ}
 \end{equation}
 For instance, the first component in Equation (\ref{outerapprox}) is found by using Equation (\ref{eq:TM1}) with
-$k=2$ and by instantiating the Taylor coefficient in degree zero in $t$ with
+$k=2$ and by instantiating the constant coefficient with
 $\intvl{x_0}=\left(\left[2,2.5\right], \left[0.1,0.15\right]\right)$, the Taylor coefficient in degree one in $t$ 
 that we found in Equation (\ref{firstcompf1}) and in degree two in $t$ that we found in Equation 
-(\ref{secondcompf1})~: 
-\begin{equation}
-\intvl{\z_1}(h,t_0,[{\z}_0]) = \left[2,2.5\right]+\left[-2.6077,-2.0766\right]t+\left[    3.5371,   13.7617\right]
+(\ref{secondcompf1}). Using a coarser interval abstraction of coefficients in degree zero and one, we indeed
+find an outer-approximation of the flowpipe until time $h$~: 
+\begin{multline}
+\intvl{\z_1}(h,t_0,[{\z}_0]) = \left[2,2.5\right]+\left[-2.6077,-2.0766\right]t\\
++\left[    3.5371,   13.7617\right]
 \frac{t^2}{2}
-\end{equation}
-hence the result of Equation (\ref{outerapprox}) for $t=h=0.2$. 
-\ForAuthors{Erreur de calcul ici? 1.549202?}
+\end{multline}
+\noindent equal to $\left[1.8740,2.0634\right]$ at time $h$, 
+which slighly overapproximates the result of Equation (\ref{outerapprox}), using affine arithmetic. 
+%for $t=h=\frac{1}{20}$. 
+%\ForAuthors{Erreur de calcul ici? 1.549202?}
 %Equations (\ref{jacobian}) (they are the right hand side
 %of these equations, as Equation (\ref{eq:IVP_jac2}) shows). 
 %\ForAuthors{Calculs pratiques de sous- et sur- approx des variables pour le Brusselator au first
@@ -1361,6 +1359,7 @@ with respect to the initial condition $z_0$.
 %\end{remark}
 
 \begin{example}
+\label{runningcenter}
 %\ForAuthors{Je vais completer}
 Starting with the center $\tilde{x}_0=(2.075,0.125)$ of the initial condition $\intvl{x_0}=\left(
 \left[2,2.15\right],\left[0.1,0.15\right]\right)$, and applying the interval Picard-Lindel\"of method
@@ -1397,7 +1396,7 @@ interval resulting from the Kaucher multiplication, then the sum of the two inte
 and the inner-approximation empty. This will be examplified in the experiments. 
 
 
-It must be noted that the quality of the inner-approximation is strongly tied to the quality of the outer-approximation. 
+It must be noted that the quality of the inner-approxima\-tion is strongly tied to the quality of the outer-approximation. 
 In particular, as we rely on Taylor models, if necessary we can locally improve the quality by using higher-order models. 
 And as we know that the exact enclosure of the uncertain system lies between the inner and outer-approximated flows, 
 we can bound the approximation error at each instant, and use this information to dynamically refine the appproximation 
@@ -1408,15 +1407,27 @@ at different time steps.
 \begin{example}
 %HIPHOP
 Now we can instantiate Equation (\ref{eq:inner_cont}) as follows, for e.g. the first component of $x$ and
-time $t=h$, using Equation (\ref{}) for the outer-approximation of the center at time $h$ and
+time $t=h$, using the result of Example \ref{runningcenter} for the outer-approximation of the center at time $h$ and
 Equation (\ref{outerapproxJ}) for the outer-approximation of the Jacobian at time $h$~: 
 \begin{multline}
 %]\z[(t,t_j) = [\tilde{\z}](t,t_j,[\tilde{\z}_j]) + [\J](t,t_j,[{\z}_j])*([\overline{z_0},\underline{z_0}]-\tilde{z_0}) 
-]\z[(h,0) = \left[1.9655, 1.9718\right]+\left[0.92545, 0.96808\right]\left[2.5,2\right]\\
-+\left[0.20597, 0.32253\right]\left[0.15,0.1\right]
+]\z[(h,0) = \left[1.9655, 1.9718\right]+\left[0.9254, 0.9680\right]\left[0.075,-0.075\right]\\
++\left[0.2059, 0.3225\right]\left[0.025,-0.025\right]
 \end{multline}
-Finally, using Kaucher arithmetic (see Section \ref{Kaucherar2}), we find $]\z[(h,0)=...$. 
-\ForAuthors{Peut-etre mettre la formule pour tout $t$ pour insister sur le flowpipe sous-approx/sur-approx ; a completer et comparer avec sur-approx au temps h}
+Finally, using Kaucher arithmetic (see Section \ref{Kaucherar2}), we find 
+$$\begin{array}{rcl}
+]\z[(h,0) & = &
+\left[1.9655+0.92545\times0.075+0.20597\times0.025, \right. \\
+& & \left. 1.9718-0.9254\times 0.075-0.20597\times 0.025\right]
+\end{array}$$
+\noindent whose proper counterpart is $\left[1.8973,2.0400\right]$.
+We thus efficiently find a quite tight characterization of the reachable set with a very low order scheme, for
+the Brusselator at time $h$~: 
+$$\left[1.8973,2.0400\right]
+\subseteq z(h,0,\intvl{z_0})\subseteq \left[1.88320, 2.05421\right]$$
+Of course, similarly to Example \ref{running3} for the outer-approximation of $z$, Equation (\ref{eq:inner_cont})
+is valid for all times $t$ in $[0,h]$, hence gives an inner-approximation of the flowpipe for the Brusselator. 
+%\ForAuthors{Peut-etre mettre la formule pour tout $t$ pour insister sur le flowpipe sous-approx/sur-approx ; a completer et comparer avec sur-approx au temps h}
 %\ForAuthors{Eric, completer (calcul final d'une sous-approx}
 \end{example}
 
