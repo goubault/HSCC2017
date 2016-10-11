@@ -111,7 +111,8 @@ x_2-5x_3x_4 \\
 \end{array}\right)
 \end{equation}
 
-\paragraph{Comparison to \cite{Underapproxflowpipes}}
+
+\subsubsection{Comparison to \cite{Underapproxflowpipes}}
 In  \cite{Underapproxflowpipes}, the  accuracy of computations is measured by the minimum width ratio 
 \[ \gamma_{\min}=\min{\frac{\gamma_u(v)}{\gamma_o(v)}}, v \in V \]
 where $V$ is a set of vectors, and $\gamma_u(v)$ and $\gamma_o(v)$ measure respectively the width of the inner-approximation and outer-approximation
@@ -119,15 +120,15 @@ in direction $v \in V$.
 Intuitively, the larger this ratio, the better the approximation. 
 Our method naturally gives inner ranges for the projection of the flow system on its state variables (although we can also directly deduce from our Taylor models 
 an inner-approximation of the range of any linear function of these variables, and also define a joint range, as shown in~\cite{hscc14,rc13}).
-\ForAuthors{Deja dit avant, on insiste ou pas?} 
+%\ForAuthors{Deja dit avant, on insiste ou pas?} 
 We thus measure in our case \[ \gamma_{\min}=\min_{i}{\frac{\gamma_u(x_i)}{\gamma_o(x_i)}}, \]
-where the $x_i$ are the state variables of the system. We think this corresponds to the measure that was used for experiments 
+where the $x_i$ are the state variables of the system. We believe this corresponds to the measure that was used for experiments 
 in~\cite{Underapproxflowpipes}, as they mention that the vectors are selected along the dimensions (axis-aligned).
 
 %\ForAuthors{Sriram dit dans le dernier paragraph ``Results'' de [1], 
 %pour $\gamma_{min}$ que ``The vectors are selected along the dimensions
 %(axis-aligned).''? Donc ca serait comparable a nous?}
-
+\paragraph{Comparison on the Brusselator}
 We first consider the Brusselator system, with an initial set taken in~\cite{Underapproxflowpipes}, defined by 
 $x_1 \geq 0.9$, $x_2 \geq 0$, $x_1+x_2-1 \leq 0$, which we can project on $1 \geq x_1 \geq 0.9$, $0.1 \geq x_2 \geq 0$.
 Naturally, this outer-approximation of the initial set is quite inaccurate, which will result in a lower quality of the inner-approximation
@@ -182,10 +183,10 @@ outer-approximation is of order $0.7$, which is equal to the value given in Tabl
 However, this ration decreases quickly, mostly due to the $x_2$ component, and at $t=4$, we get a ratio very close to $0.1$,
 instead of 0.55 as in [1]! Indeed, $t=4$ is a time at which, as already seen in Section~\ref{sec:exp_bruss}, our 
 inner-approximation of variable $x_2$ is temporarily of lower quality. 
-
 We thus got on this example, with the same parameters for the Taylor models, worse inner-approximation quality for a longer time of our implementation. 
 However, our approach allows us here to reduce the order of our models and take larger time steps for very close quality of results on $\gamma$: taking order 3 
-Taylor models and a timestep of 0.1, we now get a computation time of 93 seconds. Further decreasing the precision starts degrading the quality.    
+Taylor models and a timestep of 0.1, we now get a computation time of 93 seconds, thus comparable now to \cite{Underapproxflowpipes}. 
+Further decreasing the precision starts degrading the quality of results.    
 %\ForAuthors{Mais je crois quand meme que de ne
 %pas demarrer par un simplex doit pouvoir changer pas mal! Je peux essayer
 %de demander a Xin Chen si on peut facilement avoir leur resultat sur le
@@ -210,7 +211,7 @@ Taylor models and a timestep of 0.1, we now get a computation time of 93 seconds
 %[meme chose sans garder les relations]  outer-approx only 120 sec  outer-approx and inner-approx 451 precision un peu moindre
 
 %\ForAuthors{Add elements allowing to compare the cost of inner-approx comapred to over-approx of same degree: where to put this and on which example, see later}  
-
+\paragraph{Comparison on the biological system}
 We now consider the biological system, with initial condition $\x_0 \in [0.1,0.1175] \times...\times [0.1,0.1175]$, which is an outer-approximation
 of the simplex taken in  \cite{Underapproxflowpipes}, and we compute inner and outer approximated flowpipes for time in [0,0.2], 
 with order 3 Taylor Models and a stepsize of 0.02. The computation completes in 122 seconds, and we get as a measure of quality of the approximation 
@@ -230,8 +231,9 @@ We now consider
 \label{ex:width_sriram_bio}
 \end{figure}
 
-\paragraph{Comparison to \cite{underapprox16} on the Brusselator}
-In \cite{underapprox16} they take $X=[0.3, 0.4] \times [0.5, 0.7]$ for a time frame in [0,1.1], and a time step h=0.05. 
+\subsubsection{Comparison to \cite{underapprox16}}
+\paragraph{Comparison on the Brusselator}
+In \cite{underapprox16} they consider the Brusselator system for an initial value $X=[0.3, 0.4] \times [0.5, 0.7]$, a time frame in [0,1.1], and a time step h=0.05. 
 We compute the inner and outer-approximations, with order 4 Taylor Models, evaluated in AA, in 118.12 seconds.
 In Figure~\ref{fig:bruss_cav16}, we represent the inner and outer-approximations obtained for $x_1$ and $x_2$.  
 \begin{figure}[htbp]
@@ -250,8 +252,8 @@ and the outer approximations, for each variable $x_1$ and $x_2$.
 \end{center}
 \caption{Inner and outer approximations (order 4) for x1 and x2 \label{fig:bruss_cav16_dist}}
 \end{figure}
-This distance is somehow comparable to parameter  $\epsilon_M$ which is used to estimate the precision in \cite{underapprox16}.
-\ForAuthors{Sylvie. Continuer}
+This distance should in some sense be comparable to parameter  $\epsilon_M$ which is used to estimate the precision in \cite{underapprox16}.
+\ForAuthors{Sylvie. Continuer - pas de garnatie sur leur em etc}
 
 \ForAuthors{De ce que je comprends, leur $\epsilon_M$ est la pr\'ecision
 avec laquelle ils donnent une surapprox de la frontiere du reachable set.
@@ -276,10 +278,19 @@ voir si on ameliore cette distance? Eux meme avec VNODE, ils mettent
 pouvoir se comparer agreablement vu qu'on a du Matlab, et plein de choses
 non optimisees?}
 
+\paragraph{Comparison on the biological system}
+We now consider the biological system, with, as in \cite{underapprox16}, initial condition $\x_0 \in [0.1,0.1175] \times...\times [0.1,0.1175]$, 
+and we compute inner and outer approximated flowpipes for time in [0,0.2], 
+with order 3 Taylor Models and a stepsize of 0.02.
 
-\paragraph{Comparaison to \cite{Underapproxflowpipes} on the biological system}
+We get as width of inner-approximation on each component at time 0.2 the following : 0.0148 0.0142 0.0190 0.0160 0.0160 0.0175 0.0145. 
+\ForAuthors{A comparer au related workj, mais width de am surapporx (a recopier) < width de leur surapprox sur certains cas => wierd}
 
-for time in $[0,0.2]$, but again on differential initial conditions. 
+% [t,y] = ode23(@Bio_forode,[0 0.2],[-0.015; -0.015 ; -0.015; -0.015; -0.015; -0.015; -0.015]); => x3 sort de leur boite
+
+%\paragraph{Comparaison to \cite{Underapproxflowpipes} on the biological system}
+
+%for time in $[0,0.2]$, but again on differential initial conditions. 
 
 
 
