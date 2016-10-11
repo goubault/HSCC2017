@@ -335,19 +335,41 @@ of cyber-physical systems.
 \section{Introduction}
 %******************************************************************************
 %
-\ForAuthors{Intro a reprendre: d'abord il manque les ref, mais surtout elle etait pas mal orientee systemes hybrides et prop temporelles, 
-on veut sans doute affaiblir ca}
-The verification of software-enabled real-time control systems requires reasoning about non-linear hybrid systems, 
-that exhibit both discrete and continuous behavior. Computing the reachable set of such systems is a central component 
-of model-checking. While the exact reachability problem for hybrid systems is generally undecidable, in the recent 
-years there has been much progress in the computation of outer-approximations of the reachable set, first for the 
-verification of affine hybrid systems~\cite{}, but also for the more general class of non-linear hybrid systems~\cite{}. 
-An outer-approximation makes possible the verification of safety properties of such systems. However, the verification 
-of more general temporal properties, such as viability~\cite{} properties for instance, or the falsification of safety properties, 
-also require inner-approximating the reachable set, that is computing set of states that are definitely reached, or put differently 
-flowpipes that contain only solutions of the uncertain system.
-     
-Methods for inner-approximated reachability are far less developed, and especially in the non-linear case, 
+%\ForAuthors{Intro a reprendre: d'abord il manque les ref, mais surtout elle etait pas mal orientee systemes hybrides et prop temporelles, 
+%on veut sans doute affaiblir ca}
+
+%The verification of software-enabled real-time control systems requires reasoning about non-linear hybrid systems, 
+%that exhibit both discrete and continuous behavior. Computing the reachable set of such systems is a central component 
+%of model-checking. While the exact reachability problem for hybrid systems is generally undecidable, in the recent 
+%years there has been much progress in the computation of outer-approximations of the reachable set, first for the 
+%verification of affine hybrid systems~\cite{}, but also for the more general class of non-linear hybrid systems~\cite{}. 
+%An outer-approximation makes possible the verification of safety properties of such systems. However, the verification 
+%of more general temporal properties, such as viability~\cite{} properties for instance, or the falsification of safety properties, 
+%also require inner-approximating the reachable set, that is computing set of states that are definitely reached, or put differently 
+%flowpipes that contain only solutions of the uncertain system.
+
+We show in this paper that we can compute inner-approxi\-mations (also called sometimes 
+under-approximations) of the flowpipes, and as a consequence, reachable sets, 
+of continuous systems described by ordinary differential
+equations (ODEs), which 
+are widely used for modeling all sorts of physical, biological and even economic or
+social systems. 
+
+There are numerous methods for outer-approximating (also called over-approximating) flowpipes
+and reachable sets of ODEs, whereas linear \cite{GirardLinear06,LeGuernic09}, non-linear \cite{Taylor07,Dang2,Dang3,Dang4,Nedialkov99}, or even non-linear
+in the presence of uncertain parameters \cite{GirardHSCC2005}. This is also 
+supported by numerous tools,
+that can even consider more general hybrid systems, see e.g. NLToolBox \cite{NLTOOLBOX}, 
+SpaceEx \cite{SPACEEX}, Flow* \cite{FLOW} and VNODE-LP \cite{VNODELP} to mention but a few.  
+
+If outer-approximations describe states that may be rea\-ched, inner-approximations represent
+states that are actually reachable from one of the initial states. Inner-approxima\-tions are
+thus a very useful complement to ordinary outer-approxima\-tions, since they allow to show
+that a system must indeed reach a target or even a bad state. Also, the combination of
+inner and outer-approximations allows for judging the quality of the abstractions involved. 
+
+But 
+methods for inner-approximated reachability are far less developed, and especially in the non-linear case, 
 since most methods in the non-linear case rely on conservative linearizations, which necessarily produce outer approximations.
 
 In this work, we concentrate on the inner-approximation of the reachable sets of
@@ -426,8 +448,9 @@ experiments with a matlab implementation and make tentative comparisons to exist
 \paragraph{Related work:}
 \label{relatedwork}
 
-Outer-approximations of non-linear systems are well studied, using in particular Taylor
-models, see \cite{Taylor07} for instance. Inner-approximations have been far less studied, 
+%Outer-approximations of non-linear systems are well studied, using in particular Taylor
+%models, see \cite{Taylor07} for instance. 
+Inner-approximations have been far less studied, 
 since this is a much more complicated problem, except in the case of linear systems, 
 see e.g. \cite{LeGuernic09,GirardLinear06}.
 
@@ -1426,7 +1449,8 @@ the Brusselator at time $h$~:
 $$\left[1.8973,2.0400\right]
 \subseteq z(h,0,\intvl{z_0})\subseteq \left[1.88320, 2.05421\right]$$
 Of course, similarly to Example \ref{running3} for the outer-approximation of $z$, Equation (\ref{eq:inner_cont})
-is valid for all times $t$ in $[0,h]$, hence gives an inner-approximation of the flowpipe for the Brusselator. 
+is valid for all times $t$ in $[0,h]$, hence gives an inner-approximation of the flowpipe for the Brusselator. This is
+what we will be doing in Section \ref{sec:exp_bruss}.  
 %\ForAuthors{Peut-etre mettre la formule pour tout $t$ pour insister sur le flowpipe sous-approx/sur-approx ; a completer et comparer avec sur-approx au temps h}
 %\ForAuthors{Eric, completer (calcul final d'une sous-approx}
 \end{example}
