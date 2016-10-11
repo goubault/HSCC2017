@@ -4,45 +4,48 @@ The top-level auxiliary file: hscc17.aux
 The style file: abbrv.bst
 Database file #1: hscc2017.bib
 Warning--I didn't find a database entry for ""
+Warning--I didn't find a database entry for "Dang"
+Warning--empty publisher in Moore66
+Warning--empty year in Taylor07
 You've used 17 entries,
             2118 wiz_defined-function locations,
-            608 strings with 6984 characters,
-and the built_in function-call counts, 6331 in all, are:
-= -- 620
-> -- 319
+            606 strings with 6513 characters,
+and the built_in function-call counts, 5740 in all, are:
+= -- 560
+> -- 251
 < -- 5
-+ -- 126
-- -- 108
-* -- 429
-:= -- 1033
-add.period$ -- 55
++ -- 99
+- -- 82
+* -- 359
+:= -- 934
+add.period$ -- 54
 call.type$ -- 17
-change.case$ -- 103
+change.case$ -- 89
 chr.to.int$ -- 0
-cite$ -- 17
-duplicate$ -- 253
-empty$ -- 493
-format.name$ -- 108
-if$ -- 1347
+cite$ -- 19
+duplicate$ -- 251
+empty$ -- 478
+format.name$ -- 82
+if$ -- 1234
 int.to.chr$ -- 0
 int.to.str$ -- 17
-missing$ -- 16
+missing$ -- 18
 newline$ -- 88
 num.names$ -- 34
-pop$ -- 118
+pop$ -- 117
 preamble$ -- 1
-purify$ -- 87
+purify$ -- 75
 quote$ -- 0
-skip$ -- 180
+skip$ -- 173
 stack$ -- 0
-substring$ -- 350
-swap$ -- 69
+substring$ -- 309
+swap$ -- 65
 text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 68
-warning$ -- 0
-while$ -- 58
+type$ -- 64
+warning$ -- 2
+while$ -- 55
 width$ -- 19
-write$ -- 188
-(There was 1 warning)
+write$ -- 184
+(There were 4 warnings)

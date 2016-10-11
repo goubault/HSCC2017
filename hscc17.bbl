@@ -11,14 +11,6 @@ J.~L.~D. Comba and J.~Stolfi.
 \newblock Affine arithmetic and its applications to computer graphics.
 \newblock {\em Proceedings of SIBGRAPI}, 1993.
 
-\bibitem{Circuits06}
-G.~Frehse, B.~H. Krogh, and R.~A. Rutenbar.
-\newblock Verifying analog oscillator circuits using forward/backward
-  abstraction refinement.
-\newblock In {\em Proceedings of the Conference on Design, Automation and Test
-  in Europe: Proceedings}, DATE '06, pages 257--262. European Design and
-  Automation Association, 2006.
-
 \bibitem{GirardLinear06}
 A.~Girard, C.~L. Guernic, and O.~Maler.
 \newblock Efficient computation of reachable sets of linear time-invariant
@@ -33,10 +25,12 @@ A.~Goldsztejn, D.~Daney, M.~Rueher, and P.~Taillibert.
   intervals.
 \newblock In {\em QCP'05}, 2005.
 
-\bibitem{Goldsztejn2010}
-A.~Goldsztejn, L.~Jaulin, et~al.
-\newblock Inner approximation of the range of vector-valued functions.
-\newblock {\em Reliable Computing}, 14:1--23, 2010.
+\bibitem{Gold06}
+A.~Goldsztejng and W.~Hayes.
+\newblock Rigorous inner approximation of the range of functions.
+\newblock In {\em Proceedings of the 12th GAMM - IMACS International Symposium
+  on Scientific Computing, Computer Arithmetic and Validated Numerics}, SCAN
+  '06. IEEE Computer Society, 2006.
 
 \bibitem{rc13}
 E.~Goubault, M.~Kieffer, O.~Mullier, and S.~Putot.
@@ -56,18 +50,11 @@ E.~Goubault and S.~Putot.
   generalized affine arithmetic.
 \newblock In {\em SAS}, pages 137--152, 2007.
 
-\bibitem{HenrionLouembet}
-D.~Henrion and C.~Louembet.
-\newblock Convex inner approximations of nonconvex semialgebraic sets applied
-  to fixed-order controller design.
-\newblock {\em International Journal of Control}, 85(8):1083--1092, 2012.
-
-\bibitem{Kanade09}
-A.~Kanade, R.~Alur, F.~Ivan\v{c}i\'{c}, S.~Ramesh, S.~Sankaranarayanan, and
-  K.~C. Shashidhar.
-\newblock Generating and analyzing symbolic traces of simulink/stateflow
-  models.
-\newblock In {\em CAV'09}. Springer, 2009.
+\bibitem{IA2001}
+L.~Jaulin, M.~Kieffer, and O.~Didrit.
+\newblock {\em Applied interval analysis : with examples in parameter and state
+  estimation, robust control and robotics}.
+\newblock Springer, 2001.
 
 \bibitem{Kaucher}
 E.~Kaucher.
@@ -80,11 +67,10 @@ C.~Le~Guernic.
   Dynamics}.
 \newblock PhD thesis, University Joseph Fourier, 2009.
 
-\bibitem{RamdaniMCS14}
-M.~Ma{\"i}ga, N.~Ramdani, L.~Trav{\'e}-Massuy{\`e}s, and C.~Combastel.
-\newblock A csp versus a zonotope-based method for solving guard set
-  intersection in nonlinear hybrid reachability.
-\newblock {\em Mathematics in Computer Science}, 8(3):407--423, 2014.
+\bibitem{Moore66}
+R.~E. Moore.
+\newblock {\em Interval analysis}.
+\newblock 1966.
 
 \bibitem{Nedialkov99}
 N.~S. Nedialkov, K.~R. Jackson1, and G.~F. Corliss.
@@ -92,16 +78,25 @@ N.~S. Nedialkov, K.~R. Jackson1, and G.~F. Corliss.
   differential equations.
 \newblock {\em Appl. Math. Comput.}, 105(1):21--68, Oct. 1999.
 
-\bibitem{Nghiem10}
-T.~Nghiem, S.~Sankaranarayanan, G.~Fainekos, F.~Ivanci\'{c}, A.~Gupta, and
-  G.~J. Pappas.
-\newblock Monte-carlo techniques for falsification of temporal properties of
-  non-linear hybrid systems.
-\newblock In {\em HSCC'10}. ACM, 2010.
+\bibitem{Taylor07}
+M.~Neher, K.~R. Jackson, and N.~S. Nedialkov.
+\newblock On taylor model based integration of odes.
+\newblock {\em SIAM J. Numer. Anal}, 45:2007.
+
+\bibitem{Ru99a}
+S.~Rump.
+\newblock {INTLAB - INTerval LABoratory}.
+\newblock In {\em {Developments~in~Reliable Computing}}, pages 77--104. Kluwer
+  Academic Publishers, 1999.
 
 \bibitem{underapprox16}
 B.~Xue, Z.~She, and A.~Easwaran.
 \newblock Under-approximating backward reachable sets by polytopes.
 \newblock In {\em CAV}, May 2016.
+
+\bibitem{Zgliczynski2002}
+P.~Zgliczynski.
+\newblock $c^1$ lohner algorithm.
+\newblock {\em Foundations of Computational Mathematics}, 2(4):429--465, 2002.
 
 \end{thebibliography}
