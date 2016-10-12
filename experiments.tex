@@ -226,8 +226,8 @@ Further decreasing the precision starts degrading the quality of results.
 We now consider the biological system, with initial condition $\x_0 \in [0.1,0.1175] \times...\times [0.1,0.1175]$, which is an outer-approximation
 of the simplex taken in  \cite{Underapproxflowpipes}, and we compute inner and outer approximated flowpipes for time in [0,0.2], 
 with order 3 Taylor Models and a stepsize of 0.02. The computation completes in 118 seconds, and we get as a measure of quality of the approximation 
-$\gamma(t=0.2) \approx 0.61$, which is this time much better than the $\gamma(t=0.2) = .25$ obtained in 632 seconds in  \cite{Underapproxflowpipes}, 
-in spite of using a larger step size of 0.02 (0.002 in \cite{Underapproxflowpipes}). This seems to confirm that our approaches scales very well to high dimensional systems. 
+$\gamma(t=0.2) \approx 0.61$, which is this time a much better accuracy than the $\gamma(t=0.2) = 0.25$ obtained in 632 seconds in  \cite{Underapproxflowpipes}. 
+This seems to confirm that our approaches scales very well to high dimensional systems. 
 Again, the 118 seconds for the inner-approximation flowpipe must also be compared to the 36.9 seconds that our implementation of the classical 
 outer-approximated Taylor Model takes with the same parameters.
 
