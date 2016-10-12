@@ -25,11 +25,12 @@ width of the inner-approximation (internal dotted lines) decreases even more qui
 until it disappears at time 0.6: after this time, the inner-approximation is empty. Indeed, it is well 
 known that effective methods should be used to control this wrapping effect, for instance mean-value 
 forms or matrix preconditioning. In our implementation, we control wrapping by using 
-affine arithmetic to evaluate these models. While accurate as shown in Figure \ref{fig:brusselator_order3_t1} (inner
-and outer approximations are solid lines), it will be more costly than using 
-a method specially optimized for these Taylor model. 
-\ForAuthors{Tu penses? Comme ca je n'en serais pas completement sur?}
-However, this is convenient for prototyping, 
+affine arithmetic to evaluate these models. %While accurate as shown in Figure \ref{fig:brusselator_order3_t1} (inner
+%and outer approximations are solid lines), it will be more costly than using 
+%a method specially optimized for these Taylor model. 
+%\ForAuthors{Tu penses? Comme ca je n'en serais pas completement sur?}
+%However, 
+This is convenient for prototyping, 
 as we rely on the implementation of affine arithmetic present in the Intlab 
 toolbox.
  
@@ -40,7 +41,7 @@ toolbox.
 \caption{Brusselator, evaluation of the Taylor models (order 3) with interval vs affine arithmetic \label{fig:brusselator_order3_t1}}
 \end{figure}
 
-In the following experiments, we use Taylor models of order 4, and represent respectively in Figures~\ref{fig:brusselator_order4_x1_t10} and~\ref{fig:brusselator_order4_x2_t10}, the inner and outer approximated flowpipes for variables $x1$ and $x2$, with an evaluation in affine arithmetic, up to a maximum time $t=10$. We see that for both variables, while the width of the outer-approximation stays relatively stable with time, the width of the inner-approximation can decrease until the inner-approximation becomes empty, but the width can still later be non-zero again. This is the case for instance on variable $x_2$ around time $t=4$. 
+In the following experiments, we use Taylor models of order 4, and represent respectively in Figures~\ref{fig:brusselator_order4_x1_t10} and~\ref{fig:brusselator_order4_x2_t10}, the inner and outer approximated flowpipes for variables $x1$ and $x2$, with an evaluation in affine arithmetic, up to a maximum time $t=10$. We see that for both variables, while the width of the outer-approximation stays relatively stable with time, the width of the inner-approximation can decrease until the inner-approximation becomes empty, but the width can still later be non-zero again. This is the case for instance on variable $x_2$ around time $t=4$. Also, we can note that the inner-approximations on x1 and x2 do not get empty at the same time. 
 %At first look, this could appear as a bug in our implementation, but this is not the case. 
 This is not a bug : this phenomenon is an illustration of the fact detailed in Section~\ref{practicalissues}, that when adding an improper with a proper interval, we can get a proper interval, which results in an empty inner-approximation, but this does not prevent us to keep computing the Taylor models that can give non-empty inner-approximations at later times, depending on the behaviour of the Jacobian of the flow.    
 
@@ -105,16 +106,17 @@ x_5 \\
 x_6 \\
 x_7
 \end{array}\right)} = \left(\begin{array}{c}
--0.4x_1+5x_3x_4 \\
+-0.4x_1+ a x_3x_4 \\
 0.4x_1-x_2 \\
-x_2-5x_3x_4 \\
-5x_5x_6-5x_3x_4 \\
--5x_5x_6+5x_3x_4 \\
-0.5x_7-5x_5x_6 \\
--0.5x_7+5x_5x_6
+x_2- a x_3x_4 \\
+a x_5x_6- a x_3x_4 \\
+- a x_5x_6+ a x_3x_4 \\
+0.5x_7- a x_5x_6 \\
+-0.5x_7+ a x_5x_6
 \end{array}\right)
 \end{equation}
-
+In this system, $a$ is a parameter which is taken, from our understanding, equal to 50 in \cite{Underapproxflowpipes} and to 5 in \cite{underapprox16}. 
+We will use the corresponding value of the parameter when comparing to the realted work.
 
 \subsubsection{Comparison to \cite{Underapproxflowpipes}}
 In  \cite{Underapproxflowpipes}, the  accuracy of computations is measured by the minimum width ratio 
@@ -159,8 +161,7 @@ with matlab and the affine arithmetic of Intlab. This can be for instance quanti
 outer-approximated Taylor Model takes on the same example with the same parameters: it takes here 213 seconds, so that the overhead due to inner-approximation 
 is really of the same order of magnitude (intuitively, the time from outer to inner-approximation with our approach should indeed approximately 
 be multiplied by the dimension of the Jacobian). 
-\ForAuthors{Pas hyper hyper clair? Sinon je peux aussi te dire combien VNODE prend de temps pour la outer-approx
-avec le meme ordre et meme pas (pour le biological system, ca prend 0 seconde, a l'ordre 20 par defaut), ca donne aussi une idee du facteur du a l'implem?}
+\ForAuthors{Pas hyper hyper clair? Sinon je peux aussi te dire combien VNODE prend de temps pour la outer-approx, ca donne aussi une idee du facteur du a l'implem?}
 % Our implementation takes a total of 3400 secs (for computing both outer and inner approximations). pour 0.02
 
 %\begin{center}
@@ -223,48 +224,55 @@ Further decreasing the precision starts degrading the quality of results.
 \paragraph{Comparison on the biological system}
 We now consider the biological system, with initial condition $\x_0 \in [0.1,0.1175] \times...\times [0.1,0.1175]$, which is an outer-approximation
 of the simplex taken in  \cite{Underapproxflowpipes}, and we compute inner and outer approximated flowpipes for time in [0,0.2], 
-with order 3 Taylor Models and a stepsize of 0.02. The computation completes in 122 seconds, and we get as a measure of quality of the approximation 
-$\gamma(t=0.2) \approx 0.943$, which is this time much better than the $\gamma(t=0.2) = .25$ obtained in 632 seconds in  \cite{Underapproxflowpipes}, in spite of using a larger step size of 0.02 (0.002 in \cite{Underapproxflowpipes}). This seems to confirm that our approaches scales very well to high dimensional systems. 
-Again, the 122 seconds for the inner-approximation flowpipe must also be compared to the 39.7 seconds that our implementation of the classical 
+with order 3 Taylor Models and a stepsize of 0.02. The computation completes in 118 seconds, and we get as a measure of quality of the approximation 
+$\gamma(t=0.2) \approx 0.61$, which is this time much better than the $\gamma(t=0.2) = .25$ obtained in 632 seconds in  \cite{Underapproxflowpipes}, 
+in spite of using a larger step size of 0.02 (0.002 in \cite{Underapproxflowpipes}). This seems to confirm that our approaches scales very well to high dimensional systems. 
+Again, the 118 seconds for the inner-approximation flowpipe must also be compared to the 36.9 seconds that our implementation of the classical 
 outer-approximated Taylor Model takes with the same parameters.
+
+We also measure as an indication of the accuracy the mean value on the components $x_i$ of the distance between the inner and outer approximations, $\sum_i=1^n \frac{|x_i^{out} - x_i^{in}|}{n}$,
+which is an over-estimation of the error between our inner-approximation and the exact reachable state: this value for $T=0.2$ is $4.10^{-3}$.
 
 %elapsed_time_AA =  122.1330, step = 0.02, order 3
 %elapsed_time_surapprox_AA =  39.6906
 
-We now consider
-\ForAuthors{? ;-)}
- 
-\begin{figure}
-\begin{center}
-\epsfig{file=biological_sriram_002_order2_width.png,clip=,width=8cm}
-\end{center}
-\caption{Evolution of $\gamma_{\min}$ with time on the biological system}
-\label{ex:width_sriram_bio}
-\end{figure}
+
+% je l'enleve pas passionnant 
+%\begin{figure}
+%\begin{center}
+%\epsfig{file=biological_sriram_002_order2_width.png,clip=,width=8cm}
+%\end{center}
+%\caption{Evolution of $\gamma_{\min}$ with time on the biological system}
+%\label{ex:width_sriram_bio}
+%\end{figure}
 
 \subsubsection{Comparison to \cite{underapprox16}}
 \paragraph{Comparison to \cite{underapprox16} on the Brusselator}
 In \cite{underapprox16} the authors take $X=[0.3, 0.4] \times [0.5, 0.7]$ for a time frame in [0,1.1], and a time step h=0.05. 
-We compute the inner and outer-approximations, with order 4 Taylor Models, evaluated in affine arithmetic, in 118.12 seconds.
-In Figure~\ref{fig:bruss_cav16}, we represent the inner and outer-approximations obtained for $x_1$ and $x_2$.  
-\begin{figure}[htbp]
-\begin{tabular}{cc}
-\epsfig{file=cav16_bruss_order4_x1.png,clip=,width=4cm}
-&
-\epsfig{file=cav16_bruss_order4_x2.png,clip=,width=4cm}
-\end{tabular}
-\caption{Inner and outer approximations (order 4) for $x_1$ and $x_2$ \label{fig:bruss_cav16}}
-\ForAuthors{Trop petit?}
-\end{figure}
-In Figure~\ref{fig:bruss_cav16_dist}, we represent the maximum distance between points in the inner 
+We compute the inner and outer-approximations, with order 3 Taylor Models, evaluated in affine arithmetic, in 45 seconds.
+In comparison, our implementation of the classical outer-approximated Taylor models takes 16 seconds. 
+%In Figure~\ref{fig:bruss_cav16}, we represent the inner and outer-approximations obtained for $x_1$ and $x_2$.  
+%\begin{figure}[htbp]
+%\begin{tabular}{cc}
+%\epsfig{file=cav16_bruss_order4_x1.png,clip=,width=4cm}
+%&
+%\epsfig{file=cav16_bruss_order4_x2.png,clip=,width=4cm}
+%\end{tabular}
+%\caption{Inner and outer approximations (order 4) for $x_1$ and $x_2$ \label{fig:bruss_cav16}}
+%\ForAuthors{Trop petit?}
+%\end{figure}
+In Figure~\ref{fig:bruss_cav16_dist}, we represent the maximum distance between the inner 
 and the outer approximations, for each variable $x_1$ and $x_2$.
 \begin{figure}[htbp]
 \begin{center}
 \epsfig{file=cav16_bruss_order4_distance.png,clip=,width=8cm}
 \end{center}
-\caption{Inner and outer approximations (order 4) for x1 and x2 \label{fig:bruss_cav16_dist}}
+\caption{Maximum distance between the inner and outer approximations for x1 and x2 \label{fig:bruss_cav16_dist}}
 \end{figure}
-This distance should in some sense be comparable to parameter  $\epsilon_M$ which is used to estimate the precision in \cite{underapprox16}.
+This distance should in some sense be comparable to the parameter  $\epsilon_M$ which is used to estimate the precision in \cite{underapprox16}.
+We find a distance equal to 0.005 for $x_1$, and 0.01 for $x_2$, which is 10 times larger than their estimation of 0.001, in 55 seconds, 
+of the parameter  $\epsilon_M$ used to estimate the precision in \cite{underapprox16}, which we beleive comparable in spirit to our distance. 
+
 \ForAuthors{Eric. Commenter sur ce que veut dire leur epsilonM }
 
 %\ForAuthors{De ce que je comprends, leur $\epsilon_M$ est la pr\'ecision
@@ -297,10 +305,10 @@ for time in [0,0.2] , and use order 3 Taylor Models and a stepsize of 0.02.
 
 We get as width of inner-approximation on each component at time 0.2 the following :
 
-\begin{tabular}{c|c|c|c}
- & our inner / outer approx & VNODE outer approx (order 20) &  inner approx of \cite{underapprox16} \\
+\begin{tabular}{l|c|c|c}
+ & õur inner/outer & VNODE (order 20) &  inner\cite{underapprox16} \\
 Time & 115sec (36 for outer-approx only) & < 1 sec & 0.67 sec \\
-$x_1$ &  [  -0.01628536833380,   0.00103619844301] / [  -0.01654701249765,   0.00129784260686] & [-0.0166, 0.00131] & [-0.0152,0.000] 
+$x_1$ &  [  -0.016286,   0.0010362] / [  -0.016547,   0.0012979] & [-0.0166, 0.00131] & [-0.0152,0.000] 
 
 \end{tabular}
 
