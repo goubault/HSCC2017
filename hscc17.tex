@@ -1474,13 +1474,16 @@ in presence of guards and constraints, so as to handle general hybrid systems. O
 not only the variables as demonstrated here, but also the projection on whatever function of these variables. Also, the 
 symbolic information included in our model if we have a relational information in the evaluation of the Taylor model coefficients, 
 such as is the case when we evaluate them with affine arithmetic, will allow us to use existing work on the inner-approximation 
-of joint range of functions and constraint solving. 
-\ForAuthors{Ajouter ref?} 
-In that respect, our current matlab prototype, while producing interesting results for the continuous case, does not allow us to 
+of joint range of functions and constraint solving, as e.g.~\cite{DBLP:journals/constraints/IshiiGJ12}.  
+In that respect, our current Matlab prototype, while producing interesting results for the continuous case, does not allow us to 
 handle this symbolic information in a satisfying way, and some engineering improvement is needed and planned.
 
-
 \begin{itemize}
+\item comparaison sur / sous-approx => sous-approx competitive en complexite par rapport aux modeles de Taylor classiques : oui
+\item bon passage a l'echelle sur degre 7 ? : oui
+\item IA / AA laissant etendre que implem AA utilisee tres sous-optimale : Trop sur la defensive et deja dit
+\item un des interets est qu'on peut raffiner la precision (sur et sous-approximee) en montant en ordre a la demande, du style algo a pas ou ordre adaptatif par cette 
+estimation directe de l'erreur! : oui
 \item combination with backward inner-approximated analyses ? 
 \item abstract model-checking ? 
 \end{itemize}
