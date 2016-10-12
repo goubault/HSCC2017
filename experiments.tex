@@ -59,8 +59,6 @@ This is not a bug : this phenomenon is an illustration of the fact detailed in S
 \caption{Brusselator (x2), evaluation of the Taylor models (order 4) with affine arithmetic \label{fig:brusselator_order4_x2_t10}}
 \end{figure}
 
-\ForAuthors{reflechir a ce qu'on peut en deduire sur le systeme (cycle?), et si on veut que je fasse d'autres experiences ? Bof, non pas evident, en plus la surapprox ou combinaison avant arriere
-suffit en general, plus tard on verra (c'est l'article Verifyin Analog Oscillator Circuits)}
 
 %------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -267,7 +265,7 @@ and the outer approximations, for each variable $x_1$ and $x_2$.
 \caption{Inner and outer approximations (order 4) for x1 and x2 \label{fig:bruss_cav16_dist}}
 \end{figure}
 This distance should in some sense be comparable to parameter  $\epsilon_M$ which is used to estimate the precision in \cite{underapprox16}.
-\ForAuthors{Sylvie. Continuer - pas de garnatie sur leur em etc}
+\ForAuthors{Eric. Commenter sur ce que veut dire leur epsilonM }
 
 %\ForAuthors{De ce que je comprends, leur $\epsilon_M$ est la pr\'ecision
 %avec laquelle ils donnent une surapprox de la frontiere du reachable set.
@@ -294,11 +292,44 @@ This distance should in some sense be comparable to parameter  $\epsilon_M$ whic
 
 \paragraph{Comparison on the biological system}
 We now consider the biological system, with, as in \cite{underapprox16}, initial condition $\x_0 \in [0.1,0.1175] \times...\times [0.1,0.1175]$, 
-and we compute inner and outer approximated flowpipes for time in [0,0.2], 
-with order 3 Taylor Models and a stepsize of 0.02.
+and to compare our results to their backward estimate, we compute inner and outer approximated flowpipes on the reverse flow, 
+for time in [0,0.2] , and use order 3 Taylor Models and a stepsize of 0.02.
 
-We get as width of inner-approximation on each component at time 0.2 the following : 0.0148 0.0142 0.0190 0.0160 0.0160 0.0175 0.0145. 
-\ForAuthors{A comparer au related workj, mais width de am surapporx (a recopier) < width de leur surapprox sur certains cas => wierd}
+We get as width of inner-approximation on each component at time 0.2 the following :
+
+\begin{tabular}{c|c|c|c}
+ & our inner / outer approx & VNODE outer approx (order 20) &  inner approx of \cite{underapprox16} \\
+Time & 115sec (36 for outer-approx only) & < 1 sec & 0.67 sec \\
+$x_1$ &  [  -0.01628536833380,   0.00103619844301] / [  -0.01654701249765,   0.00129784260686] & [-0.0166, 0.00131] & [-0.0152,0.000] 
+
+\end{tabular}
+
+ $[   -0.01628,    0.00104]\times[   -0.01834,    0.00256]\times [   -0.01515,    0.00417]\times 
+[   -0.01489,    0.00088] \times[   -0.01488,    0.00089]\times[   -0.0150,    0.00248]\times [   -0.01661,    0.00106]$
+
+$[  -0.01628536833380,   0.00103619844301]  [  -0.01833708041159,   0.00255842760143]  [  -0.01514208680158,   0.00416990950253]  [  -0.01488096912574,   0.00087696255375] 
+[  -0.01487744391170,   0.00088145048369]  [  -0.01492448895828,   0.00247920964913]  [  -0.01660493465136,   0.00105021396051] $
+
+to be compared to the $[-0.0152,0.000]\times[-0.0169,0.0011]\times [-0.00140,0.0030]\times[-0.0141,0.0001]\times [-0.0141,0.0001]\times [-0.0138,0.0014]\times [-0.0155,0.0000]$
+of \cite{underapprox16} .
+
+With VNODE at order 20 (with an execution time smaller than 1 second, which confirms the poor efficiency of our matlab implementation...) 
+$[-0.0166, 0.00131]
+[-0.0184, 0.00262]
+[-0.0154, 0.00451]
+[-0.0154, 0.00141]
+[-0.0154, 0.00141]
+[-0.0152, 0.00277]
+[-0.0169, 0.00131]$
+
+Our outer-approximation is $ [  -0.01654701249765,   0.00129784260686]  [  -0.01834542409233,   0.00256677128217]  [  -0.01540563322262,   0.00443345592357]
+[  -0.01539838418560,   0.00139437761361] [  -0.01538981256285,   0.00139381913484] [  -0.01519231394425,   0.00274703463510] [  -0.01686300688068,   0.00130828618983]$
+which look tighter than the VNODE order 20 results (???). 
+
+The mean distance from our inner-approximation to our outer-approximation, defined by $\sum_i=1^n \frac{|x_i^{out} - x_i^{in}|}{n}$, is thus equal to $4.10^{-4}$ 
+when the mean distance from the inner-approximation of \cite{underapprox16} to our approximation is $2.10^{-3}$ 
+
+%\ForAuthors{A comparer au related workj, mais width de am surapporx (a recopier) < width de leur surapprox sur certains cas => wierd}
 
 % [t,y] = ode23(@Bio_forode,[0 0.2],[-0.015; -0.015 ; -0.015; -0.015; -0.015; -0.015; -0.015]); => x3 sort de leur boite
 
