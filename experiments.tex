@@ -8,8 +8,8 @@ given in the related work.
 \subsection{Brusselator}
 \label{sec:exp_bruss}
 
-We consider in this section the following instance of the Brusselator system, slightly different  from the version of  Example~\ref{running0}, but
-which is the one studied in the related work:
+We consider in this section another instance of the Brusselator system, slightly different  from the version of  Example~\ref{running0}, 
+which has been used in e.g.~\cite{Underapproxflowpipes,underapprox16}~: 
 $$\left\{\begin{array}{rcl}
 \dot{x}_1 & = & 1+x_1^2x_2-2.5x_1 \\
 \dot{x}_2 & = & 1.5x_1-x_1^2x_2
@@ -22,7 +22,7 @@ with plain interval arithmetic. When computing flowpipes for time ranging betwee
 we see, in Figure~\ref{fig:brusselator_order3_t1}, that the width of the outer-approximation 
 (external dashed lines) quickly increases, while the 
 width of the inner-approximation (internal dotted lines) decreases even more quickly, 
-until it disappears at time 0.6: after this time, the inner-approximation is empty. Indeed, it is well 
+until it disappears at time 0.6~: after this time, the inner-approximation is empty. Indeed, it is well 
 known that effective methods should be used to control this wrapping effect, for instance mean-value 
 forms or matrix preconditioning. In our implementation, we control wrapping by using 
 affine arithmetic to evaluate these models. %While accurate as shown in Figure \ref{fig:brusselator_order3_t1} (inner
@@ -41,9 +41,10 @@ toolbox.
 \caption{Brusselator, evaluation of the Taylor models (order 3) with interval vs affine arithmetic \label{fig:brusselator_order3_t1}}
 \end{figure}
 
-In the following experiments, we use Taylor models of order 4, and represent respectively in Figures~\ref{fig:brusselator_order4_x1_t10} and~\ref{fig:brusselator_order4_x2_t10}, the inner and outer approximated flowpipes for variables $x1$ and $x2$, with an evaluation in affine arithmetic, up to a maximum time $t=10$. We see that for both variables, the width of the inner-approximation can decrease until the inner-approximation becomes empty, but the width can still later be non-zero again. This is the case for instance on variable $x_2$ around time $t=4$. Also, we can note that the inner-approximations on x1 and x2 do not get empty at the same time. 
+In the following experiments, we use Taylor models of order 4, and represent respectively in Figures~\ref{fig:brusselator_order4_x1_t10} and~\ref{fig:brusselator_order4_x2_t10}, the inner and outer approximated flowpipes for variables $x_1$ and $x_2$, with an evaluation in affine arithmetic, up to a maximum time $t=10$. We see that for both variables, the width of the inner-approximation can decrease until the inner-approximation becomes empty, but the width can still later be non-zero again. This is the case for instance on variable $x_2$ around time $t=4$. Also, we can note that the inner-approximations on x1 and x2 do not get empty at the same time. 
 %At first look, this could appear as a bug in our implementation, but this is not the case. 
-This is not a bug : this phenomenon is an illustration of the fact detailed in Section~\ref{practicalissues}, that when adding an improper with a proper interval, we can get a proper interval, which results in an empty inner-approximation, but this does not prevent us to keep computing the Taylor models that can give non-empty inner-approximations at later times, depending on the behaviour of the Jacobian of the flow.    
+This is not a bug : this phenomenon is an illustration of the fact detailed in Section~\ref{practicalissues}, that when adding an improper with a proper interval, we can get a proper interval, which results in an empty inner-approximation. Nevertheless, this does not prevent us from carrying
+on with the compution of the Taylor models~:  they can indeed give non-empty inner-approximations at later times, depending on the behaviour of the Jacobian of the flow.    
 
 \begin{figure}[htbp]
 \begin{center}
@@ -82,7 +83,7 @@ This is not a bug : this phenomenon is an illustration of the fact detailed in S
 \subsection{Comparisons to the related work}
 \label{sec:exp_compar}
 We provide in this section some elements of comparisons to the experimental results given in the related work~\cite{Underapproxflowpipes,underapprox16}.
-Let us highlight that it is difficult to have a fair comparison, as on the one hand, evaluating the compared accuracy of these methods is difficult, 
+Let us highlight that it is difficult to compare these methods in a fair manner, as on the one hand, evaluating the compared accuracy of these methods is difficult, 
 and on the other hand we only used a very basic Matlab implementation of our approach, whereas the related work relies on actual implementations,
 using optimized solvers such as VNode. In order to partially account for this overhead of our preliminary implementation, we will also compare in our experiments 
 the computation time of our inner (and outer-) approximated flowpipes, with the time taken by our implementation for the classical outer-approximation 
@@ -94,7 +95,7 @@ of Taylor model flowpipes.
 %Ok je ferai quand j'aurai integre ces resultats}
 
 Among the examples studied in both ~\cite{Underapproxflowpipes} and \cite{underapprox16}, we first selected
-the version of the Brusselator introduced in section~\ref{sec:exp_bruss} as a representative of the systems of low degree. 
+the version of the Brusselator introduced in Section~\ref{sec:exp_bruss} as a representative of the systems of low degree. 
 We chose as second example the following biological system, because of its higher degree (7), to investigate the way our approach scales. 
 \begin{equation}
 \dot{\left(\begin{array}{c}
@@ -116,7 +117,7 @@ a x_5x_6- a x_3x_4 \\
 \end{array}\right)
 \end{equation}
 In this system, $a$ is a parameter which is taken, from our understanding, equal to 50 in \cite{Underapproxflowpipes} and to 5 in \cite{underapprox16}. 
-We will use the corresponding value of the parameter when comparing to the realted work.
+We will use the corresponding value of the parameter when comparing to the related work.
 
 \subsubsection{Comparison to \cite{Underapproxflowpipes}}
 In  \cite{Underapproxflowpipes}, the  accuracy of computations is measured by the minimum width ratio 
@@ -155,13 +156,13 @@ but we did not investigate this here.
 %limite forcement a des intervalles en entree?}
 In ~\cite{Underapproxflowpipes}, the authors study the result for T = 3 and T = 4. We choose, as they do, 4th order Taylor models, 
 but take a larger time step $h=0.05$ in order to keep comparable (though much larger here) analysis time. In this case, our implementation until $T=4$
-takes a total of 776 seconds (to compute both outer and inner approximations), where \cite{Underapproxflowpipes} takes 89 seconds.
+takes a total of 776 seconds (to compute both outer and inner approximations), where \cite{Underapproxflowpipes} takes 89 seconds (for the inner approximation).
 Our implementation is thus almost an order of magnitude larger, however we believe this is very much due to our naive implementation 
-with matlab and the affine arithmetic of Intlab. This can be for instance quantified by measuring the time  that our implementation of the classical 
-outer-approximated Taylor Model takes on the same example with the same parameters: it takes here 213 seconds, so that the overhead due to inner-approximation 
+with Matlab and the affine arithmetic of Intlab. This can be for instance quantified by measuring the time  that our implementation of the classical 
+outer-approximated Taylor Model takes on the same example with the same parameters: it takes here 213 seconds (where VNode takes virtually no time), so that the overhead due to inner-approximation 
 is really of the same order of magnitude (intuitively, the time from outer to inner-approximation with our approach should indeed approximately 
 be multiplied by the dimension of the Jacobian). 
-\ForAuthors{Pas hyper hyper clair? Sinon je peux aussi te dire combien VNODE prend de temps pour la outer-approx, ca donne aussi une idee du facteur du a l'implem?}
+%\ForAuthors{Pas hyper hyper clair? Sinon je peux aussi te dire combien VNODE prend de temps pour la outer-approx, ca donne aussi une idee du facteur du a l'implem?}
 % Our implementation takes a total of 3400 secs (for computing both outer and inner approximations). pour 0.02
 
 %\begin{center}
@@ -174,9 +175,10 @@ be multiplied by the dimension of the Jacobian).
 
 On Figure~\ref{ex:width_sriram_bruss}, we see that at $t=3$, the relative width of the inner-approximation over the
 outer-approximation is of order $0.7$, which is equal to the value given in Table~1 of \cite{Underapproxflowpipes}. 
-However, this ration decreases quickly, mostly due to the $x_2$ component, and at $t=4$, we get a ratio very close to $0.1$,
+However, this ratio decreases quickly, mostly due to the $x_2$ component, and at $t=4$, we get a ratio very close to $0.1$,
 instead of 0.55 as in [1]. Indeed, $t=4$ is a time at which, as already seen in Section~\ref{sec:exp_bruss}, our 
-inner-approximation of variable $x_2$ is temporarily of lower quality.
+inner-approximation of variable $x_2$ is temporarily of lower quality, whereas $x_1$ inner estimate
+is still of high quality.
 \begin{figure}
 \begin{center}
 \epsfig{file=sriram_bruss_order4_t4_minwidth.png,clip=,width=8cm}
@@ -191,8 +193,8 @@ initial value interval, and it could be interesting to try a higher order model 
 \epsfig{file=sriram_bruss_order4_t4_widthx1x2.png,clip=,width=8.cm}
 \caption{Width of the inner- and outer-approximations of x1 and x2 with time \label{ex:width_sriram_bruss_x1x2}}
 \end{figure}
-We thus get on this example, with the same parameters for the Taylor models, worse inner-approximation quality for a longer time of our implementation. 
-However, our approach allows us here to reduce the order of our models and take larger time steps for very close quality of results on $\gamma$: taking order 3 
+We thus get on this example, with the same parameters for the Taylor models, worse inner-approximatiwith our implementation, for the longer $T=4$.
+However, our approach allows us here to reduce the order of the Taylor models we use and take larger time steps, still obtaining results of very similar quality on $\gamma$: taking order 3 
 Taylor models and a timestep of 0.1, we get a computation time of 93 seconds, thus comparable now to \cite{Underapproxflowpipes}. 
 Further decreasing the precision starts degrading the quality of results.    
 
@@ -227,9 +229,9 @@ with order 3 Taylor Models and a stepsize of 0.02. The computation completes in 
 $\gamma(t=0.2) \approx 0.61$, which is this time a much better accuracy than the $\gamma(t=0.2) = 0.25$ obtained in 632 seconds in  \cite{Underapproxflowpipes}. 
 This seems to confirm that our approaches scales very well to high dimensional systems. 
 Again, the 118 seconds for the inner-approximation flowpipe must also be compared to the 36.9 seconds that our implementation of the classical 
-outer-approximated Taylor Model takes with the same parameters.
+outer-approximated Taylor Model takes with the same parameters (for which the implementation in VNode takes almost no time).
 
-We also measure as an indication of the accuracy the mean value on the components $x_i$ of the distance between the inner and outer approximations, $\sum_i=1^n \frac{|x_i^{out} - x_i^{in}|}{n}$,
+We also measure as an indication of the accuracy the mean value on the components $x_i$ of the distance between the inner and outer approximations, $\sum_{i=1}^n \frac{|x_i^{out} - x_i^{in}|}{n}$,
 which is an over-estimation of the error between our inner-approximation and the exact reachable state: this value for $T=0.2$ is $4.10^{-3}$.
 
 %elapsed_time_AA =  122.1330, step = 0.02, order 3
@@ -246,7 +248,7 @@ which is an over-estimation of the error between our inner-approximation and the
 %\end{figure}
 
 \subsubsection{Comparison to \cite{underapprox16}}
-\paragraph{Comparison to \cite{underapprox16} on the Brusselator}
+\paragraph{Comparison on the Brusselator}
 In \cite{underapprox16} the authors take $X=[0.3, 0.4] \times [0.5, 0.7]$ for a time frame in [0,1.1], and a time step h=0.05. 
 We compute the inner and outer-approximations, with order 3 Taylor Models, evaluated in affine arithmetic, in 45 seconds.
 In comparison, our implementation of the classical outer-approximated Taylor models takes 16 seconds. 
@@ -270,9 +272,10 @@ and the outer approximations, for each variable $x_1$ and $x_2$.
 \end{figure}
 This distance should in some sense be comparable to the parameter  $\epsilon_M$ which is used to estimate the precision in \cite{underapprox16}.
 We find a distance equal to 0.005 for $x_1$, and 0.01 for $x_2$, which is 10 times larger than their estimation of 0.001, in 55 seconds, 
-of the parameter  $\epsilon_M$ used to estimate the precision in \cite{underapprox16}, which we beleive comparable in spirit to our distance. 
+of the parameter  $\epsilon_M$ used to estimate the precision in \cite{underapprox16}, which we believe comparable in spirit to our distance. 
 
-\ForAuthors{Eric. Commenter sur ce que veut dire leur epsilonM }
+%\ForAuthors{Eric. Commenter sur ce que veut dire leur epsilonM }
+%HYPHOP
 
 %\ForAuthors{De ce que je comprends, leur $\epsilon_M$ est la pr\'ecision
 %avec laquelle ils donnent une surapprox de la frontiere du reachable set.
@@ -309,13 +312,13 @@ for time in [0,0.2] , and use order 3 Taylor Models and a stepsize of 0.02. Our 
 
 Using as quality measure the measure of  \cite{Underapproxflowpipes} that computes the ratio $\gamma$ of the width of the inner-approximation over the width of the outer-approximation, 
 here componentwise on the variables, and using our outer-approximation in both cases, we obtain for our approximation
-$(\gamma_1,\ldots,\gamma_n)=(0.9707,   0.9992,   0.9734,   0.9384,   0.9389,   0.9701,   0.9716)$
-while with teh results of \cite{underapprox16} we get the lower quality results
+$(\gamma_1,\ldots,\gamma_n)=(0.9707,   0.9992,   0.9734,   0.9384,   0.9389,   0.9701,   0.9716)$, 
+while with the results of \cite{underapprox16} we get the lower quality results
 $(\gamma_1,\ldots,\gamma_n)=( 0.85,   0.86,   0.22,   0.84 ,  0.84 ,  0.85,   0.85)$.
 
-We also compare our results with an outer-approximation of VNODE, computed by a Taylor model of order 5 in less than a second, which gives an idea of the overhead of our matlab implementation, 
-as our outer-approximated classical Taylor model of order 3 takes 36 seconds on the same example. We give on Figure~\ref{fig:histo} the upper bound for each of the 7 variables $x_i$ on the outer-approximation by VNODE, 
-our outer-approximation, our inner-approximation, and that of \cite{underapprox16} (which is sometimes 0, explaining absent 'related' bars for some variables).
+We also compare our results with an outer-approximation of VNODE, computed by a Taylor model of order 5 in less than a second, which gives an idea of the overhead of our Matlab implementation, 
+as our outer-approximated classical Taylor model of order 3 takes 36 seconds on the same example. We give on Figure~\ref{fig:histo} the upper bound for each of the 7 variables $x_i$ on the outer-approximation by VNode,  
+our outer-approximation, our inner-approximation, and that of \cite{underapprox16} (which is sometimes 0, explaining absent 'related' bars for some variables), in that order, from left to right.
 \begin{figure}[htbp]
 \begin{center}
 \epsfig{file=histo_sup.png,clip=,width=8cm}
@@ -380,7 +383,7 @@ our outer-approximation, our inner-approximation, and that of \cite{underapprox1
 
 
 
-\subsection{Other examples}
+%\subsection{Other examples}
 %\paragraph{Moore-Greitzer model of a jet engine}
 %\begin{equation}
 %\dot{\left(\begin{array}{c}
@@ -458,21 +461,21 @@ our outer-approximation, our inner-approximation, and that of \cite{underapprox1
 %\end{array}\right)
 %\end{equation}
 
-\paragraph{Integrable systems}
-To make precision estimates of our method. 
+%\paragraph{Integrable systems}
+%To make precision estimates of our method. 
 
 %$$\dot{u}=u^2$$
 %\noindent with $u(0)=u_0$. 
 %Then $u=\frac{u_0}{1-u_0t}$
 
-The logistic equation :
+%The logistic equation :
 
-$$\dot{u}=\lambda u(1-u)$$
-\noindent with $u(0)=u_0$. Then
-$u(t)=\frac{u_0e^{\lambda t}}{1-u_0+u_0e^{\lambda t}}$.
+%$$\dot{u}=\lambda u(1-u)$$
+%\noindent with $u(0)=u_0$. Then
+%$u(t)=\frac{u_0e^{\lambda t}}{1-u_0+u_0e^{\lambda t}}$.
 
-\ForAuthors{Pour $0 < u_0 < 1$ et $\lambda > 0$ par exemple, c'est une fonction decroissante
-en $u_0$ et $\lambda$ donc on trouve facilement les bornes!}
+%\ForAuthors{Pour $0 < u_0 < 1$ et $\lambda > 0$ par exemple, c'est une fonction decroissante
+%en $u_0$ et $\lambda$ donc on trouve facilement les bornes!}
 
 %\ForAuthors{Pas mal d'autres dans \url{http://www.math.umn.edu/~olver/am_/odz.pdf} mais les deux au dessus paraissent simples et raisonnables, surtout la 
 %logistic equation?}
@@ -483,12 +486,12 @@ en $u_0$ et $\lambda$ donc on trouve facilement les bornes!}
 %$$y(t)=\left(exp\left(\frac{3t}{2} - \frac{3a}{2} + log(a + 1)\right) - a\right)^{\frac{2}{3}}$$
 %(from Mathworks - can find $y(0)$ and translate it into polynomial system?)
 
-\subsection{Conclusion}
-Resultats preliminaires qui peuvent ne pas sembler que positif mais a priori essentiellement dus a la presente implem
-\ForAuthors{
-- comparaison sur / sous-approx => sous-approx competitive en complexite par rapport aux modeles de Taylor classiques\\
-- bon passage a l'echelle sur degre 7 ? \\
-- IA / AA laissant etendre que implem AA utilisee tres sous-optimale
-- un des interets est qu'on peut raffiner la precision (sur et sous-approximee) en montant en ordre a la demande, du style algo a pas ou ordre adaptatif par cette 
-estimation directe de l'erreur!
-}
+%\subsection{Conclusion}
+%Resultats preliminaires qui peuvent ne pas sembler que positif mais a priori essentiellement dus a %la presente implem
+%\ForAuthors{
+%- comparaison sur / sous-approx => sous-approx competitive en complexite par rapport aux modeles de Taylor classiques\\
+%- bon passage a l'echelle sur degre 7 ? \\
+%- IA / AA laissant etendre que implem AA utilisee tres sous-optimale
+%- un des interets est qu'on peut raffiner la precision (sur et sous-approximee) en montant en ordre a la demande, du style algo a pas ou ordre adaptatif par cette 
+%estimation directe de l'erreur!
+%}
