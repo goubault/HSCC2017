@@ -41,7 +41,7 @@ toolbox.
 \caption{Brusselator, evaluation of the Taylor models (order 3) with interval vs affine arithmetic \label{fig:brusselator_order3_t1}}
 \end{figure}
 
-In the following experiments, we use Taylor models of order 4, and represent respectively in Figures~\ref{fig:brusselator_order4_x1_t10} and~\ref{fig:brusselator_order4_x2_t10}, the inner and outer approximated flowpipes for variables $x1$ and $x2$, with an evaluation in affine arithmetic, up to a maximum time $t=10$. We see that for both variables, while the width of the outer-approximation stays relatively stable with time, the width of the inner-approximation can decrease until the inner-approximation becomes empty, but the width can still later be non-zero again. This is the case for instance on variable $x_2$ around time $t=4$. Also, we can note that the inner-approximations on x1 and x2 do not get empty at the same time. 
+In the following experiments, we use Taylor models of order 4, and represent respectively in Figures~\ref{fig:brusselator_order4_x1_t10} and~\ref{fig:brusselator_order4_x2_t10}, the inner and outer approximated flowpipes for variables $x1$ and $x2$, with an evaluation in affine arithmetic, up to a maximum time $t=10$. We see that for both variables, the width of the inner-approximation can decrease until the inner-approximation becomes empty, but the width can still later be non-zero again. This is the case for instance on variable $x_2$ around time $t=4$. Also, we can note that the inner-approximations on x1 and x2 do not get empty at the same time. 
 %At first look, this could appear as a bug in our implementation, but this is not the case. 
 This is not a bug : this phenomenon is an illustration of the fact detailed in Section~\ref{practicalissues}, that when adding an improper with a proper interval, we can get a proper interval, which results in an empty inner-approximation, but this does not prevent us to keep computing the Taylor models that can give non-empty inner-approximations at later times, depending on the behaviour of the Jacobian of the flow.    
 
@@ -170,16 +170,13 @@ be multiplied by the dimension of the Jacobian).
 %\begin{center}
 %\epsfig{file=sriram_bruss_order4_t4_x2.png,clip=,width=8cm}
 %\end{center}
-\begin{figure}
-\begin{tabular}{cc}
-\epsfig{file=sriram_bruss_order4_t4_widthx1.png,clip=,width=4.cm}
-&
-\epsfig{file=sriram_bruss_order4_t4_widthx2.png,clip=,width=4.cm}
-\end{tabular}
-\caption{Width of the inner- and outer-approximations of x1 and x2 with time (order 4, h=0.02)}
-\ForAuthors{Trop petit comme ca?}
-\end{figure}
 
+
+On Figure~\ref{ex:width_sriram_bruss}, we see that at $t=3$, the relative width of the inner-approximation over the
+outer-approximation is of order $0.7$, which is equal to the value given in Table~1 of \cite{Underapproxflowpipes}. 
+However, this ration decreases quickly, mostly due to the $x_2$ component, and at $t=4$, we get a ratio very close to $0.1$,
+instead of 0.55 as in [1]. Indeed, $t=4$ is a time at which, as already seen in Section~\ref{sec:exp_bruss}, our 
+inner-approximation of variable $x_2$ is temporarily of lower quality.
 \begin{figure}
 \begin{center}
 \epsfig{file=sriram_bruss_order4_t4_minwidth.png,clip=,width=8cm}
@@ -187,11 +184,15 @@ be multiplied by the dimension of the Jacobian).
 \caption{Evolution of $\gamma_{\min}$ with time}
 \label{ex:width_sriram_bruss}
 \end{figure}
-On Figure~\ref{ex:width_sriram_bruss}, we see that at $t=3$, the relative width of the inner-approximation over the
-outer-approximation is of order $0.7$, which is equal to the value given in Table~1 of \cite{Underapproxflowpipes}. 
-However, this ration decreases quickly, mostly due to the $x_2$ component, and at $t=4$, we get a ratio very close to $0.1$,
-instead of 0.55 as in [1]. Indeed, $t=4$ is a time at which, as already seen in Section~\ref{sec:exp_bruss}, our 
-inner-approximation of variable $x_2$ is temporarily of lower quality. 
+We also see from Figure~\ref{ex:width_sriram_bruss_x1x2} that when the width of the inner-approximation on $x_2$ gets very close 
+to zero (around t=4), the width of the outer-approximation is also strongly decreasing: the difference between these width remains 
+quite stable. This almost constant difference could be due to the outer-approximation of the flow starting from the center of our 
+initial value interval, and it could be interesting to try a higher order model to estimate this center only.
+\begin{figure}[htbp]
+\epsfig{file=sriram_bruss_order4_t4_widthx1x2.png,clip=,width=8.cm}
+\caption{Width of the inner- and outer-approximations of x1 and x2 with time}
+\label{ex:width_sriram_bruss_x1x2}
+\end{figure}
 We thus get on this example, with the same parameters for the Taylor models, worse inner-approximation quality for a longer time of our implementation. 
 However, our approach allows us here to reduce the order of our models and take larger time steps for very close quality of results on $\gamma$: taking order 3 
 Taylor models and a timestep of 0.1, we get a computation time of 93 seconds, thus comparable now to \cite{Underapproxflowpipes}. 
