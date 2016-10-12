@@ -181,8 +181,7 @@ inner-approximation of variable $x_2$ is temporarily of lower quality.
 \begin{center}
 \epsfig{file=sriram_bruss_order4_t4_minwidth.png,clip=,width=8cm}
 \end{center}
-\caption{Evolution of $\gamma_{\min}$ with time}
-\label{ex:width_sriram_bruss}
+\caption{Evolution of $\gamma_{\min}$ with time \label{ex:width_sriram_bruss} }
 \end{figure}
 We also see from Figure~\ref{ex:width_sriram_bruss_x1x2} that when the width of the inner-approximation on $x_2$ gets very close 
 to zero (around t=4), the width of the outer-approximation is also strongly decreasing: the difference between these width remains 
@@ -190,8 +189,7 @@ quite stable. This almost constant difference could be due to the outer-approxim
 initial value interval, and it could be interesting to try a higher order model to estimate this center only.
 \begin{figure}[htbp]
 \epsfig{file=sriram_bruss_order4_t4_widthx1x2.png,clip=,width=8.cm}
-\caption{Width of the inner- and outer-approximations of x1 and x2 with time}
-\label{ex:width_sriram_bruss_x1x2}
+\caption{Width of the inner- and outer-approximations of x1 and x2 with time \label{ex:width_sriram_bruss_x1x2}}
 \end{figure}
 We thus get on this example, with the same parameters for the Taylor models, worse inner-approximation quality for a longer time of our implementation. 
 However, our approach allows us here to reduce the order of our models and take larger time steps for very close quality of results on $\gamma$: taking order 3 
@@ -313,7 +311,18 @@ Using as quality measure the measure of  \cite{Underapproxflowpipes} that comput
 here componentwise on the variables, and using our outer-approximation in both cases, we obtain for our approximation
 $(\gamma_1,\ldots,\gamma_n)=(0.9707,   0.9992,   0.9734,   0.9384,   0.9389,   0.9701,   0.9716)$
 while with teh results of \cite{underapprox16} we get the lower quality results
-$(\gamma_1,\ldots,\gamma_n)=( 0.85,   0.86,   0.22,   0.84 ,  0.84 ,  0.85,   0.85)$
+$(\gamma_1,\ldots,\gamma_n)=( 0.85,   0.86,   0.22,   0.84 ,  0.84 ,  0.85,   0.85)$.
+
+We also compare our results with an outer-approximation of VNODE, computed by a Taylor model of order 5 in less than a second, which gives an idea of the overhead of our matlab implementation, 
+as our outer-approximated classical Taylor model of order 3 takes 36 seconds on the same example. We give on Figure~\ref{fig:histo} the upper bound for each of the 7 variables $x_i$ on the outer-approximation by VNODE, 
+our outer-approximation, our inner-approximation, and that of \cite{underapprox16} (which is sometimes 0, explaining absent 'related' bars for some variables).
+\begin{figure}[htbp]
+\begin{center}
+\epsfig{file=histo_sup.png,clip=,width=8cm}
+\end{center}
+\caption{Upper bound inner and outer-approximations on the 7 variables of the biological system \label{fig:histo}}
+\end{figure}
+
 
 %We get as width of inner-approximation on each component at time 0.2 the following:
 
