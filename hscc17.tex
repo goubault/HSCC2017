@@ -289,12 +289,12 @@
 
 \maketitle
 \begin{abstract}
-We propose an approach for computing inner-approximations (also called under-approximations) of reachable sets of dynamical systems 
+We propose an approach for computing inner-approxima\-tions (also called under-approximations) of reachable sets of dynamical systems 
 defined by non-linear, uncertain, ordinary differential equations. This is a notoriously difficult problem, much more intricate than 
 outer-approximations for whi\-ch there exist well known solutions, mostly based on Taylor models. 
 The few methods developped recently for inner-approximation mostly rely on backward flowmaps, and extra ingredients, either coming from optimisation, 
 or involving topological criteria, are required. Our solution, in comparison, builds on rather inexpensive set-based methods, namely a generalized
-mean-value theorem combined with Taylor models outer-approximations (also called over-approx\-imations) of the flow and its jacobian with respect 
+mean-value theorem combined with Taylor models outer-approximations (also called over-approx\-imations) of the flow and its Jacobian with respect 
 to the uncertain inputs and parameters.
 %for inner-approximations is also based on Taylor models, but contrarily to the few methods developped recently, 
 % is a direct forward method, which only relies on rather inexpensive set-based methods, namely a generalized mean-value theorem 
@@ -438,7 +438,7 @@ greatly reducing the incurred costs.
 %- guards \\
 
 Finally, we carry out some 
-experiments with a matlab implementation and make tentative comparisons to existing work in Section \ref{sec:experiments}. 
+experiments with a Matlab implementation and make tentative comparisons to existing work in Section \ref{sec:experiments}. 
 
 % (but dual approaches - mostly bacward inner reachability ? - combination to be studied ?) 
 
@@ -490,7 +490,8 @@ The method we are presenting is much more straightforward, and relies only on cl
 Taylor models (although for a slightly augmented system of ODEs), and on simple methods
 for inner-approximating the image of a non-linear vector-valued scalar functions. 
 
-Finally, the authors have recently discovered the work \cite{Gold06}, whose Section 4 contains
+Finally, the authors have recently discovered Section 4 of the work \cite{Gold06}, which
+contains
 ideas that look similar to ours. The main differences seem to be that we are considering more
 general parameterized dynamical systems, which will later allow us to handle guard conditions for hybrid systems, 
 and that we have a different scheme for bounding
@@ -737,7 +738,7 @@ as: $\forall z \in [2.25,5.25]$, $\exists x \in [2,3],$  $z=f(x)$. Thus, $[2.25,
 
 In Section~\ref{sec:inner_reachability}, we will be using Theorem~\ref{thm1} with $f$ being the solution of the uncertain dynamical system 
 (\ref{eq:flowb}): for this, we need to be able to outer-approximate, at any time $t$, $f(\tilde x), \tilde x \in \pro \x$, 
-and its jacobian with respect to the (uncertain) initial value of the system, $\left\{ \frac{\partial f}{\partial x_i} (x), \; x \in \pro \x \right\}$.
+and its Jacobian with respect to the (uncertain) initial value of the system, $\left\{ \frac{\partial f}{\partial x_i} (x), \; x \in \pro \x \right\}$.
 Computing an enclosure of the solution of an initial value problem is the objective of Section~\ref{sec:Taylor}.  
 
 \subsection{Enclosing the flow of an uncertain ODE with interval Taylor methods}
@@ -899,7 +900,7 @@ using the outer-approximation for $z(t,z_0)$ given by Taylor expansion~(\ref{eq:
 We just have to note that Equations (\ref{eq:IVP_jac}) together with Equations
 (\ref{eq:flow}) define a system of $n(n+1)$ ordinary differential equations in $n(n+1)$
 variable (the $z_i$ and $J_{ij}$). We call the corresponding vector field $F$ and
-write similarly, by an abuse of notation, for $H$ a function in the $z_i$ and $J_{ij}$,
+write similarly, by an abuse of notation, for $H$ a function in variables $z_i$ and $J_{ij}$,
 $H^{[i]}$ the $i-1$th Lie derivative of $H$ along the (augmented) vector field $H$. More
 explicitly, it is defined inductively as follows : 
 \begin{eqnarray}
@@ -1118,8 +1119,8 @@ with the calculation of the Jacobian. Without this, we would have written:
 [\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} (\mbox{Jac}_x(f))^{[i]}([{\r}_{j+1}],[{\J}_j]) \\ +  \frac{(t-t_j)^k}{k !} (\mbox{Jac}_x(f))^{[k]}([{\r}_{j+1}],[\bfm{R}_{j+1}])
 \label{eq:TM3b}
 \end{multline}
-\noindent ($\mbox{Jac}_x(f)$ being seen as a function of the $z_i$ and $J_{ij}$, which 
-is linear in the $J_{ij}$ as in Equation (\ref{pqentry}))
+\noindent ($\mbox{Jac}_x(f)$ being seen as a function of variables $z_i$ and $J_{ij}$, which 
+is linear in the $J_{ij}$ as in Equation (\ref{pqentry})). 
 %\noindent where $(\mbox{Jac}_x(f))^{[i]}$ denotes the $i$th Lie derivative of 
 %$\mbox{Jac}_x(f)$ along the vector field defined by Equation (\ref{eq:IVP_jac2}), i.e. is
 %the derivation defined by induction as follows (for all $k$ and $l$ between 1 and $n$), 
@@ -1225,15 +1226,16 @@ $p(z) ? 0$ (where $?$ may be equality, less or equal etc.) when analyzing
 hybrid systems, or for proving some specification depending on arithmetic expressions of
 the state variables $p$ again, we can just evaluate $]p(z)[$ by using simple
 affine arithmetic and 
-Equations (\ref{eq:inner_cont})
+Equations (\ref{eq:inner_cont}). 
 
 \begin{example}
 \label{running3}
 We compute a first-order Taylor model for the Brusselator, using Equation
 (\ref{eq:TM}) with $k=2$, and using affine arithmetic to compute 
 $\mbox{Jac}_x(f^{[i]})([\r_{j+1}])[\J_j]$ and $f^{[i]}([{\z}_j])$.
-\ForAuthors{Tout a coup j'ai un doute, ce n'est pas 
-$\mbox{Jac}_x(f^{[i]}([\z_j])[\J_j]$ plutot?} We start with 
+%\ForAuthors{Tout a coup j'ai un doute, ce n'est pas 
+%$\mbox{Jac}_x(f^{[i]}([\z_j])[\J_j]$ plutot?} 
+We start with 
 $\intvl{x_0}=\left([2,2.5],[0.1,0.15]\right)$, hence, in affine arithmetic,
 $\intvl{x_0}=\left(\frac{83}{40}+\frac{3}{40}\epsilon_1,
 \frac{1}{8}+\frac{1}{40}\epsilon_2\right)$. Evaluating $f^{[1]}=f$ using
