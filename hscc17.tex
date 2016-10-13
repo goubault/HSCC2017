@@ -618,7 +618,7 @@ $ (\forall z \in ]\pro \z[) \, (\exists x \in \pro \x) \, (f(x)=z).    $
 %\subsection{Kaucher arithmetic and the generalized interval natural extension}
 %\label{Kaucherar2}
  Kaucher arithmetic~\cite{Kaucher} returns intervals that are interpretable as inner-approximations in some simple cases. 
-Kaucher addition extends addition on classical intervals by $\x+\y=[\underline x + \underline y,\overline x + \overline y]$ and 
+Kau\-cher addition extends addition on classical intervals by $\x+\y=[\underline x + \underline y,\overline x + \overline y]$ and 
 $\x-\y=[\underline x - \overline y,\overline x - \underline y]$.
 
 For multiplication, things are a little more complex. Let us decompose $\K$ in ${\cal P} = \{\x=[\underline x,\overline x], \; \underline x \geqslant 0 \wedge
@@ -1439,7 +1439,7 @@ interval resulting from the Kaucher multiplication, then the sum of the two inte
 and the inner-approximation empty. This will be examplified in the experiments. 
 
 
-It must be noted that the quality of the inner-approxima\-tion is strongly linked to the quality of the outer-approximation. 
+It must be noted that the quality of the inner-approxima\-tion is strongly linked to the quality of the outer-approxima\-tion. 
 In particular, as we rely on Taylor models, if necessary we can locally improve the quality by using higher-order models. 
 And as we know that the exact reachable set of the uncertain system lies between the inner and outer-approximated flows, 
 we can bound the approximation error at each instant, and use this information to dynamically refine the appproximation.  
@@ -1466,7 +1466,7 @@ We thus efficiently find a quite tight characterization of the reachable set wit
 the Brusselator at time $h$~: 
 $$\left[1.8973,2.0400\right]
 \subseteq z(h,0,\intvl{z_0})\subseteq \left[1.88320, 2.05421\right]$$
-Of course, similarly to Example \ref{running3} for the outer-approximation of $z$, Equation (\ref{eq:inner_cont})
+Of course, similarly to Example \ref{running3} for the outer-approxima\-tion of $z$, Equation (\ref{eq:inner_cont})
 is valid for all times $t$ in $[0,h]$, hence gives an inner-approximation of the flowpipe for the Brusselator. This is
 what we will be doing in Section \ref{sec:exp_bruss}.  
 %\ForAuthors{Peut-etre mettre la formule pour tout $t$ pour insister sur le flowpipe sous-approx/sur-approx ; a completer et comparer avec sur-approx au temps h}
@@ -1485,7 +1485,7 @@ what we will be doing in Section \ref{sec:exp_bruss}.
 \section{Conclusion and future work}
 %******************************************************************************
 %
-We presented an approach to compute inner-approximating flowpipes of uncertain ODEs, that extends in a simple way Taylor-based 
+We presented an approach to compute inner-approxima\-ting flowpipes of uncertain ODEs, that extends in a simple way Taylor-based 
 methods for outer-approximating flowpipes. We assessed the good behaviour of the inner- compared to the classical outer-approximations
 with a preliminary matlab implementation, and showed that the method scales very well to larger-order systems of ODEs. 
 The joint computation of the inner and outer approximating flowpipes gives us at each instant a bound on the error to the exact reachable 
