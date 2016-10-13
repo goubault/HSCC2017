@@ -878,7 +878,7 @@ We will %write equivalently, by a slight abuse of notation,
 denote by $\nabla_z f$ the function of variables $z_i$ and $J_{ij}$ (linear in $J_{ij}$) which is
 the right hand side of Equation \ref{eq:IVP_jac2}. Hence, its $pq$ entry is : 
 \begin{equation}
-(\nabla_z f)_{pq}(z_i,J_{ij}) = \sum\limits_{k=1}^n \frac{\partial f_p}{\partial z_k}(z_i) J_{kq}
+(\nabla_z f)_{pq}(z,J) = \sum\limits_{k=1}^n \frac{\partial f_p}{\partial z_k}(z) J_{kq}
 \label{pqentry}
 \end{equation}
 A Taylor expansion can thus be used to outer-approximate the solution of~(\ref{eq:IVP_jac2}) noted ${\cal J}(t;t_0,\z_0)$ on each time interval  $[t_j,t_{j+1}]$, 
