@@ -301,7 +301,7 @@ to the uncertain inputs and parameters.
 %applied to 
 % instead of the %clever, but still complicated, 
 %existing  methods relying on backward flowmaps and for which extra ingredients, either coming from optimisation, or involving topological criteria, are required. 
-We are able to show with our prototype Matlab implementation that our method is both efficient and
+We demonstrate with a Matlab implementation that our method is both efficient and
 precise on classical examples. 
 %\ForAuthors{Est-ce dangereux de se placer un peu sur la complexite? On pourrait nous reprocher d'avoir un
 %nombre d'equations en le produit du nombre d'equations d'origine, avec le nombre de variables... Mais la methode
@@ -364,16 +364,14 @@ SpaceEx \cite{SPACEEX}, Flow* \cite{FLOW} and VNODE-LP \cite{VNODELP} to mention
 
 If outer-approximations describe states that may be rea\-ched, inner-approximations represent
 states that are actually reachable from one of the initial states. Inner-approxima\-tions are
-thus a very useful complement to ordinary outer-approxima\-tions, since they allow to show
-that a system must indeed reach a target or even a bad state. Also, the combination of
+thus a very useful complement to  outer-approxima\-tions, since they allow to show
+that some executions of the system will actually reach a target or a bad state. Also, the combination of
 inner and outer-approximations allows for judging the quality of the abstractions involved. 
-
-But 
-methods for inner-approximated reachability are far less developed, and especially in the non-linear case, 
+But methods for inner-approximated reachability are far less developed, and especially in the non-linear case, 
 since most methods in the non-linear case rely on conservative linearizations, which necessarily produce outer approximations.
 
 In this work, we concentrate on the inner-approximation of the reachable sets of
-the continuous part of hybrid systems. We intend to handle guard conditions in subsequent work.
+the continuous part of hybrid systems. %We intend to handle guard conditions in subsequent work.
 %The discrete part has been treated elsewhere \cite{hscc14}
 %and we intend to treat guards in subsequent work. 
 We consider general systems of parametric ODEs, i.e. possibly non-linear, or
@@ -400,12 +398,12 @@ the state vector $x$ and of the function $f$.
 
 \paragraph{Contributions:}
 
-This paper extends the work presented in ~\cite{sas07,hscc14}, where their authors proposed an approach for direct forward inner-approximated reachability of 
+This paper extends the work of ~\cite{sas07,hscc14}, where the authors proposed an approach for direct forward inner-approximated reachability of 
 %\ForAuthors{Attention au double-blind review}
 discrete dynamical systems, and gave a few hints to handle continuous and hybrid systems. 
 %on this previous work. \\
 
-Our method allows for 
+The approach presented here 
 computing inner-approximations of the flow of uncertain initial value problems, defined
 in Section \ref{prelim}. 
 
@@ -1505,8 +1503,8 @@ specific times like the related work, but as flowpipes, that can be used for det
 The symbolic information included in our model  when we evaluate the Taylor models with affine arithmetic, 
 will allow us to use existing work on the inner-approximation 
 of joint range of functions and constraint solving, as e.g.~\cite{DBLP:journals/constraints/IshiiGJ12}.  
-In that respect, our current Matlab prototype, while producing interesting results for the continuous case, does not allow us to 
-handle this symbolic information in a satisfying way, and some engineering improvement is needed and planned.
+%In that respect, our current Matlab prototype, while producing interesting results for the continuous case, does not allow us to 
+%handle this symbolic information in a satisfying way, and some engineering improvement is needed and planned.
 
 Among the main interests of inner-approximation is the possibility to falsify properties. Our mid-term objective in that respect, 
 is to use the combination of inner and outer approximations to tackle the verification and falsification of temporal properties, 
