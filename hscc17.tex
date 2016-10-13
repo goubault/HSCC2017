@@ -874,11 +874,11 @@ The coefficients of the Jacobian matrix of the flow satisfy~:
 \end{equation} 
 with $J(t_0)=Id$ (these are the ``variational equations'' used in particular in \cite{Zgliczynski2002}
 for improving outer-approximations of continuous dynamical systems).
-We will write equivalently, by a slight abuse of notation, 
-$\mbox{Jac}_z f$ as the function of the $z_i$ and $J_{ij}$ (linear in $J_{ij}$) which is
+We will %write equivalently, by a slight abuse of notation, 
+denote by $\nabla_z f$ the function of variables $z_i$ and $J_{ij}$ (linear in $J_{ij}$) which is
 the right hand side of Equation \ref{eq:IVP_jac2}. Hence, its $pq$ entry is : 
 \begin{equation}
-(\mbox{Jac}_z f)_{pq} = \sum\limits_{k=1}^n \frac{\partial f_p}{\partial z_k} J_{kq}
+(\nabla_z f)_{pq}(z_i,J_{ij}) = \sum\limits_{k=1}^n \frac{\partial f_p}{\partial z_k}(z_i) J_{kq}
 \label{pqentry}
 \end{equation}
 A Taylor expansion can thus be used to outer-approximate the solution of~(\ref{eq:IVP_jac2}) noted ${\cal J}(t;t_0,\z_0)$ on each time interval  $[t_j,t_{j+1}]$, 
@@ -967,6 +967,7 @@ otherwise the inner-approximation is empty.\\
 We will illustrate the computations on the following example:
 \begin{example}
 \label{running0}
+\label{running1}
 We consider the Brusselator equation: 
 $$ f(x) = \left(\begin{array}{l}
 1-2 x_1+\frac{3}{2} x_1^2 x_2 \\
@@ -1109,7 +1110,7 @@ relies on the possibility to commute the $i$th Lie derivative
 with the calculation of the Jacobian. Without this, we would have written:
 %\ForAuthors{Faire commuter les derivations plus bas, mais notations pour derivees de Lie a mettre avant ($^{[i]}$)}
 \begin{multline}
-[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} (\mbox{Jac}_z(f))^{[i]}([{\z}_{j}],[{\J}_j]) \\ +  \frac{(t-t_j)^k}{k !} (\mbox{Jac}_z(f))^{[k]}([{\r}_{j+1}],[\bfm{R}_{j+1}])
+[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} (\mbox{Jac}_z(f))^{[i]}([{\z}_{j}]).[{\J}_j] \\ +  \frac{(t-t_j)^k}{k !} (\mbox{Jac}_z(f))^{[k]}([{\r}_{j+1}]).[\bfm{R}_{j+1}]
 \label{eq:TM3b}
 \end{multline}
 \noindent ($\mbox{Jac}_z(f)$ being seen as a function of variables $z_i$ and $J_{ij}$, which 
@@ -1143,12 +1144,12 @@ Equations (\ref{eq:TM3}) and (\ref{eq:TM3b}) are equivalent since the two deriva
 and the Lie derivative) commute.  
 \begin{proof}
 We prove this equivalence by induction on the number of Lie derivations. 
-For $i=1$, we have, by definition $\mbox{Jac}_z(f^{[1]})
-=\mbox{Jac}_z(f)=(\mbox{Jac}_z(f))^{[1]}$. Suppose now we have, as an induction
-step $\mbox{Jac}_z(f^{[i]})=(\mbox{Jac}_z(f))^{[i]}$. We now write~:
+For $i=1$, we have, by definition $\nabla_z(f^{[1]})
+=\nabla_z(f)=(\nabla_z(f))^{[1]}$. Suppose now we have, as an induction
+step $\nabla_z(f^{[i]})=(\nabla_z(f))^{[i]}$. We now write~:
 $$
 %\begin{array}{rclcl}
-\mbox{Jac}_z(f^{[i+1]})_{pq} 
+\nabla_z(f^{[i+1]})_{pq} 
 %& 
 = 
 %& 
@@ -1163,24 +1164,24 @@ $$
 $$
 \noindent hence, 
 \begin{equation}
-\mbox{Jac}_z(f^{[i+1]})_{pq} =  \sum\limits_{k,l=1}^n \left(\frac{\partial^2 f_p^{[i]}}{\partial z_k \partial z_l} f_l
+\nabla_z(f^{[i+1]})_{pq} =  \sum\limits_{k,l=1}^n \left(\frac{\partial^2 f_p^{[i]}}{\partial z_k \partial z_l} f_l
 +\frac{\partial f_p^{[i]}}{\partial z_l}\frac{\partial f_l}{\partial z_k}\right)
 J_{kq}
 \label{firstpart}
 \end{equation}
 On the other hand we have : 
 $$\begin{array}{rcl}
-(\mbox{Jac}_z(f)_{pq})^{[i+1]} & = &
-(\mbox{Jac}_z(f^{[i]})_{pq})^{[2]}
+(\nabla_z(f)_{pq})^{[i+1]} & = &
+(\nabla_z(f^{[i]})_{pq})^{[2]}
 \end{array}$$
 \noindent by Definition (\ref{eqfirstH}) and by the induction step. 
 Using now Equation (\ref{eqfirstH}) and using the fact (Equation (\ref{pqentry})) that :
 $$\begin{array}{rcl}
-(\mbox{Jac}_z(f^{[i]}))_{pq} = \sum\limits_{k=1}^n \frac{\partial f^{[i]}_p}{\partial z_k} J_{kq}
+(\nabla_z(f^{[i]}))_{pq} = \sum\limits_{k=1}^n \frac{\partial f^{[i]}_p}{\partial z_k} J_{kq}
 \end{array}$$
 \noindent we have~:  
 \begin{multline}
-(\mbox{Jac}_z(f)_{pq})^{[i+1]}  = 
+(\nabla_z(f)_{pq})^{[i+1]}  = 
 \sum\limits_{k,l=1}^n \frac{\partial^2 f_p^{[i]}}{\partial z_k \partial z_l} f_l J_{kq} \\
 + \sum\limits_{r=1}^n \frac{\partial f_p^{[i]}}{\partial z_r}\left(\sum\limits_{t=1}^n
 \frac{\partial f_r}{\partial z_t} J_{tq} \right)
@@ -1188,7 +1189,7 @@ $$\begin{array}{rcl}
 %& & +\sum_{k,l=1}^n \frac{\partial (\mbox{Jac}_x(f)_{pq})^{[i]}}{\partial J_{jk}} \left(
 %\sum_{l=1}^n \frac{\partial f_j}{\partial z_l} J_{lk}\right)
 \end{multline}
-\noindent which is thus seen to be equal to $\mbox{Jac}_z(f^{[i+1]})_{pq}$ by
+\noindent which is thus seen to be equal to $\nabla_z(f^{[i+1]})_{pq}$ by
 Equation (\ref{firstpart}). 
 %\noindent but $(\mbox{Jac}_x(f)_{pq})^{[i]}$ does not depend on variables $J_{ij}$ since
 %$f$ does only depend on variables $z_i$, so
@@ -1388,7 +1389,7 @@ which slighly overapproximates the result of Equation (\ref{outerapprox}), using
 
 \paragraph{Computing the center of the inner-approximation}
 
-Equation (\ref{eq:TM2}) is required to estimate the inner-approximations as in Equation (\ref{eq:inner_cont}) : we need to propagate a ``center'' in 
+Equation (\ref{eq:TM2}) is required to estimate the inner-approxima\-tions as in Equation (\ref{eq:inner_cont}) : we need to propagate a ``center'' in 
 a flowpipe of solutions of ODE (\ref{eq:flow}), at each time step $t_j$ in our time
 grid, and this central solution is certainly not in general derivable from the 
 outer-approximation of the flowpipe, e.g. as its midpoint. 
