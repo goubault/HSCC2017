@@ -36,29 +36,30 @@ toolbox.
  
 \begin{figure}[htbp]
 \begin{center}
-\epsfig{file=brusselator_x1_IA_AA.png,clip=,width=9cm}
+\epsfig{file=brusselator_x1_IA_AA.png,width=9cm,height=7cm}
 \end{center}
-\caption{Brusselator, evaluation of the Taylor models (order 3) with interval vs affine arithmetic \label{fig:brusselator_order3_t1}}
+\caption{Brusselator, order 3 Taylor models (order 3) with interval vs affine arithmetic \label{fig:brusselator_order3_t1}}
 \end{figure}
 
-In the following experiments, we use Taylor models of order 4, and represent respectively in Figures~\ref{fig:brusselator_order4_x1_t10} and~\ref{fig:brusselator_order4_x2_t10}, the inner and outer approximated flowpipes for variables $x_1$ and $x_2$, with an evaluation in affine arithmetic, up to a maximum time $t=10$. We see that for both variables, the width of the inner-approximation can decrease until the inner-approximation becomes empty, but the width can still later be non-zero again. This is the case for instance on variable $x_2$ around time $t=4$. Also, we can note that the inner-approximations on x1 and x2 do not get empty at the same time. 
+In the following experiments, we use Taylor models of order 4, and represent  in Figure~\ref{fig:brusselator_order4_x2_t10}, the inner and outer approximated flowpipes for variable $x_2$, with an evaluation in affine arithmetic, up to a maximum time $t=10$. We see that the width of the inner-approximation can decrease until the inner-approximation becomes empty (this is the case for variable $x_2$ around $t=4$), but the width can still later be non-zero again. 
 %At first look, this could appear as a bug in our implementation, but this is not the case. 
-This is not a bug : this phenomenon is an illustration of the fact detailed in Section~\ref{practicalissues}, that when adding an improper with a proper interval, we can get a proper interval, which results in an empty inner-approximation. Nevertheless, this does not prevent us from carrying
-on with the compution of the Taylor models~:  they can indeed give non-empty inner-approximations at later times, depending on the behaviour of the Jacobian of the flow.    
+This is not a bug : this phenomenon is an illustration of the fact detailed in Section~\ref{practicalissues}, that when adding an improper with a proper interval, we can get a proper interval, which results in an empty inner-approximation (for one variable - actually, on this example, the inner-approximations of the two variables do not become empty at the same time). 
+Nevertheless, this does not prevent us from carrying
+on with the compution of the Taylor models~:  they can indeed give non-empty inner-approximations at later times, 
+depending on the behaviour of the Jacobian of the flow.    
+
+%\begin{figure}[htbp]
+%\begin{center}
+%\epsfig{file=brusselator_x1_t10.png,clip=,width=9cm}
+%\end{center}
+%\caption{Brusselator (x1), evaluation of the Taylor models (order 4) with affine arithmetic \label{fig:brusselator_order4_x1_t10}}
+%\end{figure}
 
 \begin{figure}[htbp]
 \begin{center}
-\epsfig{file=brusselator_x1_t10.png,clip=,width=9cm}
-% ou version non commentée : \epsfig{file=brusselator_x1_t10_comment.png,clip=,width=10cm}
+\epsfig{file=brusselator_x2_t10.png,width=9cm,height=7cm}
 \end{center}
-\caption{Brusselator (x1), evaluation of the Taylor models (order 4) with affine arithmetic \label{fig:brusselator_order4_x1_t10}}
-\end{figure}
-
-\begin{figure}[htbp]
-\begin{center}
-\epsfig{file=brusselator_x2_t10.png,clip=,width=9cm}
-\end{center}
-\caption{Brusselator (x2), evaluation of the Taylor models (order 4) with affine arithmetic \label{fig:brusselator_order4_x2_t10}}
+\caption{Brusselator (x2), Taylor models order 4 \label{fig:brusselator_order4_x2_t10}}
 \end{figure}
 
 
@@ -251,7 +252,7 @@ which is an over-estimation of the error between our inner-approximation and the
 \paragraph{Comparison on the Brusselator}
 In \cite{underapprox16} the authors take $X=[0.3, 0.4] \times [0.5, 0.7]$ for a time frame in [0,1.1], and a time step h=0.05. 
 We compute the inner and outer-approximations, with order 3 Taylor Models, evaluated in affine arithmetic, in 45 seconds.
-In comparison, our implementation of the classical outer-approximated Taylor models takes 16 seconds. 
+Our implementation of the classical outer-approximated Taylor models only takes 16 seconds. 
 %In Figure~\ref{fig:bruss_cav16}, we represent the inner and outer-approximations obtained for $x_1$ and $x_2$.  
 %\begin{figure}[htbp]
 %\begin{tabular}{cc}
@@ -262,17 +263,29 @@ In comparison, our implementation of the classical outer-approximated Taylor mod
 %\caption{Inner and outer approximations (order 4) for $x_1$ and $x_2$ \label{fig:bruss_cav16}}
 %\ForAuthors{Trop petit?}
 %\end{figure}
-In Figure~\ref{fig:bruss_cav16_dist}, we represent the maximum distance between the inner 
-and the outer approximations, for each variable $x_1$ and $x_2$.
-\begin{figure}[htbp]
-\begin{center}
-\epsfig{file=cav16_bruss_order4_distance.png,clip=,width=8cm}
-\end{center}
-\caption{Maximum distance between the inner and outer approximations for x1 and x2 \label{fig:bruss_cav16_dist}}
-\end{figure}
-This distance should in some sense be comparable to the parameter  $\epsilon_M$ which is used to estimate the precision in \cite{underapprox16}.
-We find a distance equal to 0.005 for $x_1$, and 0.01 for $x_2$, which is 10 times larger than their estimation of 0.001, in 55 seconds, 
-of the parameter  $\epsilon_M$ used to estimate the precision in \cite{underapprox16}, which we believe comparable in spirit to our distance. 
+In \cite{underapprox16}, the accuracy of the result is estimated by a parameter $\epsilon_M$ that bounds the size of 
+the boxes used to approximated the boundary of the exact reachable set, inside which they will look for an inner-approximation. 
+We believe this parameter comparable in spirit 
+to our measure of the maximum distance between the inner and the outer approximations. We can point 2 differences. First, in our case 
+we compute the distance to the outer-approximation, which will alaways be greater than the distance to the exact reachable set.
+Also, it is not completely clear what guarantees are obtained in  \cite{underapprox16} on the actual distance between the inner-approximation itself 
+to the reachable set, whereas are bounds are guaranteed. 
+
+We measure on this example a distance equal to 0.005 for $x_1$, and 0.01 for $x_2$, which is 10 times larger than the estimation 0.001 obtained 
+in 55 seconds in \cite{underapprox16}. 
+
+%In Figure~\ref{fig:bruss_cav16_dist}, we represent the maximum distance between the inner 
+%and the outer approximations, for each variable $x_1$ and $x_2$.
+%\begin{figure}[htbp]
+%\begin{center}
+%\epsfig{file=cav16_bruss_order4_distance.png,clip=,width=8cm}
+%\end{center}
+%\caption{Maximum distance between the inner and outer approximations for x1 and x2 \label{fig:bruss_cav16_dist}}
+%\end{figure}
+%%This distance should in some sense be comparable to the parameter  $\epsilon_M$ which is used to estimate the precision in \cite{underapprox16}.
+%We find a distance equal to 0.005 for $x_1$, and 0.01 for $x_2$, which is 10 times larger than their estimation of 0.001, in 55 seconds, 
+%of the parameter  $\epsilon_M$ used to estimate the precision in \cite{underapprox16}. We believe this parameter comparable in spirit to our distance, 
+%but while we have a guarantee . 
 
 %\ForAuthors{Eric. Commenter sur ce que veut dire leur epsilonM }
 %HYPHOP
