@@ -356,7 +356,7 @@ are widely used for modeling all sorts of physical, biological and even economic
 social systems. 
 
 There are numerous methods for outer-approximating (also called over-approximating) flowpipes
-and reachable sets of ODEs, whereas linear \cite{GirardLinear06,LeGuernic09}, non-linear \cite{Taylor07,Dang2,Dang3,Dang4,Nedialkov99}, or even non-linear
+and reachable sets of ODEs, whereas linear \cite{GirardLinear06,LeGuernic09}, non-linear \cite{Nedialkov99,Dang4,Dang3}, or even non-linear
 in the presence of uncertain parameters \cite{GirardHSCC2005}. This is also 
 supported by numerous tools,
 that can even consider more general hybrid systems, see e.g. NLToolBox \cite{NLTOOLBOX}, 
@@ -1011,7 +1011,7 @@ otherwise the inner-approximation is empty.\\
 In order the $k$th term in Equations (\ref{eq:TM1}) and (\ref{eq:TM2}) we need
 to compute $\intvl{\r_j}$ (respectively $\intvl{\bfm{R}_j}$), i.e. intervals which over-approximate 
 the components of the solutions $z$ and $J$ to the variational equations over the
-time interval $[t_j,t_{j+1}]$. This is done by using the classical interval
+time interval $[t_j,t_{j+1}]$. This is done following the classical approach~\ref{Nedialkov99} relying on the  interval
 Picard-Lindel\"of method. This goes as follows : note first that Equation 
 (\ref{eq:flow}) can be rewritten in the form of the integral equation
 \begin{equation}
@@ -1492,24 +1492,34 @@ what we will be doing in Section \ref{sec:exp_bruss}.
 \section{Conclusion and future work}
 %******************************************************************************
 %
-A natural future extension of the present work, that we are interested in, is the inner-approximation of reachable sets 
+We presented an approach to compute inner-approximated flowpipes of uncertain ODEs, that extends in a simple way Taylor-based 
+methods for outer-approximated flowpipes. We assessed the good behaviour of the inner- compared to the classical outer-approximations
+with a preliminary matlab implementation, and showed that the method scales very well to larger-order systems of ODEs. 
+The joint computation of the inner and outer approximated flowpipes gives us at each instant a bound on the error to the exact reachable 
+set at each instant, that we can use if needed to dynamically refine the approximation by using higher order Taylor models or smaller step sizes. 
+Indeed, error estimation, which is usually a difficult task, is a direct outcome of our computation.
+A natural future extension of the present work, is the inner-approximation of reachable sets 
 in presence of guards and constraints, so as to handle general hybrid systems. Our approach allows us to inner-approximate 
-not only the variables as demonstrated here, but also the projection on whatever function of these variables. Also, the 
-symbolic information included in our model if we have a relational information in the evaluation of the Taylor model coefficients, 
-such as is the case when we evaluate them with affine arithmetic, will allow us to use existing work on the inner-approximation 
+not only the variables as demonstrated here, but also the projection on whatever function of these variables, not only at 
+specific times like the related work, but as flowpipes, that can be used for detection of intersection. 
+The symbolic information included in our model  when we evaluate the Taylor models with affine arithmetic, 
+will allow us to use existing work on the inner-approximation 
 of joint range of functions and constraint solving, as e.g.~\cite{DBLP:journals/constraints/IshiiGJ12}.  
 In that respect, our current Matlab prototype, while producing interesting results for the continuous case, does not allow us to 
 handle this symbolic information in a satisfying way, and some engineering improvement is needed and planned.
 
-\begin{itemize}
-\item comparaison sur / sous-approx => sous-approx competitive en complexite par rapport aux modeles de Taylor classiques : oui
-\item bon passage a l'echelle sur degre 7 ? : oui
-\item IA / AA laissant etendre que implem AA utilisee tres sous-optimale : Trop sur la defensive et deja dit
-\item un des interets est qu'on peut raffiner la precision (sur et sous-approximee) en montant en ordre a la demande, du style algo a pas ou ordre adaptatif par cette 
-estimation directe de l'erreur! : oui
-\item combination with backward inner-approximated analyses ? 
-\item abstract model-checking ? 
-\end{itemize}
+Among the main interests of inner-approximation is the possibility to falsify properties. Our mid-term objective in that respect, 
+is to use the combination of inner and outer approximations to tackle the verification and falsification of temporal properties, 
+along the lines of~\cite{falsification2,IshiiYG16}. 
+
+%\begin{itemize}
+%\item comparaison sur / sous-approx => sous-approx competitive en complexite par rapport aux modeles de Taylor classiques : oui
+%\item bon passage a l'echelle sur degre 7 ? : oui
+%\item IA / AA laissant etendre que implem AA utilisee tres sous-optimale : Trop sur la defensive et deja dit
+%\item un des interets est qu'on peut raffiner la precision (sur et sous-approximee) en montant en ordre a la demande, du style algo a pas ou ordre adaptatif par cette 
+%estimation directe de l'erreur! : oui
+%\item combination with backward inner-approximated analyses ? 
+%\end{itemize}
 
 Finally, this work can be applied to other, related problems. First, this can be applied
 to backward reachability problems, such as the ones treated in e.g.~\cite{underapprox16}, by considering
