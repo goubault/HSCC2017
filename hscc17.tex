@@ -358,13 +358,13 @@ social systems.
 There are numerous methods for outer-approximating (also called over-approximating) flowpipes
 and reachable sets of ODEs, whereas linear \cite{GirardLinear06,LeGuernic09}, non-linear \cite{Nedialkov99,Dang4,Dang3}, or even non-linear
 in the presence of uncertain parameters \cite{GirardHSCC2005}. This is also 
-supported by numerous tools,
-that can even consider more general hybrid systems, see e.g. NLToolBox \cite{NLTOOLBOX}, 
+supported by several tools,
+that can often also consider hybrid systems, see e.g. NLToolBox \cite{NLTOOLBOX}, 
 SpaceEx \cite{SPACEEX}, Flow* \cite{FLOW} and VNODE-LP \cite{VNODELP} to mention but a few.  
 
-If outer-approximations describe states that may be rea\-ched, inner-approximations represent
-states that are actually reachable from one of the initial states. Inner-approxima\-tions are
-thus a very useful complement to  outer-approxima\-tions, since they allow to show
+While outer-approximations describe states that may be rea\-ched, inner-approximations represent
+states that are actually reachable from one of the initial states. They are
+thus a very useful complement to the more classical outer-approxima\-tions, since they allow to show
 that some executions of the system will actually reach a target or a bad state. Also, the combination of
 inner and outer-approximations allows for judging the quality of the abstractions involved. 
 But methods for inner-approximated reachability are far less developed, and especially in the non-linear case, 
@@ -402,31 +402,26 @@ This paper extends the work of ~\cite{sas07,hscc14}, where the authors proposed 
 %\ForAuthors{Attention au double-blind review}
 discrete dynamical systems, and gave a few hints to handle continuous and hybrid systems. 
 %on this previous work. \\
-
-The approach presented here 
-computing inner-approximations of the flow of uncertain initial value problems, defined
-in Section \ref{prelim}. 
-
-There are two main ingredients for our method. The first one is that we only need in fact forward 
-outer-approxima\-tions of some dynamics, for deriving inner-approximations, that we can treat using classical
-Taylor models (that we recap in Section \ref{sec:Taylor}). But we need to outer-approximate not only 
+We computing here inner\-approximations of the flow of uncertain initial value problems, as defined in Section \ref{prelim}. 
+There are two main ingredients for our method. The first ingredient is that in order to derive inner-approximations, we only need forward 
+outer-approxima\-tions of some dynamics, which we can treat using classical
+Taylor models, introduced in Section \ref{sec:Taylor}. But we need to outer-approximate not only 
 the set of reachable states of the dynamics but also
-of the ``variational equations'', including the dynamics of the Jacobian of the solutions with respect to the
+of the ``variational equations'', including the dynamics of the Jacobian of the solutions with respect to the uncertain
 initial values. 
 
-This is made possible using the second main ingredient of our method, which is 
-a generalized mean value theorem, that we introduce in Section \ref{generalizedmean}. 
+The second main ingredient of our method is 
+a generalized mean value theorem, that we introduce in Section \ref{generalizedmean}, applied to the flow of the uncertain ODE. 
 The generalized mean value theorem relies itself on modal intervals, a simple 
-extension of classical interval arithmetics (see Section \ref{Kaucherar} and \ref{Kaucherar2}). 
+extension of classical interval arithmetics (see Section \ref{Kaucherar}), to inner-approximate 
+the image of an input set by a non-linear vector-valued scalar functions. 
 
 In many ways, all this is remarkably simple, with respect to other existing methods (using backward propagation
 of the flow of the dynamics), that we discuss in the related work Section \ref{relatedwork}. Our method
 is not much more complex than a classical Taylor model approach for outer-approximations. 
-Still, we have to consider a bigger dynamical system, since we have to consider the Jacobian,
-with the order of $n^2$ equations ($n$ being the number of equations in the original dynamical
-system) instead of $n$ equations. But the Taylor models generated for the Jacobian can easily be derived from
-the Taylor models of the original equations, as we show in Section \ref{sec:inner_reachability},
-greatly reducing the incurred costs.  
+But we have to consider a larger dynamical system, since we have to consider also the dynamics of the Jacobian with respect to the initial values.
+Thus, if the original system contains $n$ equations, we must compute Taylor models for $n^2$ equations. However, the Taylor coefficients of the Jacobian 
+can easily be derived from the Taylor models of the original equations, as we show in Section \ref{sec:inner_reachability}.  
 %For 
 %a continuous dynamical system, we show that we can combine Taylor based outer-approximations, on time intervals, of the solution of the initial value problem, 
 %and its jacobian with respect to initial values, 
@@ -484,9 +479,9 @@ complicated to approximate.
 % propose a computation of backward inner-approximation. The problem is in some sense 
 %dual to the one we consider: 
 
-The method we are presenting is much more straightforward, and relies only on classical
-Taylor models (although for a slightly augmented system of ODEs), and on simple methods
-for inner-approximating the image of a non-linear vector-valued scalar functions. 
+%The method we are presenting is much more straightforward, and relies only on classical
+%Taylor models (although for a slightly augmented system of ODEs), and on simple methods
+%for inner-approximating the image of a non-linear vector-valued scalar functions. 
 
 Finally, the authors have recently discovered Section 4 of the work \cite{Gold06}, which
 contains
@@ -529,22 +524,20 @@ differences since the description in \cite{Gold06} is sketchy, and contains no r
 %******************************************************************************
 
 Let us first introduce the ingredients that will be instrumental in the computation of inner-approximations of
-the range of a function over interval inputs, and in particular
-generalized intervals and mean-value theorem for inner-approximation~\label{generalized}. 
-The results and notations quickly introduced in this section are mostly based on the work of Goldsztejn {\it et al.} 
-on modal intervals~\cite{gold1}. 
+the range of a function over interval inputs. In particular, we introduce
+generalized intervals in Section~\ref{Kaucherar}, along with the Kaucher arithmetic, which are instrumental in extending 
+the mean-value theorem to obtain an inner-approximation, 
+as described in Section~\ref{generalizedmean}. Finally we give a short introduction on Taylor methods for enclosing flows of ODEs in Section~\ref{sec:Taylor}. 
 
 \subsection{Interval extensions, outer and inner approximations}
 Classical intervals~\cite{Moore66,IA2001} are used in many situations to rigorously compute with interval
 domains instead of reals, usually leading to outer approximations of function
 ranges over boxes. 
-
-The set of classical intervals is 
-denoted by $$\I = \{ [a,b], \; a\in \bbr, b \in \bbr, a \leqslant b\}$$ 
-
+We denote the set of classical intervals by $\I = \{ [\underline{x},\overline{x}], \; \underline{x} \in \bbr, \overline{x} \in \bbr,  \underline{x} \leqslant \overline{x} \}$
+\paragraph{Notations}
 In what follows, 
-uncertain quantities defined in intervals are noted in bold, outer-approximating interval enclosures are noted in bold face and enclosed within brackets, 
-and inner-approximating intervals are noted in bold face and enclosed within outward facing 
+uncertain quantities defined in intervals are noted in bold, outer-approximating interval enclosures are noted in bold and enclosed within inward facing brackets, 
+and inner-approximating intervals are noted in bold and enclosed within outward facing 
 brackets.
 
  An outer-approximating extension of a function $f: \R^n \rightarrow \R $ is a function 
@@ -553,26 +546,27 @@ The natural interval extension consists in replacing real
 operations by their interval counterparts in the expression of the function. 
 A generally more accurate extension relies on the mean-value theorem, linearizing the 
 function to compute. Suppose the function f is differentiable over the interval 
-$\x = [a, b]$. Then,the mean-value theorem implies that for any choice of $x_0 \in \x$, then we have
-\[ \forall x \in \x, \, \exists c \in \x, \, f(x) = f(x_0) + f'(c) (x-x_0).\]
+$\x = [a, b]$. Then, the mean-value theorem implies that for any choice of $x_0 \in \x$, then we have
+$ \forall x \in \x, \, \exists c \in \x, \, f(x) = f(x_0) + f'(c) (x-x_0).$
+
 If we can bound the range of the gradient of $f$ over $\x$, by $\mbox{range}(f',\x)=\subseteq [\f'](\x)$, we can 
 derive the following interval enclosure, usually called the mean-value extension: for any  $x_0 \in \x$
-\[    \mbox{range}(f,\x)  \subseteq f(x_0) +  [\f'](\x) (\x - x_0) \]
+$    \mbox{range}(f,\x)  \subseteq f(x_0) +  [\f'](\x) (\x - x_0). $
 
 Classical interval computations can be interpreted as quantified 
 propositions. Consider for example $f(x)=x^2-x$.
 Its natural interval extension, evaluated on $[2,3]$, is 
 $[\f]([2,3])=[2,3]^2-[2,3]=[1,7]$, which can be interpreted as the proposition 
-\[ (\forall x \in [2,3]) \, (\exists z \in [1,7]) \, (f(x)=z).    \]
+$ (\forall x \in [2,3]) \, (\exists z \in [1,7]) \, (f(x)=z).    $
 The mean-value extension gives
 $f(2.5) + $ $[\f']([2, 3]) \times ([2, 3] - 2.5)$ $ = [1.25, 6.25]$, and can be interpreted similarly.
 
 Inner-approximations determine a set of values proved to belong to the range of the function over some input box. 
 The fact that some $]\z[ \in \I$ satisfies $]\z[ \subseteq \range(f,\x)$, i.e., is an inner-approximation of the range 
 of $f$ over $\x$, can again be written using quantifiers~: 
-\[ (\forall z \in ]\z[) \, (\exists x \in \x) \, (f(x)=z).    \]
+$ (\forall z \in ]\z[) \, (\exists x \in \x) \, (f(x)=z).    $
 
-\subsection{Generalized intervals}
+\subsection{Generalized intervals, and the generalized interval extension by Kaucher arithmetic}
 %A modal interval~\cite{model01} is an interval supplemented by a quantifier. 
 %Extensions of modal intervals were proposed in the framework 
 %of generalized intervals, and called AE extensions because universal quantifiers
@@ -580,13 +574,15 @@ of $f$ over $\x$, can again be written using quantifiers~:
 %to a generalized interval arithmetic which coincides with Kaucher arithmetic~\cite{Kaucher}.
 \label{Kaucherar}
 
+The results and notations quickly introduced in this section are mostly based on the work of Goldsztejn {\it et al.} 
+on modal intervals~\cite{gold1}. 
 Let us first introduce generalized intervals, i.e., intervals whose
 bounds are not ordered, and Kaucher arithmetic~\cite{Kaucher} on these intervals.  
 
 The set of generalized
-intervals is denoted by $\K = \{ [a,b], \; a\in \bbr, b \in \bbr\}$.
-Related to a set of real numbers $\{x \in \bbr, \; a \leqslant x \leqslant b\}$, one can consider two generalized 
-intervals, $[a,b]$, which is called \emph{proper}, and $[b,a]$, which is called 
+intervals is denoted by $\K = \{ \x=[\underline{x},\overline{x}], \; \underline{x} \in \bbr, \overline{x}  \in \bbr\}$.
+Related to a set of real numbers $\{x_0 \in \bbr, \;  \underline{x} \leqslant x_0 \leqslant  \overline{x} \}$, one can consider two generalized 
+intervals, $[\underline{x},\overline{x}]$, which is called \emph{proper}, and $[\overline{x},\underline{x}]$, which is called 
 \emph{improper}. We define the operations $\mbox{dual } [a,b]=[b,a]$ and 
 $\pro [a,b]=[\min(a,b),$ $\max(a,b)]$. 
 %The generalized intervals are partially ordered by inclusion which extends 
@@ -614,15 +610,14 @@ where $Q_z = \exists$ if $(\z)$ is proper, and  $Q_z = \forall$ otherwise.
 %In the present context of intervals, we can only consider each component of $f$ independently. 
 
 When all intervals in (\ref{eq1}) are proper, we retrieve the interpretation of classical interval 
-computation, which gives an outer approximation of $\range(f,\x)$
-\[ (\forall x \in \x) \, (\exists z \in [\z]) \, (f(x)=z).    \]
-When all intervals are improper, (\ref{eq1}) becomes an inner-approx\-imation  of $\range(f,\x)$
-\[ (\forall z \in ]\pro \z[) \, (\exists x \in \pro \x) \, (f(x)=z).    \] 
+computation, which gives an outer approximation of $\range(f,\x)$, that is
+$ (\forall x \in \x) \, (\exists z \in [\z]) \, (f(x)=z).    $
+When all intervals are improper, (\ref{eq1}) becomes an inner-approx\-imation  of $\range(f,\x)$, that is
+$ (\forall z \in ]\pro \z[) \, (\exists x \in \pro \x) \, (f(x)=z).    $
 
-\subsection{Kaucher arithmetic and the generalized interval natural extension}
-\label{Kaucherar2}
+%\subsection{Kaucher arithmetic and the generalized interval natural extension}
+%\label{Kaucherar2}
  Kaucher arithmetic~\cite{Kaucher} returns intervals that are interpretable as inner-approximations in some simple cases. 
-
 Kaucher addition extends addition on classical intervals by $\x+\y=[\underline x + \underline y,\overline x + \overline y]$ and 
 $\x-\y=[\underline x - \overline y,\overline x - \underline y]$.
 
@@ -631,56 +626,56 @@ For multiplication, things are a little more complex. Let us decompose $\K$ in $
 \overline x \leqslant 0\}$, 
 ${\cal Z} = \{\x=[\underline x,\overline x], \; \underline x \leqslant 0 \leqslant \overline x\}$, and 
 ${\mbox{dual } \cal Z} = \{\x=[\underline x,\overline x], \; \underline x \geqslant 0 \geqslant \overline x\}$. 
-Kaucher multiplication $\x \times \y$ is described in Table \ref{tabmult}, we only give an 
-intuitive explanation of one of its entries below. 
-
-Let us  interpret the result of the multiplication $\z = \x \times \y$ in one of the cases encountered when $\y \in \mbox{dual } \cal Z$, 
-for instance for $\x \in {\cal Z}$. Proposition~\ref{prop1} will express the fact that 
+When restricted to proper intervals, these operations coincide with the 
+classical interval operations.
+Kaucher multiplication $\x \times \y$ extends the classical multiplication for all possible combinations of $\x$ and $\y$
+belonging to these sets. We refer to~\cite{Kaucher} for full details, and only give below an intuitive explanation of one of these cases.
+%is described in Table \ref{tabmult}, we only give an 
+%intuitive explanation of one of its entries below. 
+Let us  interpret the result of the multiplication $\z = \x \times \y$ when $\y \in \mbox{dual } \cal Z$, 
+and $\x \in {\cal Z}$, which is $\z = \x \times \y = 0$. Proposition~\ref{prop1} will express the fact that 
 the result can be interpreted as in Definition~\ref{pb1}. Interval $\z$ can a priori either be proper or improper, 
 let us consider the improper case. We obtain an inner-approximation of the range of the multiplication: 
 according to the quantifiers in Definition~\ref{pb1}, 
 computing $\z = \x \times \y$ consists in finding $\z$ such that 
 for all $x \in \x$, for all $z \in \pro \z$, there exists $y \in \pro \y$ such that $z=x \times y$. If $\x$ contains zero, 
-which is the case when $\x \in {\cal Z}$, then $\z$ is necessarily $0$, the result given in Table~\ref{tabmult}. 
+which is the case when $\x \in {\cal Z}$, then $\z$ is necessarily $0$. 
 Indeed, a property that holds for all $x \in \x$, holds in particular for $x=0$, from which we deduce that 
 for all $z \in \pro \z$, (there exists $y \in \pro \y$) $z=0$.
 
-%For instance, $[\x] \times [\y]$, $[\x] \in {\cal Z}$,  $[\y] \in \mbox{dual } \cal Z$ 
-%is necessarily $\z=0$ since its interpretability as in Proposition~\ref{prop1} implies for all $x \in [\x]$, in particular $x=0$, 
-%for all $z \in \pro \z$, there exists $y \in \pro [\y]$ such that $z=x \times y=0$. 
-%Kaucher division is defined for all $[\y]$ such that $0 \notin \pro  [\y]$ by $[\x] / [\y] = [\x] \times [1/\overline y,1/\underline y]$.  
-\begin{table}
-\captionsetup{singlelinecheck=off}
-\[
-\begin{array}{c|cccc}
-\x \times \y & \y \in \cal P & \cal Z & - \cal P & \mbox{dual} \cal Z \\
-\hline
-\x \in \cal P & [\underline x \underline y, \overline x \overline y] & [\overline x \underline y,
-\overline x \overline y] & [\overline x \underline y,\underline x \overline y] & 
-[\underline x \underline y, \underline x \overline y] \\
-\cal Z & [\underline x \overline y, \overline x \overline y] & 
-\begin{array}{c}[\min(\underline x \overline y,
-\overline x \underline y), \\  \max(\underline x \underline y, \overline x \overline y)]
-\end{array}  & 
- [\overline x \underline y, \underline x \underline y]  & 0 \\
- - \cal P & [\underline x \overline y, \overline x \underline y] & [\underline x \overline y,
-\underline x \underline y] & [\overline x \overline y, \underline x \underline y] &
-[\overline x \overline y, \overline x \underline y] \\
- \mbox{dual} \cal Z  & [\underline x \underline y, \overline x \underline y]  & 0 &
- [\overline x \overline y, \underline x \overline y] & \begin{array}{c}[\max(\underline x \underline y, 
-\overline x \overline y), \\  \min(\underline x \overline y, \overline x \underline y)]
-\end{array} 
-\end{array}
-\]
-\caption{Kaucher multiplication \label{tabmult}}
-\end{table}
-When restricted to proper intervals, these operations coincide with the 
-classical interval operations. %Kaucher arithmetic has better algebraic
+
+
+%\begin{table}
+%\captionsetup{singlelinecheck=off}
+%\[
+%\begin{array}{c|cccc}
+%\x \times \y & \y \in \cal P & \cal Z & - \cal P & \mbox{dual} \cal Z \\
+%\hline
+%\x \in \cal P & [\underline x \underline y, \overline x \overline y] & [\overline x \underline y,
+%\overline x \overline y] & [\overline x \underline y,\underline x \overline y] & 
+%[\underline x \underline y, \underline x \overline y] \\
+%\cal Z & [\underline x \overline y, \overline x \overline y] & 
+%\begin{array}{c}[\min(\underline x \overline y,
+%\overline x \underline y), \\  \max(\underline x \underline y, \overline x \overline y)]
+%\end{array}  & 
+% [\overline x \underline y, \underline x \underline y]  & 0 \\
+% - \cal P & [\underline x \overline y, \overline x \underline y] & [\underline x \overline y,
+%\underline x \underline y] & [\overline x \overline y, \underline x \underline y] &
+%[\overline x \overline y, \overline x \underline y] \\
+% \mbox{dual} \cal Z  & [\underline x \underline y, \overline x \underline y]  & 0 &
+% [\overline x \overline y, \underline x \overline y] & \begin{array}{c}[\max(\underline x \underline y, 
+%\overline x \overline y), \\  \min(\underline x \overline y, \overline x \underline y)]
+%\end{array} 
+%\end{array}
+%\]
+%\caption{Kaucher multiplication \label{tabmult}}
+%\end{table}
+%When restricted to proper intervals, these operations coincide with the 
+%classical interval operations. %Kaucher arithmetic has better algebraic
 %properties than classical interval arithmetic: Kaucher addition turns $\K$ into 
 %a group, as $ [\x] + (-\mbox{dual } [\x]) = 0.$
 %Kaucher multiplication turns $\K$ restricted to generalized intervals whose products of 
 %bounds are strictly positive into a group, as $[\x] \times (1/ \mbox{dual } [\x]) = 1$.
-
 The important feature of Kaucher arithmetic is that it defines a generalized interval natural extension (see~\cite{gold1})~:
 \begin{proposition}
 \label{prop1}
@@ -697,13 +692,14 @@ In the general case of a differentiable function $f$, the mean-value theorem can
 a generalized interval mean value extension (see~\cite{gold1})~:
 \begin{theorem}
 \label{thm1}
-Let $f : \bbr^n \rightarrow \bbr$ be differentiable, $\x \in \K^n$ and suppose that for each $i \in \{1,\ldots,n\}$, we can compute $[\bfm{\Delta}_i] \in \I$ such that 
+Let $f : \bbr^n \rightarrow \bbr$ be differentiable, $\x \in \K^n$ an improper interval, 
+and suppose that for each $i \in \{1,\ldots,n\}$, we can compute $[\bfm{\Delta}_i] \in \I$ such that 
 \begin{equation} 
 \left\{ \frac{\partial f}{\partial x_i} (x), \; x \in \pro \x \right\} 
 \sqsubseteq [\bfm{\Delta}_i].
 \label{delta1} 
 \end{equation}
-Then, for any $\tilde x \in \pro \x$, the following interval is $(f,\x)$-interpretable~:
+Then, for any $\tilde x \in \pro \x$, the following interval, evaluated with Kaucher arithmetic, is $(f,\x)$-interpretable~:
 \begin{equation}
 \tilde{f}(\x) = f(\tilde x) + \sum\limits_{i=1}^{n} [\bfm{\Delta}_i] (\x_i - \tilde{x}_i).
 \label{Taylor}
@@ -716,9 +712,17 @@ Then, for any $\tilde x \in \pro \x$, the following interval is $(f,\x)$-interpr
 %\end{equation}
 \end{theorem}
 
+When using (\ref{Taylor}) for inner-approximation, we can only get the following cases of the Kaucher multiplication: 
+$(\x \in {\cal P}) \times (\y \in \dual {\cal Z})=[\underline x \underline y, \underline x \overline y]$, 
+ $(\x \in -{\cal P}) \times (\y \in \dual {\cal Z})=[\overline x \overline y, \overline x \underline y]$, 
+and  $(\x \in {\cal Z}) \times (\y \in \dual {\cal Z})=0$.
+Indeed, for an improper $\x$ and $\tilde x \in \pro \x$, then $(\x - \tilde{x})$ is in $\dual {\cal Z}$. 
+The outer-approximation  $[\bfm{\Delta}_i] $ of the Jacobian is a proper interval, thus in ${\cal P}$, $-{\cal P}$ or ${\cal Z}$, 
+and we can deduce from the multilplication rules that the inner-approximation is non empty only when $[\bfm{\Delta}_i]$ does not contain 0.
+
 \begin{example}
 Let $f$ be defined by $f(x)=x^2-x$, for which we want to compute an inner-approximation of the range over $\x=[2,3]$. Due to the
-two occurrences of $x$, $f(\x)$, computed with Kaucher arithmetic, 
+two occurrences of $x$, $f(\mbox{dual}\, \x)$, computed with Kaucher arithmetic, 
 is not  $(f,\x)$-interpretable. The interval $\tilde{f}(\x) = f(2.5) + \f'([2,3]) (\x - 2.5)=3.75 + [3,5](\x - 2.5)$
 given by its mean-value extension, computed with Kaucher arithmetic, is $(f,\x)$-interpretable. 
 For  $\x=[3,2]$, using the multiplication rule for ${\cal P} \times \dual {\cal Z}$, we get 
@@ -788,8 +792,7 @@ f^{[l]}(z(t))\right) \\
 & = & \sum\limits_{j=1}^n f_j(z(t)) \frac{\partial f^{[l]}}{\partial z_j}(z(t)) 
 & = & f^{[l+1]}(z(t))
 \end{array}$$
-Equation (\ref{eq:TM}) is then a direct consequence from Taylor-La\-grange expansion
-formula, for sufficiently smooth functions $f$. 
+Equation (\ref{eq:TM}) is then a direct consequence from Taylor-La\-grange expansion, for sufficiently smooth functions $f$. 
 \end{proof}
 
 %\ForAuthors{Une ligne sur 
@@ -802,21 +805,19 @@ Finally, we use enclosure $[{\z}_{j+1}]=[\z](t_{j+1},t_j,[{\z}_j])$ as initial s
 
 If evaluated plainly in interval arithmetic, scheme~(\ref{eq:TM}) yields enclosures of increasing width. A classical way to improve 
 this evaluation is the method introduced by Lohner, that uses QR-factorization.
-In the experiments presented in Section~\ref{sec:experiments}, we chose to control wrapping using affine arithmetic~\cite{com-sto-93-aa} instead of interval arithmetic to evaluate the solution enclosures given by (\ref{eq:TM}). 
+We chose here to control wrapping using affine arithmetic~\cite{com-sto-93-aa}. 
 
 %******************************************************************************
-\section{Forward inner reachability of continous systems}
+\section{Forward inner reachability}
 \label{sec:inner_reachability}
 %******************************************************************************
 
 As in Section~\ref{sec:Taylor}, we consider the uncertain dynamical system (\ref{eq:flowb}), where $z=(x,p,t)$ and with initial condition 
 $z(t_0) \in {\cal Z_0} = \z_0=[\underline{z}_0,\overline{z}_0]$ at time $t_0 \geq 0$, and we denote ${\cal Z}(t;t_0, \z_0)$
  the set of solutions $\{ z(t,z_0), \, z_0(t_0) \in \z_0 \}$ of  (\ref{eq:flowb}) at time $t$. 
-
 We have seen in  Section~\ref{sec:Taylor}, that for a  time grid $t_0 < t_1 < \ldots < t_N$, we can compute on each time interval  $[t_j,t_{j+1}]$,
 a flowpipe~(\ref{eq:TM}) 
 that is guaranteed to contain the reachable set of solutions of~(\ref{eq:flowb}) for all time $t$ in $[t_j,t_{j+1}]$. 
-
 We now want to compute also an inner-approximating flowpipe of this reachable set, that is for all $t$ in $[t_j,t_{j+1}]$, 
 a range $]\z[(t,t_j,[\z_j])$ such that all values inside that range are sure to be reached at time $t$ by an execution of system (\ref{eq:flowb}).
 %\ForAuthors{Est-ce qu'on ne veut pas ecrire $]\z[(t,t_j,]\z_j[)$ plut\^ot avec
@@ -831,22 +832,10 @@ enclosures of the solution and its Jacobian  on each time step, that we use for 
 In Section~\ref{efficientLieJacobian}, we build the Taylor models, and show that  we can compute
 the Taylor model of the Jacobian as if we were simply derivating the Taylor model for the solution of the initial ODE, 
 which makes its construction very simple and efficient. Finally, in Section~\ref{practicalissues}, we comment the actual 
-computation of the inner-approximation flow-pipe, and show how a loss of accuracy in the outer-approximation results in 
+computation of the inner-approximating flow-pipe, and show how a loss of accuracy in the outer-approximation results in 
 a loss of accuracy in the inner-approximation, and even possibly to an empty inner-approximation.
 
-We will illustrate the computations on the following example:
-\begin{example}
-\label{running0}
-We consider the Brusselator equation: 
-$$ f(x) = \left(\begin{array}{l}
-1-2 x_1+\frac{3}{2} x_1^2 x_2 \\
-x_1-\frac{3}{2} x_1^2x_2
-\end{array}\right)$$
-\noindent with $x=(x_1,x_2)$, over the time interval $\left[0,h\right]$ 
-$\left(h=\frac{1}{20}\right)$, and with initial conditions
-$\intvl{x_0}=\left([2, 2.15],[0.1, 0.15]\right)$.
-%(...)
-\end{example}
+
 
 %for the solution of the initial ODE, which makes things much more efficient. 
 %If its principle is simple to grasp, there are a number of subtleties. 
@@ -872,7 +861,7 @@ component of the vector flow function $z$, and $z_{0,j}$ the $j$-th component of
 We compute these outer-approximations by applying the Taylor method of Section~\ref{sec:Taylor} to  $z(t,\tilde{z_0})$ 
 and $J(t,z_0)$ where $z_0 \in \z_0$ and with initial condition $J(t_0)=Id$ the identity matrix~: $z(t,\tilde{z_0})$ satisfies system  (\ref{eq:flowb}) with $z(t_0)=\tilde{z_0}\in \z_0$, so that we can directly 
 use the Taylor expansion~(\ref{eq:TM}) on each time interval $[t_j,t_{j+1}]$ to compute ${\cal Z}(t;t_0,\tilde{z_0})$. 
-The coefficients of the Jacobian matrix of the flow satisfy the following differential equations~:
+The coefficients of the Jacobian matrix of the flow satisfy~:
 \begin{equation}
 \dot{J}_{ij}(t,z_0) %=  \frac{\partial \dot z_i}{\partial z_{0,j}} 
 = \sum\limits_{k=1}^n \frac{\partial f_i}{\partial z_k}(z) . J_{kj}(t,z_0)
@@ -894,9 +883,10 @@ the right hand side of Equation \ref{eq:IVP_jac2}. Hence, its $pq$ entry is :
 \end{equation}
 A Taylor expansion can thus be used to outer-approximate the solution of~(\ref{eq:IVP_jac2}) noted ${\cal J}(t;t_0,\z_0)$ on each time interval  $[t_j,t_{j+1}]$, 
 using the outer-approximation for $z(t,z_0)$ given by Taylor expansion~(\ref{eq:TM}).
-We just have to note that Equations (\ref{eq:IVP_jac}) together with Equations
+%We just have to note that 
+Equations (\ref{eq:IVP_jac}) together with Equations
 (\ref{eq:flow}) define a system of $n(n+1)$ ordinary differential equations in $n(n+1)$
-variable (the $z_i$ and $J_{ij}$). We call the corresponding vector field $F$ and
+variables (the $z_i$ and $J_{ij}$). We call the corresponding vector field $F$ and
 write similarly, by an abuse of notation, for $H$ a function in variables $z_i$ and $J_{ij}$,
 $H^{[i]}$ the $i-1$th Lie derivative of $H$ along the (augmented) vector field $H$. More
 explicitly, it is defined inductively as follows : 
@@ -927,38 +917,11 @@ replacing $\dot{z}_i$ by its expression in Equation (\ref{eq:flow}) and
 $\dot{J}_{kl}$ by its expression in Equation (\ref{eq:IVP_jac}). 
 \end{proof}
 
-\begin{example}
-\label{running1}
-We consider again the continous system of Example \ref{running0}. 
-%$$ f(x) = \left(\begin{array}{l}
-%1-2 x_1+\frac{3}{2} x_1^2 x_2 \\
-%x_1-\frac{3}{2} x_1^2x_2
-%\end{array}\right)$$
-The Jacobian that appears in Equation (\ref{eq:IVP_jac2}) is~: 
-$$
-\mbox{Jac}_z f(z(t,z_0)) = \left(\begin{array}{cc} 
--2+3x_1x_2  & \frac{3}{2} x^2_1 \\
-1-3x_1x_2 & -\frac{3}{2} x^2_1
-\end{array}\right)
-$$
-%The corresponding variational equations are~:
-%, for the Jacobian of the solutions $x_i$ with respect to the initial
-%conditions (at time 0) $x^0_j$ are $J_{i,j}=\frac{\partial x_i}{\partial x^0_j}$ : 
-%\begin{eqnarray}
-%\dot{J}_{1,1} & = & (-2+3x_1x_2)J_{1,1} + \frac{3}{2} x^2_1 J_{2,1} \\
-%\dot{J}_{1,2} & = & (-2+3x_1x_2)J_{1,2} + \frac{3}{2} x^2_1 J_{2,2} \\
-%\dot{J}_{2,1} & = & (1-3x_1x_2)J_{1,1}-\frac{3}{2} x^2_1 J_{2,1} \\
-%\dot{J}_{2,2} & = & (1-3x_1x_2)J_{1,2}-\frac{3}{2} x^2_1 J_{2,2} 
-%\label{jacobian}
-%\end{eqnarray}
-%\ForAuthors{Forme matricielle a mettre plutot}
-%\noindent with initial conditions (at time 0) $J_{i,j}=\delta_{i,j}$ (where $\delta$ denotes
-%the Kronecker symbol).
-\end{example}
 
-Altogether, the algorithm to compute an inner-approxima\-ted flow-pipe of the uncertain initial-value problem given a time grid  $t_0 < t_1 < \ldots < t_N$, 
-an initial range $\z_0$, and some $\tilde{z_0} \in \z_0$, is as follows~:
- {\par\smallskip                     %  authors:
+
+Altogether, given a time grid  $t_0 < t_1 < \ldots < t_N$, 
+an initial range $\z_0$, and some $\tilde{z_0} \in \z_0$, the algorithm is as follows~:
+ {\par %\smallskip                     %  authors:
   \begin{center}%                    %
    \fbox%                            %    --------
    {\parbox{1.\linewidth}%          %    |  #1  |
@@ -981,7 +944,7 @@ and $[\bfm{R}_{j+1}]$ of ${\cal J}(t;t_j,\z_j)$
 \label{eq:TM2}
 \end{multline}
 \begin{multline}
-[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} \mbox{Jac}_x(f^{[i]})([{\z}_{j}]) [{\J}_j] \\ +  \frac{(t-t_j)^k}{k !} \mbox{Jac}_x(f^{[k]})([{\r}_{j+1}]) [\bfm{R}_{j+1}]
+[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} \mbox{Jac}_z(f^{[i]})([{\z}_{j}]) [{\J}_j] \\ +  \frac{(t-t_j)^k}{k !} \mbox{Jac}_z(f^{[k]})([{\r}_{j+1}]) [\bfm{R}_{j+1}]
 \label{eq:TM3}
 \end{multline}
 
@@ -1001,32 +964,66 @@ otherwise the inner-approximation is empty.\\
   \par\smallskip                     %
  }        
 
+We will illustrate the computations on the following example:
+\begin{example}
+\label{running0}
+We consider the Brusselator equation: 
+$$ f(x) = \left(\begin{array}{l}
+1-2 x_1+\frac{3}{2} x_1^2 x_2 \\
+x_1-\frac{3}{2} x_1^2x_2
+\end{array}\right)$$
+\noindent with $x=(x_1,x_2)$, over the time interval $\left[0,h\right]$ 
+$\left(h=\frac{1}{20}\right)$, and with initial conditions
+$\intvl{x_0}=\left([2, 2.15],[0.1, 0.15]\right)$.
+%(...)
+
+The Jacobian that appears in Equation (\ref{eq:IVP_jac2}) is~: 
+$$
+\mbox{Jac}_z f(z(t,z_0)) = \left(\begin{array}{cc} 
+-2+3x_1x_2  & \frac{3}{2} x^2_1 \\
+1-3x_1x_2 & -\frac{3}{2} x^2_1
+\end{array}\right)
+$$
+%The corresponding variational equations are~:
+%, for the Jacobian of the solutions $x_i$ with respect to the initial
+%conditions (at time 0) $x^0_j$ are $J_{i,j}=\frac{\partial x_i}{\partial x^0_j}$ : 
+%\begin{eqnarray}
+%\dot{J}_{1,1} & = & (-2+3x_1x_2)J_{1,1} + \frac{3}{2} x^2_1 J_{2,1} \\
+%\dot{J}_{1,2} & = & (-2+3x_1x_2)J_{1,2} + \frac{3}{2} x^2_1 J_{2,2} \\
+%\dot{J}_{2,1} & = & (1-3x_1x_2)J_{1,1}-\frac{3}{2} x^2_1 J_{2,1} \\
+%\dot{J}_{2,2} & = & (1-3x_1x_2)J_{1,2}-\frac{3}{2} x^2_1 J_{2,2} 
+%\label{jacobian}
+%\end{eqnarray}
+%\ForAuthors{Forme matricielle a mettre plutot}
+%\noindent with initial conditions (at time 0) $J_{i,j}=\delta_{i,j}$ (where $\delta$ denotes
+%the Kronecker symbol).
+\end{example}
 
 \subsection{Step 1: computing the rough enclosures}
 % HOP
 \label{roughenc}
 
-In order the $k$th term in Equations (\ref{eq:TM1}) and (\ref{eq:TM2}) we need
-to compute $\intvl{\r_j}$ (respectively $\intvl{\bfm{R}_j}$), i.e. intervals which over-approximate 
-the components of the solutions $z$ and $J$ to the variational equations over the
-time interval $[t_j,t_{j+1}]$. This is done following the classical approach~\ref{Nedialkov99} relying on the  interval
-Picard-Lindel\"of method. This goes as follows : note first that Equation 
-(\ref{eq:flow}) can be rewritten in the form of the integral equation
+In order to compute the $k$th term in Equations (\ref{eq:TM1}) and (\ref{eq:TM2}) we need
+to compute $\intvl{\r_j}$ (respectively $\intvl{\bfm{R}_j}$), i.e. a priori enclosures of
+the components of the solutions $z$ and $J$ over the
+time interval $[t_j,t_{j+1}]$. This is done following the classical approach~\cite{Nedialkov99} relying on the  interval
+Picard-Lindel\"of method. this goes as follows: note first that Equation 
+(\ref{eq:flow}) can be rewritten as the integral equation
 \begin{equation}
 z(t) = z_0+\int_{t_j}^{t_{j+1}} \! f(z(s)) \mathrm{d}s
 \label{Picard1}
 \end{equation}
 Hence calling $F$ the functional which to function $z$ associates the right-hand
 side of Equation (\ref{Picard1}), under the condition that $f$ is Lipschitz, it 
-possesses a unique fixpoint, that is the solution to Equations (\ref{eq:flow}) and
+admits a unique fixpoint, solution to Equations (\ref{eq:flow}) and
 (\ref{Picard1}). The interval version ${F}^{\sharp}$ of the Picard-Lindel\"of operator $F$ 
 enjoys the same property and is derived using the obvious rough interval approximation
-of the integral : $F^{\sharp}(\intvl{z})=z_0+[t_j,t_{j+1}]f(\intvl{z})$ (where
+of the integral : $F^{\sharp}(\intvl{z})=z_0+[t_j,t_{j+1}][\f](\intvl{z})$ (where
 $\intvl{z}$ will denote ultimately the ``rough'' enclosure of the solutions to
-Equation (\ref{eq:flow}) and $f$ denotes also the interval extension of function $f$). 
+Equation (\ref{eq:flow}) and $[\f]$ denotes  the interval extension of function $f$). 
 Simple Jacobi like iteration suffices to reach the fixpoint of $F^{\sharp}$ : 
 $\intvl{z}_0=z_0$, $\intvl{z}_{i+1}=F^{\sharp}(\intvl{z}_i)$ for all $i \in \N$. 
-Finite time convergence can be ensured using outwards rounding in finite precision,
+Convergence can be ensured using outwards rounding in finite precision,
 numerical acceleration techniques, widening techniques etc. 
 
 %\ForAuthors{Rappel ultra rapide de Picard-Lindel\"of}
@@ -1047,7 +1044,6 @@ step.
 %First, we use the Picard-Lindel\"of operator to compute rough enclosures $[r_2]$ and
 %$[R_2]$ for, respectively, the states $x_1$ and $x_2$, and the entries of the Jacobian
 %$J_{1,1}$, $J_{1,2}$, $J_{2,1}$ and $J_{2,2}$. 
-
 %We will have, as outer-approximations of order 1 with respect to time, the formulas (for $i=1, 2$, $j=1, 2$
 %and $t \in [0,h]$ (Equations (\ref{eq:TM1}) and (\ref{eq:TM3})) the following. 
 %Note that
@@ -1063,7 +1059,7 @@ using the interval Picard-Lindel\"of method of Section \ref{roughenc}~:
 %\intvl{x_i}(t) = \intvl{(x_i)_0} + {f_i}^{[0]}(\intvl{x_0}) t + f_i^{[1]}(\intvl{r_1}) \frac{t^2}{2}
 %\end{equation}
 %\begin{multline}
-%\intvl{J_{i,j}}(t) =  \intvl{(J_{i,j})_0}+Jac_x(f_{i}^{[0]})(\intvl{r_1})\intvl{R_1}^j t \\
+%\intvl{J_{i,j}}(t) =  \intvl{(J_{i,j})_0}+Jac_z(f_{i}^{[0]})(\intvl{r_1})\intvl{R_1}^j t \\
 %+ Jac_x(f_{i}^{[1]})(\intvl{r_1})\intvl{R_1}^j \frac{t^2}{2} 
 %\label{TaylorJ}
 %\end{multline}
@@ -1077,14 +1073,14 @@ using the interval Picard-Lindel\"of method of Section \ref{roughenc}~:
 %For rough enclosures of $\intvl{r_1}_i$ and $\intvl{R_1}_{i,j}$ 
 %\begin{eqnarray}%{lcl}
 $\intvl{\r_1} = \left(\begin{array}{c}
-\left[ 1.8609,    2.1500 \right]\\ 
-\left[ 0.1000,    0.2316 \right] 
+\left[ 1.86,    2.15 \right]\\ 
+\left[ 0.10,    0.23 \right] 
 %\left[\frac{93}{50}, \frac{43}{20}\right]\\
 %\left[\frac{1}{10}, \frac{579}{2500}\right]
 \end{array}\right)$, 
 $\intvl{\bfm{R}_1} =\left(\begin{array}{cc} 
-\left[    0.9279,    1.0000\right] & \left[    0.0000,    0.3467\right] \\
-\left[   -0.0247,    0.0221\right] & \left[    0.6533,    1.0000\right] 
+\left[    0.92,    1.00\right] & \left[    0.00,    0.35\right] \\
+\left[   -0.025,    0.022\right] & \left[    0.65,    1.00\right] 
 %\left[\frac{116}{125}, 1\right] & \left[0, \frac{26}{75}\right]\\
 %\left[-\frac{37}{1500}, \frac{1}{45}\right] & 
 %\left[\frac{49}{75}, 1\right] \\
@@ -1103,7 +1099,7 @@ will be determined in Example \ref{running3}.
 
 \subsection{Step 2: building the Taylor models}
 
-\paragraph{Efficient computations of the Lie derivatives of the Jacobian}
+\paragraph{Building the Lie derivatives of the Jacobian}
 
 \label{efficientLieJacobian}
 
@@ -1113,10 +1109,10 @@ relies on the possibility to commute the $i$th Lie derivative
 with the calculation of the Jacobian. Without this, we would have written:
 %\ForAuthors{Faire commuter les derivations plus bas, mais notations pour derivees de Lie a mettre avant ($^{[i]}$)}
 \begin{multline}
-[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} (\mbox{Jac}_x(f))^{[i]}([{\z}_{j}],[{\J}_j]) \\ +  \frac{(t-t_j)^k}{k !} (\mbox{Jac}_x(f))^{[k]}([{\r}_{j+1}],[\bfm{R}_{j+1}])
+[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} (\mbox{Jac}_z(f))^{[i]}([{\z}_{j}],[{\J}_j]) \\ +  \frac{(t-t_j)^k}{k !} (\mbox{Jac}_z(f))^{[k]}([{\r}_{j+1}],[\bfm{R}_{j+1}])
 \label{eq:TM3b}
 \end{multline}
-\noindent ($\mbox{Jac}_x(f)$ being seen as a function of variables $z_i$ and $J_{ij}$, which 
+\noindent ($\mbox{Jac}_z(f)$ being seen as a function of variables $z_i$ and $J_{ij}$, which 
 is linear in the $J_{ij}$ as in Equation (\ref{pqentry})). 
 %\noindent where $(\mbox{Jac}_x(f))^{[i]}$ denotes the $i$th Lie derivative of 
 %$\mbox{Jac}_x(f)$ along the vector field defined by Equation (\ref{eq:IVP_jac2}), i.e. is
@@ -1147,12 +1143,12 @@ Equations (\ref{eq:TM3}) and (\ref{eq:TM3b}) are equivalent since the two deriva
 and the Lie derivative) commute.  
 \begin{proof}
 We prove this equivalence by induction on the number of Lie derivations. 
-For $i=1$, we have, by definition $\mbox{Jac}_x(f^{[1]})
-=\mbox{Jac}_x(f)=(\mbox{Jac}_x(f))^{[1]}$. Suppose now we have, as an induction
-step $\mbox{Jac}_x(f^{[i]})=(\mbox{Jac}_x(f))^{[i]}$. We now write~:
+For $i=1$, we have, by definition $\mbox{Jac}_z(f^{[1]})
+=\mbox{Jac}_z(f)=(\mbox{Jac}_z(f))^{[1]}$. Suppose now we have, as an induction
+step $\mbox{Jac}_z(f^{[i]})=(\mbox{Jac}_z(f))^{[i]}$. We now write~:
 $$
 %\begin{array}{rclcl}
-\mbox{Jac}_x(f^{[i+1]})_{pq} 
+\mbox{Jac}_z(f^{[i+1]})_{pq} 
 %& 
 = 
 %& 
@@ -1167,24 +1163,24 @@ $$
 $$
 \noindent hence, 
 \begin{equation}
-\mbox{Jac}_x(f^{[i+1]})_{pq} =  \sum\limits_{k,l=1}^n \left(\frac{\partial^2 f_p^{[i]}}{\partial z_k \partial z_l} f_l
+\mbox{Jac}_z(f^{[i+1]})_{pq} =  \sum\limits_{k,l=1}^n \left(\frac{\partial^2 f_p^{[i]}}{\partial z_k \partial z_l} f_l
 +\frac{\partial f_p^{[i]}}{\partial z_l}\frac{\partial f_l}{\partial z_k}\right)
 J_{kq}
 \label{firstpart}
 \end{equation}
 On the other hand we have : 
 $$\begin{array}{rcl}
-(\mbox{Jac}_x(f)_{pq})^{[i+1]} & = &
-(\mbox{Jac}_x(f^{[i]})_{pq})^{[2]}
+(\mbox{Jac}_z(f)_{pq})^{[i+1]} & = &
+(\mbox{Jac}_z(f^{[i]})_{pq})^{[2]}
 \end{array}$$
 \noindent by Definition (\ref{eqfirstH}) and by the induction step. 
 Using now Equation (\ref{eqfirstH}) and using the fact (Equation (\ref{pqentry})) that :
 $$\begin{array}{rcl}
-(\mbox{Jac}_x(f^{[i]}))_{pq} = \sum\limits_{k=1}^n \frac{\partial f^{[i]}_p}{\partial z_k} J_{kq}
+(\mbox{Jac}_z(f^{[i]}))_{pq} = \sum\limits_{k=1}^n \frac{\partial f^{[i]}_p}{\partial z_k} J_{kq}
 \end{array}$$
 \noindent we have~:  
 \begin{multline}
-(\mbox{Jac}_x(f)_{pq})^{[i+1]}  = 
+(\mbox{Jac}_z(f)_{pq})^{[i+1]}  = 
 \sum\limits_{k,l=1}^n \frac{\partial^2 f_p^{[i]}}{\partial z_k \partial z_l} f_l J_{kq} \\
 + \sum\limits_{r=1}^n \frac{\partial f_p^{[i]}}{\partial z_r}\left(\sum\limits_{t=1}^n
 \frac{\partial f_r}{\partial z_t} J_{tq} \right)
@@ -1192,7 +1188,7 @@ $$\begin{array}{rcl}
 %& & +\sum_{k,l=1}^n \frac{\partial (\mbox{Jac}_x(f)_{pq})^{[i]}}{\partial J_{jk}} \left(
 %\sum_{l=1}^n \frac{\partial f_j}{\partial z_l} J_{lk}\right)
 \end{multline}
-\noindent which is thus seen to be equal to $\mbox{Jac}_x(f^{[i+1]})_{pq}$ by
+\noindent which is thus seen to be equal to $\mbox{Jac}_z(f^{[i+1]})_{pq}$ by
 Equation (\ref{firstpart}). 
 %\noindent but $(\mbox{Jac}_x(f)_{pq})^{[i]}$ does not depend on variables $J_{ij}$ since
 %$f$ does only depend on variables $z_i$, so
@@ -1214,31 +1210,30 @@ inexpensive.
 %\end{remark}
 
 %\begin{remark}
-\paragraph{Calculations of coefficients of the Taylor models}
+\paragraph{Computing the coefficients of the Taylor models}
 
 We need to outer-approximate the values of some functions (in particular, all Lie
 derivatives, which are coefficients in the Taylor models) in Equations 
 (\ref{eq:TM1}-\ref{eq:TM3}). We have a wide choice from all the existing set-based
 methods, from interval computations to Bernstein polynomials \cite{Dang} if $f$
 is polynomial. We will use in our running example simple affine arithmetic
-\cite{com-sto-93-aa} and will compare it with interval computations, that we
-both used in our prototype implementation, in Section \ref{sec:experiments}. 
+\cite{com-sto-93-aa}, as used in our prototype. % and will compare it with interval computations, that we
+%both used in our prototype implementation, in Section \ref{sec:experiments}. 
 Affine arithmetic was also used in \cite{hscc14} for inner-approximations of
 discrete dynamical systems. The interest of this approach, using affine arithmetic,
 is that we can use the results from \cite{rc13} to get good estimates of the
-joint inner range of the state variables $z_j$, altogether, when needed. In practice
-though, this is rarely needed, as, either for estimating guards of the form
-$p(z) ? 0$ (where $?$ may be equality, less or equal etc.) when analyzing
-hybrid systems, or for proving some specification depending on arithmetic expressions of
-the state variables $p$ again, we can just evaluate $]p(z)[$ by using simple
-affine arithmetic and 
-Equations (\ref{eq:inner_cont}). 
+joint inner range of the state variables $z_j$, altogether, when needed. 
+%In practice though, this is rarely needed, as, either for estimating guards of the form
+%$p(z) ? 0$ (where $?$ may be equality, less or equal etc.) when analyzing
+%hybrid systems, or for proving some specification depending on arithmetic expressions of
+%the state variables $p$ again, we can just evaluate $]p(z)[$ by using simple
+%affine arithmetic and Equations (\ref{eq:inner_cont}). 
 
 \begin{example}
 \label{running3}
 We compute a first-order Taylor model for the Brusselator, using Equation
 (\ref{eq:TM}) with $k=2$, and using affine arithmetic to compute 
-$\mbox{Jac}_x(f^{[i]})([\r_{j+1}])[\J_j]$ and $f^{[i]}([{\z}_j])$.
+$\mbox{Jac}_z(f^{[i]})([\r_{j+1}])[\J_j]$ and $f^{[i]}([{\z}_j])$.
 %\ForAuthors{Tout a coup j'ai un doute, ce n'est pas 
 %$\mbox{Jac}_x(f^{[i]}([\z_j])[\J_j]$ plutot?} 
 We start with 
@@ -1274,7 +1269,7 @@ f^{[1]}(\intvl{x_0})
 \end{equation}
 %\begin{equation}
 \noindent and, e.g. $
-\mbox{Jac}_x(f^{[1]})([x_0])_{11} %& 
+\mbox{Jac}_z(f^{[1]})([x_0])_{11} %& 
 = 
 %& 
 -\frac{391}{320}+\frac{9}{320}\epsilon_1+\frac{249}{1600}\epsilon_2+\frac{9}{1600}\eta_3
@@ -1313,7 +1308,7 @@ as $\left[-2.6077,-2.0766\right]$.
 
 Now, to determine the remainders, we first compute
 $f_i^{[2]}$ and then 
-$Jac_x(f_i^{[2]})$. For instance we have : 
+$Jac_z(f_i^{[2]})$. For instance we have : 
 
 \begin{multline}
 {f}_1^{[2]} = -2+4x_1+3x_1x_2+\frac{3}{2}x_1^3-9x_1^2x_2
@@ -1322,9 +1317,9 @@ $Jac_x(f_i^{[2]})$. For instance we have :
 %f_2^{[1]} & = & 1-2x_1-3x_1x_2+\frac{15}{2}x_1^2x_2-\frac{3}{2}x_1^3\\
 %& & \ \ \ -\frac{9}{2}x_1^3x_2^2+\frac{9}{4}x_1^4x_2 \\
 \begin{multline}
-\mbox{Jac}_x(f^{[2]})_{11}(x_1,x_2)(J_{11},J_{21}) = (3x_2f_1+3x_1f_2)J_{11}\\
-+(-2+3x_1x_2)\mbox{Jac}_x(f^{[1]})_{11}(x_1,x_2)(J_{11},J_{21}) \\ 
-+3x_1f_1J_{21}+\frac{3}{2}x_1^2{\mbox{Jac}_x(f^{[1]})}_{21}(x_1,x_2)(J_{11},J_{21}) 
+\mbox{Jac}_z(f^{[2]})_{11}(x_1,x_2)(J_{11},J_{21}) = (3x_2f_1+3x_1f_2)J_{11}\\
++(-2+3x_1x_2)\mbox{Jac}_z(f^{[1]})_{11}(x_1,x_2)(J_{11},J_{21}) \\ 
++3x_1f_1J_{21}+\frac{3}{2}x_1^2{\mbox{Jac}_z(f^{[1]})}_{21}(x_1,x_2)(J_{11},J_{21}) 
 %Jac_x(f^{[1]}) & = & \left(\begin{array}{cc}
 %(3x_2f_1+3x_1f_2)J_{1,1}+(-2+3x_1x_2)\dot{J}_{1,1}+3x_1f_1J_{2,1}+\frac{3}{2}x_1^2\dot{J}_{2,1} &
 %(3x_2f_1+3x_1f_2)J_{1,2}+(-2+3x_1x_2)\dot{J}_{1,2}
@@ -1335,12 +1330,12 @@ $Jac_x(f_i^{[2]})$. For instance we have :
 %-3x_1f_1J_{2,2}-\frac{3}{2}x_1^2\dot{J}_{2,2}\end{array}\right)
 \label{secondderivative}
 \end{multline} %$$
-\noindent where $\mbox{Jac}_x(f^{[1]})_{11}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
-and ${\mbox{Jac}_x(f^{[1]})}_{21}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
+\noindent where $\mbox{Jac}_z(f^{[1]})_{11}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
+and ${\mbox{Jac}_z(f^{[1]})}_{21}$ %(x_1,x_2)(J_{1,1},J_{2,1})$ 
 are just the $\mbox{Jac}_z f(z(t,z_0)_{11}$ and $\mbox{Jac}_z f(z(t,z_0))_{21}$ given in Example \ref{running1}.
 
 Now again, we are applying affine arithmetic to compute 
-$f^{[2]}([{\r}_{1}])$ and $\mbox{Jac}_x(f^{[2]})([{\r}_{1}]) [\bfm{R}_{1}]$
+$f^{[2]}([{\r}_{1}])$ and $\mbox{Jac}_z(f^{[2]})([{\r}_{1}]) [\bfm{R}_{1}]$
 given the rough enclosures $\r_1$ and $\bfm{R}_1$ computed in Example
 \ref{running2} and we find : 
 \begin{eqnarray}
@@ -1350,7 +1345,7 @@ f^{[2]}([{\r}_{1}]) & = & \left(\begin{array}{c}
 \end{array}\right)
 \label{secondcompf1}
 \end{eqnarray}
-and $\mbox{Jac}_x(f^{[2]})([{\r}_{1}]) [\bfm{R}_{1}]$ is the matrix~: 
+and $\mbox{Jac}_z(f^{[2]})([{\r}_{1}]) [\bfm{R}_{1}]$ is the matrix~: 
 $$
 \left(\begin{array}{cc}
 \left[   -3.1897,   15.7653\right] & \left[  -74.8884,  -19.3243\right] \\
@@ -1393,15 +1388,15 @@ which slighly overapproximates the result of Equation (\ref{outerapprox}), using
 
 \paragraph{Computing the center of the inner-approximation}
 
-Note that Equation (\ref{eq:TM2}) is required for estimating the inner-approximations as in Equation (\ref{eq:inner_cont}) : we need to propagate a ``center'' in 
+Equation (\ref{eq:TM2}) is required to estimate the inner-approximations as in Equation (\ref{eq:inner_cont}) : we need to propagate a ``center'' in 
 a flowpipe of solutions of ODE (\ref{eq:flow}), at each time step $t_j$ in our time
 grid, and this central solution is certainly not in general derivable from the 
 outer-approximation of the flowpipe, e.g. as its midpoint. 
  
-We then use the same Taylor expansion, but with different initial conditions, to compute in~(\ref{eq:TM1}) an outer-approximation of the solution of system(\ref{eq:flowb}) 
+We use the same Taylor expansion, but with different initial conditions, to compute in~(\ref{eq:TM1}) an outer-approximation of the solution of system~(\ref{eq:flowb}) 
 with $z(t_0)=\tilde{z_0}$, used as the center in inner-approximation~(\ref{eq:inner_cont}), and  in~(\ref{eq:TM2}) an outer-approximation of the solution of the 
-same system but with uncertain $z(t_0) \in \z_0$, used to compute the Taylor coefficients in Equation~(\ref{eq:TM3}) which outer-approximates the Jacobian of the flow 
-with respect to the initial condition $z_0$. 
+same system but with uncertain $z(t_0) \in \z_0$, used to compute the Taylor coefficients in Equation~(\ref{eq:TM3}). % which outer-approximates the Jacobian of the flow 
+%with respect to the initial condition $z_0$. 
 %\end{remark}
 
 \begin{example}
@@ -1431,7 +1426,8 @@ Also, the wider the outer-approximation in Taylor models~(\ref{eq:TM1}-\ref{eq:T
 it can even  lead to an empty inner-approximation if the result of Equation~(\ref{eq:inner_cont}) in Kaucher arithmetic is not an improper interval. 
 
 The phenomenom we mentionned above can occur in two ways. First, note that $[\overline{z_0},\underline{z_0}]-\tilde{z_0}$ is an improper interval that belongs to $\dual {\cal Z}$ as defined 
-in Section~\ref{generalized}. The outer-approximation of the Jacobian matrix,  $[\J](t,t_j,[{\z}_j])$ is a proper interval. The Kaucher multiplication as defined in Table~\ref{tabmult}
+in Section~\ref{Kaucherar}. The outer-approximation of the Jacobian matrix,  $[\J](t,t_j,[{\z}_j])$ is a proper interval. The Kaucher multiplication, as mentioned 
+in Section~\ref{generalizedmean},
 will yield a non-zero improper interval only if$[\J](t,t_j,[{\z}_j])$ does not contain $0$. And, in this case, the result of this multiplication will depend on the 
 lower bound of the absolute value of the Jacobian (while the same mean-value theorem used for outer-approximation would imply a multiplication of proper intervals that would, 
 in the same case, depend on the upper bound of the absolute value of the Jacobian). The larger this lower bound, the wider the inner-approximation. 
@@ -1442,12 +1438,10 @@ interval resulting from the Kaucher multiplication, then the sum of the two inte
 and the inner-approximation empty. This will be examplified in the experiments. 
 
 
-It must be noted that the quality of the inner-approxima\-tion is strongly tied to the quality of the outer-approximation. 
+It must be noted that the quality of the inner-approxima\-tion is strongly linked to the quality of the outer-approximation. 
 In particular, as we rely on Taylor models, if necessary we can locally improve the quality by using higher-order models. 
-And as we know that the exact enclosure of the uncertain system lies between the inner and outer-approximated flows, 
-we can bound the approximation error at each instant, and use this information to dynamically refine the appproximation 
-when this error becomes larger than some threshold: indeed, nothing prevents us from using different orders of the Taylor models 
-at different time steps.  
+And as we know that the exact reachable set of the uncertain system lies between the inner and outer-approximated flows, 
+we can bound the approximation error at each instant, and use this information to dynamically refine the appproximation.  
 %\end{remark}
 
 \begin{example}
@@ -1460,7 +1454,7 @@ Equation (\ref{outerapproxJ}) for the outer-approximation of the Jacobian at tim
 ]\z[(h,0) = \left[1.9655, 1.9718\right]+\left[0.9254, 0.9680\right]\left[0.075,-0.075\right]\\
 +\left[0.2059, 0.3225\right]\left[0.025,-0.025\right]
 \end{multline}
-Finally, using Kaucher arithmetic (see Section \ref{Kaucherar2}), we find 
+Finally, using Kaucher arithmetic (see Section \ref{Kaucherar}), we find 
 $$\begin{array}{rcl}
 ]\z[(h,0) & = &
 \left[1.9655+0.92545\times0.075+0.20597\times0.025, \right. \\
@@ -1490,10 +1484,10 @@ what we will be doing in Section \ref{sec:exp_bruss}.
 \section{Conclusion and future work}
 %******************************************************************************
 %
-We presented an approach to compute inner-approximated flowpipes of uncertain ODEs, that extends in a simple way Taylor-based 
-methods for outer-approximated flowpipes. We assessed the good behaviour of the inner- compared to the classical outer-approximations
+We presented an approach to compute inner-approximating flowpipes of uncertain ODEs, that extends in a simple way Taylor-based 
+methods for outer-approximating flowpipes. We assessed the good behaviour of the inner- compared to the classical outer-approximations
 with a preliminary matlab implementation, and showed that the method scales very well to larger-order systems of ODEs. 
-The joint computation of the inner and outer approximated flowpipes gives us at each instant a bound on the error to the exact reachable 
+The joint computation of the inner and outer approximating flowpipes gives us at each instant a bound on the error to the exact reachable 
 set at each instant, that we can use if needed to dynamically refine the approximation by using higher order Taylor models or smaller step sizes. 
 Indeed, error estimation, which is usually a difficult task, is a direct outcome of our computation.
 A natural future extension of the present work, is the inner-approximation of reachable sets 
@@ -1523,7 +1517,7 @@ Finally, this work can be applied to other, related problems. First, this can be
 to backward reachability problems, such as the ones treated in e.g.~\cite{underapprox16}, by considering
 the opposite vector field. Secondly, this can be applied to a particular backward 
 reachability problem : the inner-approximations to region
-of attractions, for which we should compare our method with the work~\cite{DBLP:conf/nolcos/KordaHJ13}. 
+of attractions, for which we should compare our method with exitsing work~\cite{DBLP:conf/nolcos/KordaHJ13}. 
 
 \bibliographystyle{abbrv}
 \bibliography{hscc2017}

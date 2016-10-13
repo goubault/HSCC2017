@@ -198,8 +198,8 @@ is still of high quality.
 %\end{figure}
 On the right part of Figure~\ref{ex:width_sriram_bruss}, we represent the evolution with time of the widths of the inner- and outer-approximations of both x1 and x2. We see that when the width of the inner-approximation on $x_2$ gets very close 
 to zero (around t=4), the width of the outer-approximation is also strongly decreasing: the difference between these width remains 
-quite stable. This almost constant difference could be due to the outer-approximation of the flow starting from the center of our 
-initial value interval, and it could be interesting to try a higher order model to estimate this center only.
+quite stable. This stable difference could be due to the outer-approximation of the flow starting from the center of our 
+initial value interval, and it could be interesting to use a higher order model to estimate this center, keeping lower order models for the Jacobian.
 %\begin{figure}[htbp]
 %\epsfig{file=sriram_bruss_order4_t4_widthx1x2.png,clip=,width=8.cm}
 %\caption{Width of the inner- and outer-approximations of x1 and x2 with time \label{ex:width_sriram_bruss_x1x2}}
@@ -328,8 +328,7 @@ in 55 seconds in \cite{underapprox16}.
 \paragraph{Comparison on the biological system}
 We now consider the biological system, with, as in \cite{underapprox16}, initial condition $\x_0 \in [0.1,0.1175] \times...\times [0.1,0.1175]$, 
 and to compare our results to their backward estimate, we compute inner and outer approximated flowpipes on the reverse flow, 
-for time in [0,0.2] , and use order 3 Taylor Models and a stepsize of 0.02. Our computation of the inner and outer approximated flowpipes takes 115 
-(computing outer-approximation takes 36 seconds). We get inner-approximations that always strictly contain the  ones of \cite{underapprox16}, which however take only 0.67 seconds to compute.
+for time in [0,0.2] , and use order 3 Taylor Models and a stepsize of 0.02. Our computation of the inner and outer approximated flowpipes takes 115 seconds. We get inner-approximations that always strictly contain the  ones of \cite{underapprox16}, which however take only 0.67 seconds to compute.
 %$[  -0.01628536833380,   0.00103619844301]  [  -0.01833708041159,   0.00255842760143]  [  -0.01514208680158,   0.00416990950253]  [  -0.01488096912574,   0.00087696255375] 
 %[  -0.01487744391170,   0.00088145048369]  [  -0.01492448895828,   0.00247920964913]  [  -0.01660493465136,   0.00105021396051] $
 %to be compared to the always tighter (thus with lower quality) $[-0.0152,0.000]\times[-0.0169,0.0011]\times [-0.00140,0.0030]\times[-0.0141,0.0001]\times [-0.0141,0.0001]\times [-0.0138,0.0014]\times [-0.0155,0.0000]$
@@ -342,7 +341,7 @@ while with the results of \cite{underapprox16} we get the lower quality results
 $(\gamma_1,\ldots,\gamma_n)=( 0.85,   0.86,   0.22,   0.84 ,  0.84 ,  0.85,   0.85)$.
 
 We also compare our results with the outer-approximation computed, in less than a second, by VNODE with a Taylor model of order 5 - while our outer-approximated classical Taylor model of order 3 
-takes 36 seconds on the same example. We represent on Figure~\ref{fig:histo} the upper bound for each of the 7 variables $x_i$ on the outer-approximation by VNode,  
+takes 36 seconds. We represent on Figure~\ref{fig:histo} the upper bound for each of the 7 variables $x_i$ on the outer-approximation by VNode,  
 our outer-approximation, our inner-approximation, and that of \cite{underapprox16}, in that order, from left to right.
 \begin{figure}[htbp]
 \begin{center}
