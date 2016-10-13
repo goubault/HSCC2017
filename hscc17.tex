@@ -773,9 +773,8 @@ f^{[i+1]}_k & = & \sum\limits_{j=1}^n \frac{\partial{f^{[i]}_k}}{\partial z_j} f
 Let $z(t)$ be a solution to Equation (\ref{eq:flow}) starting at
 time 0 at point $z_0$. By definition~: 
 $$
-\begin{array}{rcl}
-\frac{d z}{d t}(t) & = & f(z(t)) \\
-& = & f^{[1]}(z(t))
+\begin{array}{rclcl}
+\frac{d z}{d t}(t) & = & f(z(t)) & = & f^{[1]}(z(t))
 \end{array}$$
 \noindent and more generally, we can prove by induction on $l$ that 
 %\begin{eqnarray}
@@ -784,11 +783,11 @@ $\frac{d^{(l+1)} z}{dt^{(l+1)}}(t) = f^{[l+1]}(z(t))$,
 %\end{eqnarray} 
 %\noindent 
 since by induction hypothesis :
-$$\begin{array}{rcl}
+$$\begin{array}{rclcl}
 \frac{d^{(l+1)} z}{dt^{(l+1)}}(t) & = & \frac{d}{dt}\left(t \rightarrow
 f^{[l]}(z(t))\right) \\
 & = & \sum\limits_{j=1}^n \dot{z}_j(t) \frac{\partial f^{[l]}}{\partial z_j}(z(t)) \\
-& = & \sum\limits_{j=1}^n f_j(z(t)) \frac{\partial f^{[l]}}{\partial z_j}(z(t)) \\
+& = & \sum\limits_{j=1}^n f_j(z(t)) \frac{\partial f^{[l]}}{\partial z_j}(z(t)) 
 & = & f^{[l+1]}(z(t))
 \end{array}$$
 Equation (\ref{eq:TM}) is then a direct consequence from Taylor-La\-grange expansion
@@ -984,7 +983,7 @@ and $[\bfm{R}_{j+1}]$ of ${\cal J}(t;t_j,\z_j)$
 \label{eq:TM2}
 \end{multline}
 \begin{multline}
-[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} \mbox{Jac}_x(f^{[i]})([{\r}_{j+1}]) [{\J}_j] \\ +  \frac{(t-t_j)^k}{k !} \mbox{Jac}_x(f^{[k]})([{\r}_{j+1}]) [\bfm{R}_{j+1}]
+[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} \mbox{Jac}_x(f^{[i]})([{\z}_{j}]) [{\J}_j] \\ +  \frac{(t-t_j)^k}{k !} \mbox{Jac}_x(f^{[k]})([{\r}_{j+1}]) [\bfm{R}_{j+1}]
 \label{eq:TM3}
 \end{multline}
 
@@ -1116,7 +1115,7 @@ relies on the possibility to commute the $i$th Lie derivative
 with the calculation of the Jacobian. Without this, we would have written:
 %\ForAuthors{Faire commuter les derivations plus bas, mais notations pour derivees de Lie a mettre avant ($^{[i]}$)}
 \begin{multline}
-[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} (\mbox{Jac}_x(f))^{[i]}([{\r}_{j+1}],[{\J}_j]) \\ +  \frac{(t-t_j)^k}{k !} (\mbox{Jac}_x(f))^{[k]}([{\r}_{j+1}],[\bfm{R}_{j+1}])
+[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} (\mbox{Jac}_x(f))^{[i]}([{\z}_{j}],[{\J}_j]) \\ +  \frac{(t-t_j)^k}{k !} (\mbox{Jac}_x(f))^{[k]}([{\r}_{j+1}],[\bfm{R}_{j+1}])
 \label{eq:TM3b}
 \end{multline}
 \noindent ($\mbox{Jac}_x(f)$ being seen as a function of variables $z_i$ and $J_{ij}$, which 
@@ -1153,12 +1152,21 @@ We prove this equivalence by induction on the number of Lie derivations.
 For $i=1$, we have, by definition $\mbox{Jac}_x(f^{[1]})
 =\mbox{Jac}_x(f)=(\mbox{Jac}_x(f))^{[1]}$. Suppose now we have, as an induction
 step $\mbox{Jac}_x(f^{[i]})=(\mbox{Jac}_x(f))^{[i]}$. We now write~:
-$$\begin{array}{rcl}
-\mbox{Jac}_x(f^{[i+1]})_{pq} & = & \sum\limits_{k=1}^n \frac{\partial f^{[i+1]}_p}{\partial z_k} J_{kq} \\
- & = & \sum\limits_{k=1}^n \frac{\partial}{\partial z_k} \left(
+$$
+%\begin{array}{rclcl}
+\mbox{Jac}_x(f^{[i+1]})_{pq} 
+%& 
+= 
+%& 
+\sum\limits_{k=1}^n \frac{\partial f^{[i+1]}_p}{\partial z_k} J_{kq} 
+% & 
+= 
+%& 
+\sum\limits_{k=1}^n \frac{\partial}{\partial z_k} \left(
 \sum\limits_{l=1}^n \frac{\partial{f^{[i]}_p}}{\partial z_l} f_l
 \right)J_{kq}
-\end{array}$$
+%\end{array}
+$$
 \noindent hence, 
 \begin{equation}
 \mbox{Jac}_x(f^{[i+1]})_{pq} =  \sum\limits_{k,l=1}^n \left(\frac{\partial^2 f_p^{[i]}}{\partial z_k \partial z_l} f_l
@@ -1238,56 +1246,71 @@ $\mbox{Jac}_x(f^{[i]})([\r_{j+1}])[\J_j]$ and $f^{[i]}([{\z}_j])$.
 We start with 
 $\intvl{x_0}=\left([2,2.5],[0.1,0.15]\right)$, hence, in affine arithmetic,
 $\intvl{x_0}=\left(\frac{83}{40}+\frac{3}{40}\epsilon_1,
-\frac{1}{8}+\frac{1}{40}\epsilon_2\right)$. Evaluating $f^{[1]}=f$ using
-simple rules from affine arithmetic, we find~: 
-
-\begin{eqnarray}%{lcl}
-f^{[1]}(\intvl{x_0}) & = & \left(\begin{array}{c}
-\left(-\frac{119919}{51200}-\frac{1173}{12800} \epsilon_1+\frac{41361}{256000}\epsilon_2
-\right.
+\frac{1}{8}+\frac{1}{40}\epsilon_2\right)$. We evaluate $f^{[1]}=f$ using
+simple rules from affine arithmetic, e.g.~: 
+%\begin{eqnarray}%{lcl}
+\begin{equation}
+f^{[1]}(\intvl{x_0}) 
+%& 
+= 
+%& 
+%\left(\begin{array}{c}
+%\left(
+\small 
+-\frac{119919}{51200}-\frac{1173}{12800} \epsilon_1+\frac{41361}{256000}\epsilon_2
+%\right.
 \label{firstcompf1}
-\\
-\ \left.+\frac{27}{51200}\eta_1+\frac{3015}{256000}\eta_2\right) \\ 
+%\\
+%\ \left.
++\frac{27}{51200}\eta_1+\frac{3015}{256000}\eta_2
+%\right) 
+%\\ 
 %on peut tout mettre dans un \eta, mais ils ont une signification, partagee avec la suite, a voir
 %\dot{x}^0_2 & = & 
-\left(\frac{64879}{51200}+\frac{213}{12800}\epsilon_1-\frac{41361}{256000}\epsilon_2
-\right.\\
-\ \left. -\frac{27}{51200}\eta_1
--\frac{3015}{256000}\eta_2 \right) 
-\end{array}\right)
-\end{eqnarray}
-\begin{equation}
+%\left(\frac{64879}{51200}+\frac{213}{12800}\epsilon_1-\frac{41361}{256000}\epsilon_2
+%\right.\\
+%\ \left. -\frac{27}{51200}\eta_1
+%-\frac{3015}{256000}\eta_2 \right) 
+%\end{array}\right)
+%\end{eqnarray}
+\end{equation}
+%\begin{equation}
+\noindent and, e.g. $
 \mbox{Jac}_x(f^{[1]})([x_0])_{11} %& 
 = 
 %& 
--\frac{391}{320}+\frac{9}{320}\epsilon_1+\frac{249}{1600}\epsilon_2+\frac{9}{1600}\eta_3%\\
-\end{equation}
+-\frac{391}{320}+\frac{9}{320}\epsilon_1+\frac{249}{1600}\epsilon_2+\frac{9}{1600}\eta_3
+$. 
+%\\
+%\end{equation}
 %\begin{eqnarray}
-\begin{equation}
-\mbox{Jac}_x(f^{[1]})([x_0])_{12} %& 
-= 
+%\begin{equation}
+%\mbox{Jac}_x(f^{[1]})([x_0])_{12} %& 
+%= 
 %& 
-\frac{41361}{6400}+\frac{747}{1600}\epsilon_1+\frac{27}{6400}\eta_1%\\
-\end{equation}
-\begin{equation}
-\mbox{Jac}_x(f^{[1]})([x_0])_{21} %& 
-= 
+%\frac{41361}{6400}+\frac{747}{1600}\epsilon_1+\frac{27}{6400}\eta_1%\\
+%\end{equation}
+%\begin{equation}
+%\mbox{Jac}_x(f^{[1]})([x_0])_{21} %& 
+%= 
 %& 
-\frac{71}{320}-\frac{9}{320}\epsilon_1-\frac{249}{1600}\epsilon_2-\frac{9}{1600}\eta_3%\\
-\end{equation}
-\begin{equation}
-\mbox{Jac}_x(f^{[1]})([x_0])_{22} %& 
-= 
+%\frac{71}{320}-\frac{9}{320}\epsilon_1-\frac{249}{1600}\epsilon_2-\frac{9}{1600}\eta_3%\\
+%\end{equation}
+%\begin{equation}
+%\mbox{Jac}_x(f^{[1]})([x_0])_{22} %& 
+%= 
 %& 
--\frac{41361}{6400}-\frac{747}{1600}\epsilon_1-\frac{27}{6400}\eta_1
-\label{firstderivative}
-\end{equation}
+%-\frac{41361}{6400}-\frac{747}{1600}\epsilon_1-\frac{27}{6400}\eta_1
+%\label{firstderivative}
+%\end{equation}
 %\end{eqnarray}
 Note that the non-linearity of $f$ and its Jacobian produces new noise symbols than just $\epsilon_1$,
 $\epsilon_2$ : we noted them using the $\eta$ letter, instead of $\epsilon$, to make apparent the uncertainty
 produced by the interpretation in affine arithmetic. 
-As an example, the first component of $f^{[1]}(\intvl{x_0})$ computed in Equation (\ref{firstcompf1})
-gives the interval $\left[-2.6077,-2.0766\right]$.
+Equation (\ref{firstcompf1}) evaluates in intervals
+%he first component of $f^{[1]}(\intvl{x_0})$ computed in Equation (\ref{firstcompf1})
+%gives the interval 
+as $\left[-2.6077,-2.0766\right]$.
 %-2.607679688, -2.076656250 
 
 Now, to determine the remainders, we first compute
@@ -1295,7 +1318,7 @@ $f_i^{[2]}$ and then
 $Jac_x(f_i^{[2]})$. For instance we have : 
 
 \begin{multline}
-{f}_1^{[2]} = -2+4x_1+3x_1x_2+\frac{3}{2}x_1^3-9x_1^2x_2\\
+{f}_1^{[2]} = -2+4x_1+3x_1x_2+\frac{3}{2}x_1^3-9x_1^2x_2
 +\frac{9}{2}x_1^3x_2^2-\frac{9}{4}x_1^4x_2
 \end{multline}
 %f_2^{[1]} & = & 1-2x_1-3x_1x_2+\frac{15}{2}x_1^2x_2-\frac{3}{2}x_1^3\\
@@ -1355,12 +1378,12 @@ $\intvl{x_0}=\left(\left[2,2.5\right], \left[0.1,0.15\right]\right)$, the Taylor
 that we found in Equation (\ref{firstcompf1}) and in degree two in $t$ that we found in Equation 
 (\ref{secondcompf1}). Using a coarser interval abstraction of coefficients in degree zero and one, we indeed
 find an outer-approximation of the flowpipe until time $h$~: 
-\begin{multline}
-\intvl{\z_1}(h,t_0,[{\z}_0]) = \left[2,2.5\right]+\left[-2.6077,-2.0766\right]t\\
+%\begin{multline}
+$\intvl{\z_1}(h,t_0,[{\z}_0]) = \left[2,2.5\right]+\left[-2.6077,-2.0766\right]t
 +\left[    3.5371,   13.7617\right]
-\frac{t^2}{2}
-\end{multline}
-\noindent equal to $\left[1.8740,2.0634\right]$ at time $h$, 
+\frac{t^2}{2}$
+%\end{multline}
+\noindent equal at time $h$ to $\left[1.8740,2.0634\right]$, 
 which slighly overapproximates the result of Equation (\ref{outerapprox}), using affine arithmetic. 
 %for $t=h=\frac{1}{20}$. 
 %\ForAuthors{Erreur de calcul ici? 1.549202?}
