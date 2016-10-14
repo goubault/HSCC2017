@@ -1,6 +1,6 @@
 We implemented a first prototype version of our approach in Matlab, relying on the Intlab~\cite{Ru99a} 
 toolbox for computations with interval and affine arithmetic.
-It allows us to first demonstrate in Section~\ref{sec:exp_bruss} the good behaviour of our inner-approximated flowpipes
+It allows us to first demonstrate in Section~\ref{sec:exp_bruss} the good behavior of our inner-approximated flowpipes
  on the quite difficult Brusselator model. % plus des elements permettant de quantifier le cout de surapprox par rapport a sousapprox
 Then, in Section~\ref{sec:exp_compar}, we provide some elements of comparison to the experimental results 
 of the related work. 
@@ -45,8 +45,8 @@ We now use Taylor models of order 4, and represent  in Figure~\ref{fig:brusselat
 %At first look, this could appear as a bug in our implementation, but this is not the case. 
 This is not a bug: this phenomenon is an illustration of the fact detailed in Section~\ref{practicalissues}, that when adding an improper with a proper interval to get the inner range of a variable, we can get a proper interval, which results in an empty inner-approximation (of the variable of interest - actually, on this example, the inner-approximations of the two variables do not become empty at the same time). 
 Nevertheless, this does not prevent us from carrying
-on with the compution of the Taylor models~:  they can indeed give non-empty inner-approximations at later times, 
-depending on the behaviour of the Jacobian of the flow.    
+on with the computation of the Taylor models~:  they can indeed give non-empty inner-approximations at later times, 
+depending on the behavior of the Jacobian of the flow.    
 
 %\begin{figure}[htbp]
 %\begin{center}
@@ -236,8 +236,8 @@ initial value interval, and it could be interesting to use a higher order model 
 %\ForAuthors{Add elements allowing to compare the cost of inner-approx comapred to over-approx of same degree: where to put this and on which example, see later}  
 \paragraph{Comparison on the biological system}
 We now consider the biological system, with initial condition $\x_0 \in [0.1,0.1175] \times...\times [0.1,0.1175]$, which is an outer-approximation
-of the simplex taken in  \cite{Underapproxflowpipes}, and we compute inner and outer approximated flowpipes for time in [0,0.2], 
-with order 3 Taylor Models and a stepsize of 0.02. The computation completes in 118 seconds, and we get as a measure of quality of the approximation 
+of the simplex taken in  \cite{Underapproxflowpipes}. We compute inner and outer approximated flowpipes for time in [0,0.2], 
+with order 3 Taylor Models and a step size of 0.02. The computation completes in 118 seconds, and we get as a measure of quality of the approximation 
 $\gamma(t=0.2) \approx 0.61$, which is this time a much better accuracy than the $\gamma(t=0.2) = 0.25$ obtained in 632 seconds in  \cite{Underapproxflowpipes}. 
 This seems to confirm that our approaches scales very well to high dimensional systems. 
 Again, the 118 seconds for the inner-approximation flowpipe must also be compared to the 36.9 seconds that our implementation of the classical 
@@ -326,9 +326,9 @@ in 55 seconds in \cite{underapprox16}.
 %non optimisees?}
 
 \paragraph{Comparison on the biological system}
-We now consider the biological system, with, as in \cite{underapprox16}, initial condition $\x_0 \in [0.1,0.1175] \times...\times [0.1,0.1175]$, 
-and to compare our results to their backward estimate, we compute inner and outer approximated flowpipes on the reverse flow, 
-for time in [0,0.2] , and use order 3 Taylor Models and a stepsize of 0.02. Our computation of the inner and outer approximated flowpipes takes 115 seconds. We get inner-approximations that always strictly contain the  ones of \cite{underapprox16}, which however take only 0.67 seconds to compute.
+We now consider the biological system, with, as in \cite{underapprox16}, initial condition $\x_0 \in [0.1,0.1175] \times...\times [0.1,0.1175]$. 
+In order to compare our results to their backward estimate, we compute inner and outer approximated flowpipes on the reverse flow, 
+for time in [0,0.2] , and use order 3 Taylor Models and a step size of 0.02. Our computation of the inner and outer approximated flowpipes takes 115 seconds. We get inner-approximations that always strictly contain the  ones of \cite{underapprox16}, which however take only 0.67 seconds to compute.
 %$[  -0.01628536833380,   0.00103619844301]  [  -0.01833708041159,   0.00255842760143]  [  -0.01514208680158,   0.00416990950253]  [  -0.01488096912574,   0.00087696255375] 
 %[  -0.01487744391170,   0.00088145048369]  [  -0.01492448895828,   0.00247920964913]  [  -0.01660493465136,   0.00105021396051] $
 %to be compared to the always tighter (thus with lower quality) $[-0.0152,0.000]\times[-0.0169,0.0011]\times [-0.00140,0.0030]\times[-0.0141,0.0001]\times [-0.0141,0.0001]\times [-0.0138,0.0014]\times [-0.0155,0.0000]$
@@ -350,7 +350,7 @@ our outer-approximation, our inner-approximation, and that of \cite{underapprox1
 \caption{Upper bounds on inner and outer-approximations on the 7 variables of the biological system \label{fig:histo}}
 \end{figure}
 The results confirm that our inner-approximation (third bar of each group in the Figure, noted 'in') is generally very close to the outer-approximations (first two bars in each group),
-while the inner-approximation of the relate work (fourth bar, noted 'related') is of lower quality, and on some variables even absent (upper boudn equal to zero).
+while the inner-approximation of the relate work (fourth bar, noted 'related') is of lower quality, and on some variables even absent (upper bound equal to zero).
 
 %We get as width of inner-approximation on each component at time 0.2 the following:
 
