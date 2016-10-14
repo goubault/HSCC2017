@@ -348,19 +348,10 @@ of cyber-physical systems.
 %also require inner-approximating the reachable set, that is computing set of states that are definitely reached, or put differently 
 %flowpipes that contain only solutions of the uncertain system.
 
-We show in this paper that we can compute inner-approxi\-mations (also called 
-under-approximations) of the flowpipes, and as a consequence, reachable sets, 
-of continuous systems described by ordinary differential
-equations (ODEs), which 
+We propose an approach to compute inner-approxi\-mating flowpipes, that under-approximate reachable sets 
+of uncertain continuous systems described by ordinary differential equations (ODEs), which 
 are widely used for modeling all sorts of physical, biological and even economic or
-social systems. 
-
-There are numerous methods for the computation of outer-approximating (or over-approximating) flowpipes
-and reachable sets of ODEs, either linear \cite{GirardLinear06,LeGuernic09}, or non-linear \cite{Nedialkov99,Dang4,Dang3}, or even non-linear
-in the presence of uncertain parameters \cite{GirardHSCC2005}. This is also 
-supported by several tools,
-that can often also consider hybrid systems, see e.g. NLToolBox \cite{NLTOOLBOX}, 
-SpaceEx \cite{SPACEEX}, Flow* \cite{FLOW} and VNODE-LP \cite{VNODELP} to mention but a few.  
+social systems.  
 
 While outer-approximations describe states that may be rea\-ched, inner-approximations represent
 states that are actually reachable from one of the initial states. They are
@@ -441,9 +432,16 @@ experiments with a Matlab implementation and make tentative comparisons to exist
 \paragraph{Related work:}
 \label{relatedwork}
 
+There are numerous methods for the computation of outer-approximating (or over-approximating) flowpipes
+and reachable sets of ODEs, either linear \cite{GirardLinear06,LeGuernic09}, or non-linear \cite{Nedialkov99,Dang4,Dang3}, or even non-linear
+in the presence of uncertain parameters \cite{GirardHSCC2005}. This is also 
+supported by several tools,
+that can often also consider hybrid systems, see e.g. NLToolBox \cite{NLTOOLBOX}, 
+SpaceEx \cite{SPACEEX}, Flow* \cite{FLOW} and VNODE-LP \cite{VNODELP} to mention but a few. 
+
 %Outer-approximations of non-linear systems are well studied, using in particular Taylor
 %models, see \cite{Taylor07} for instance. 
-Inner-approximations have been little studied, except in the case of linear systems, 
+Inner-approximations have been far less studied, except in the case of linear systems, 
 see e.g. \cite{LeGuernic09,GirardLinear06}.
 The main existing method for under-approximating (or inner-approximating as we put it 
 here) flowpipes of non-linear systems is a backward method, described in \cite{Underapproxflowpipes}. 
