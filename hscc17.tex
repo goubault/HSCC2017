@@ -1472,7 +1472,10 @@ what we will be doing in Section \ref{sec:exp_bruss}.
 For the experiments if this paper, we implemented our method as follows. We use the {\tt FILIB++} C++ library~\cite{filib} for 
 interval computations, the {\tt FADBAD++} package \\ (http://www.fadbad.com) for automatic differentiation, and (a slightly modified version of)
 the {\tt aaflib} library \\ 
-(http://aaflib.sourceforge.net) for affine arithmetic.
+(http://aaflib.sourceforge.net) for affine arithmetic. Affine arithmetic is used for the
+coefficients of the Taylor models in order to limit the wrapping effect. Matrix preconditioning is a more classical alternative. 
+But the use of affine arithmetic is convenient for prototyping, as we rely on the {\tt aaflib} library,
+and it also provides a nice trade-off between efficiency and accuracy.
 
 It allows us to first demonstrate in Section~\ref{sec:exp_bruss} the good behavior of our inner-approximated flowpipes
  on the quite difficult Brusselator model. % plus des elements permettant de quantifier le cout de surapprox par rapport a sousapprox
@@ -1510,15 +1513,14 @@ $$\left\{\begin{array}{rcl}
 %\caption{Order 3 models, interval vs affine arithmetic \label{fig:brusselator_order3_t1}}
 %\end{figure}
 
-We use Taylor models of order 4 in time, and represent  in Figure~\ref{fig:brusselator_order4_x2_t10}, the inner and outer approximated flowpipes for variable $x_2$, up to a maximum time $t=10$. The wrapping effect is controlled by using affine arithmetic for the
-coefficients of the Taylor models. Matrix preconditioning is a more classical alternative. 
-However, the use of affine arithmetic is convenient for prototyping, as we rely on the {\tt aaflib} library,
-but it also provides a nice trade-off between efficiency and accuracy. We see that the width of the outer-approximation 
+We use Taylor models of order 4 in time, and represent  in Figure~\ref{fig:brusselator_order4_x2_t10}, the inner and outer approximated flowpipes for variables $x_1$ and $x_2$, up to a maximum time $t=10$. The inner-approximations are represented in dashed lines, and the outer-approximations in plain lines. 
+
+ We see that the width of the outer-approximation 
 (external lines) remains indeed stable. 
-Note that the width of the inner-approximation (internal lines) can decrease until the inner-approximation becomes empty 
+Note that the width of the inner-approximation (internal dashed lines) can decrease until the inner-approximation becomes empty 
 (this is the case for variable $x_2$ around $t=4$), but the width can still later be non-zero again. 
 %At first look, this could appear as a bug in our implementation, but this is not the case. 
-This is not a bug: this phenomenon is an illustration of the fact detailed in Section~\ref{practicalissues}, that when adding an improper with a proper interval to get the inner range of a variable, we can get a proper interval, which results in an empty inner-approximation (of the variable of interest - actually, on this example, the inner-approximations of the two variables do not become empty at the same time). 
+This is not a bug: this phenomenon is an illustration of the fact detailed in Section~\ref{practicalissues}, that when adding an improper with a proper interval to get the inner range of a variable, we can get a proper interval, which results in an empty inner-approximation (of the variable of interest - actually, you can note that on this example, the inner-approximations of the two variables do not become empty at the same time). 
 This does not prevent us from carrying
 on with the computation of the Taylor models~:  they can indeed give non-empty inner-approximations at later times, 
 depending on the behavior of the Jacobian of the flow.    
@@ -1634,27 +1636,37 @@ Further decreasing the precision starts degrading the quality of results.
 
 
 
-On Figure~\ref{ex:width_sriram_bruss1}, we represent $\gamma_{\min}$. We see that at $t=3$, the relative width of the inner-approximation over the
+On Figure~\ref{ex:width_sriram_bruss1}, we represent $\gamma_{\min}$ as a function of time, for a  time range 
+extended to a maximum time of 10 in order to observe further behavior. 
+We observe that at $t=3$, the relative width of the inner-approximation over the
 outer-approximation is of order $0.7$, which is equal to the value given in Table~1 of \cite{Underapproxflowpipes}. 
 However, this ratio decreases quickly, mostly due to the $x_2$ component, and at $t=4$, we get a ratio very close to $0.1$,
-instead of 0.55 as in [1]. Indeed, $t=4$ is a time at which, as already seen in Section~\ref{sec:exp_bruss}, our 
-inner-approximation of variable $x_2$ is temporarily of lower quality, whereas $x_1$ inner estimate
-is still of high quality.
+instead of $0.55$ as in~\cite{Underapproxflowpipes}. Indeed, $t=4$ is a time at which, as already noted in Section~\ref{sec:exp_bruss}, our 
+inner-approximation of variable $x_2$ is temporarily of lower quality, even though the $x_1$ inner estimate
+is still of high quality. We note that it is only temporary, as at further times the quality then improves and degrades again. 
 \begin{figure}[htbp]
 \begin{center}
-\epsfig{file=sriram_bruss_order4_t4_minwidth.png,width=9cm,height=5cm}
+\epsfig{file=cav16_bruss_order4_gammab.png,width=9cm,height=5cm}
+%\epsfig{file=sriram_bruss_order4_t4_minwidth.png,width=9cm,height=5cm}
 \end{center}
 \caption{Evolution of $\gamma_{\min}$ with time \label{ex:width_sriram_bruss1} }
 \end{figure}
-On Figure~\ref{ex:width_sriram_bruss2}, we represent the evolution with time of the widths of the inner- and outer-approximations of both x1 and x2. We see that when the width of the inner-approximation on $x_2$ gets very close 
-to zero (around t=4), the width of the outer-approximation is also strongly decreasing: the difference between these width remains 
-quite stable. This stable difference could be due to the outer-approximation of the flow starting from the center of our 
-initial value interval, and it could be interesting to use a higher order model to estimate this center, keeping lower order models for the Jacobian.
+On Figure~\ref{ex:width_sriram_bruss2}, we represent the evolution with time of the widths of the inner- and outer-approximations of $x_2$, 
+the component that makes $\gamma$ decrease drastically around $t=4$. We see that whenever the width of the inner-approximation on $x_2$ decreases 
+to zero, the width of the outer-approximation is also strongly decreasing: the difference between these width remains 
+almost stable. We also note again that the inner-approximation becoming empty at some point does not impact the behavior of the inner-approximation 
+at further times. Finally, we note that this system looks quite stable, with solution widths that tend to decrease with time. This is of course a
+difficult case for demonstrating the good behavior of the inner-approximation, as its width tends towards 0 as we note on 
+Figure~\ref{ex:width_sriram_bruss2}.
+
+%This stable difference could be due to the outer-approximation of the flow starting from the center of our 
+%initial value interval, and it could be interesting to use a higher order model to estimate this center, keeping lower order models for the Jacobian.
 \begin{figure}[htbp]
 \begin{center}
-\epsfig{file=sriram_bruss_order4_t4_widthx1x2.png,width=9cm,height=5cm}
+\epsfig{file=cav16_bruss_order4_width_x2b.png,width=9cm,height=5cm}
+%\epsfig{file=sriram_bruss_order4_t4_widthx1x2.png,width=9cm,height=5cm}
 \end{center}
-\caption{Evolution with time of the width of inner- and outer-approximations \label{ex:width_sriram_bruss2} }
+\caption{Evolution with time of the width of inner- and outer-approximations on $x_2$ \label{ex:width_sriram_bruss2} }
 \end{figure}
 
 
