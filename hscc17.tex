@@ -261,7 +261,7 @@
 % of EIGHT authors. SIX appear on the 'first-page' (for formatting
 % reasons) and the remaining two appear in the \additionalauthors section.
 %
-%\author{
+\author{
 % You can go ahead and credit any number of authors here,
 % e.g. one 'row of three' or two rows (consisting of one row of three
 % and a second row of one, two or three).
@@ -273,19 +273,17 @@
 % e-mail address with \email.
 %
 % 1st. author
-%\alignauthor E. Goubault \\ %\titlenote{Dr.~Trovato insisted his name be first.}\\
-%       \affaddr{LIX, Ecole Polytechnique, CNRS, }\\
-%       \affaddr{Universit\'e Paris-Saclay, 91128 Palaiseau, France} \\
-%       \email{\small goubault@lix.polytechnique.fr}
+\alignauthor E. Goubault \\ %\titlenote{Dr.~Trovato insisted his name be first.}\\
+       \affaddr{LIX, Ecole Polytechnique, CNRS, }\\
+       \affaddr{Universit\'e Paris-Saclay, 91128 Palaiseau, France} \\
+       \email{\small goubault@lix.polytechnique.fr}
 % 2nd. author
-%\alignauthor S. Putot \\ %\titlenote{The secretary disavows
-%any knowledge of this author's actions.}\\
-%       \affaddr{LIX, Ecole Polytechnique, CNRS, } \\
-%       \affaddr{Universit\'e Paris-Saclay, 91128 Palaiseau, France}\\
-%       \affaddr{France}\\
-%       \email{\small putot@lix.polytechnique.fr}
-%}
-\author{}
+\alignauthor S. Putot \\ %\titlenote{The secretary disavows any knowledge of this author's actions.}\\
+       \affaddr{LIX, Ecole Polytechnique, CNRS, } \\
+       \affaddr{Universit\'e Paris-Saclay, 91128 Palaiseau, France}\\
+       \email{\small putot@lix.polytechnique.fr}
+}
+%\author{}
 
 \maketitle
 \begin{abstract}
@@ -301,7 +299,7 @@ to the uncertain inputs and parameters.
 %applied to 
 % instead of the %clever, but still complicated, 
 %existing  methods relying on backward flowmaps and for which extra ingredients, either coming from optimisation, or involving topological criteria, are required. 
-We demonstrate with a Matlab implementation that our method is both efficient and
+We demonstrate with a C/C++ prototype implementation that our method is both efficient and
 precise on classical examples. 
 %\ForAuthors{Est-ce dangereux de se placer un peu sur la complexite? On pourrait nous reprocher d'avoir un
 %nombre d'equations en le produit du nombre d'equations d'origine, avec le nombre de variables... Mais la methode
@@ -393,7 +391,7 @@ This paper extends the work of ~\cite{sas07,hscc14}, where the authors proposed 
 %\ForAuthors{Attention au double-blind review}
 discrete dynamical systems, and gave a few hints to handle continuous and hybrid systems. 
 %on this previous work. \\
-We are computing here inner\-approximations of the flow of uncertain initial value problems, as defined in Section \ref{prelim}. 
+We are computing here inner-approximations of the flow of uncertain initial value problems, as defined in Section \ref{prelim}. 
 There are two main ingredients involved in our method. The first ingredient is that in order to derive inner-approximations, we only need forward 
 outer-approxima\-tions of some dynamics, which we can compute using classical
 Taylor models, introduced in Section \ref{sec:Taylor}. But we need to outer-approximate not only 
@@ -422,7 +420,7 @@ can easily be derived from the Taylor models of the original equations, as we sh
 %- guards \\
 
 Finally, we carry out some 
-experiments with a Matlab implementation and make tentative comparisons to existing work in Section \ref{sec:experiments}. 
+experiments with our prototype implementation, and make tentative comparisons to existing work in Section \ref{sec:experiments}. 
 
 % (but dual approaches - mostly bacward inner reachability ? - combination to be studied ?) 
 
@@ -432,10 +430,9 @@ experiments with a Matlab implementation and make tentative comparisons to exist
 \paragraph{Related work:}
 \label{relatedwork}
 
-There are numerous methods for the computation of outer-approximating (or over-approximating) flowpipes
-and reachable sets of ODEs, either linear \cite{GirardLinear06,LeGuernic09}, or non-linear \cite{Nedialkov99,Dang4,Dang3}, or even non-linear
-in the presence of uncertain parameters \cite{GirardHSCC2005}. This is also 
-supported by several tools,
+The computation of outer-approximating (or over-approximating) flowpipes
+and reachable sets of ODEs, either linear~\cite{GirardHSCC2005,LeGuernic09}, or non-linear~\cite{AlthoffS08,Nedialkov99,Dang4}
+has become a well-studied problem. This is  supported by several tools,
 that can often also consider hybrid systems, see e.g. NLToolBox \cite{NLTOOLBOX}, 
 SpaceEx \cite{SPACEEX}, Flow* \cite{FLOW} and VNODE-LP \cite{VNODELP} to mention but a few. 
 
@@ -548,12 +545,12 @@ If we can bound the range of the gradient of $f$ over $\x$, by $\mbox{range}(f',
 derive the following interval enclosure, usually called the mean-value extension: for any  $x_0 \in \x, \,    \mbox{range}(f,\x)  \subseteq f(x_0) +  [\f'](\x) (\x - x_0). $
 
 Classical interval computations can be interpreted as quantified 
-propositions. Consider for example $f(x)=x^2-x$.
-Its natural interval extension, evaluated on $[2,3]$, is 
+propositions. Consider for example $f(x)=x^2-x$, its exact range over $x=[2,3]$ is $[2,6]$.
+The natural interval extension of $f$, evaluated on $[2,3]$, is 
 $[\f]([2,3])=[2,3]^2-[2,3]=[1,7]$, which can be interpreted as the proposition 
 $ (\forall x \in [2,3]) \, (\exists z \in [1,7]) \, (f(x)=z).    $
 The mean-value extension gives
-$f(2.5) + $ $[\f']([2, 3]) \times ([2, 3] - 2.5)$ $ = [1.25, 6.25]$, and can be interpreted similarly.
+$f(2.5) + $ $[\f']([2, 3]) \times ([2, 3] - 2.5)$ $ = [1.25, 6.25]$, and can be interpreted similarly as an outer-aproximation.
 
 Inner-approximations determine a set of values proved to belong to the range of the function over some input box. 
 The fact that some $]\z[ \in \I$ satisfies $]\z[ \subseteq \range(f,\x)$, i.e., is an inner-approximation of the range 
@@ -620,8 +617,8 @@ For multiplication, things are a little more complex. Let us decompose $\K$ in $
 \overline x \leqslant 0\}$, 
 ${\cal Z} = \{\x=[\underline x,\overline x], \; \underline x \leqslant 0 \leqslant \overline x\}$, and 
 ${\mbox{dual } \cal Z} = \{\x=[\underline x,\overline x], \; \underline x \geqslant 0 \geqslant \overline x\}$. 
-When restricted to proper intervals, these operations coincide with the 
-classical interval operations.
+When restricted to proper intervals, the Kaucher multiplication coincides with the 
+classical interval multiplication. 
 Kaucher multiplication $\x \times \y$ extends the classical multiplication for all possible combinations of $\x$ and $\y$
 belonging to these sets. We refer to~\cite{Kaucher} for full details, and only give below an intuitive explanation of one of these cases.
 %is described in Table \ref{tabmult}, we only give an 
@@ -673,7 +670,7 @@ for all $z \in \pro \z$, (there exists $y \in \pro \y$) $z=0$.
 The important feature of Kaucher arithmetic is that it defines a generalized interval natural extension (see~\cite{gold1})~:
 \begin{proposition}
 \label{prop1}
-Let $f : \bbr^n \rightarrow \bbr$ be a function, given by an arithmetic expression where each variable appears syntactically only once.
+Let $f : \bbr^n \rightarrow \bbr$ be a function, given by an arithmetic expression where each variable appears syntactically only once (and with dregree 1).
 Then for $\x \in \K^n$, $f(\x)$, computed using Kaucher arithmetic, is $(f,\x)$-interpretable.
 \end{proposition}
 Kaucher arithmetic can thus be used in some cases to compute an inner-approximation of $\range(f,\x)$.
@@ -690,7 +687,7 @@ Let $f : \bbr^n \rightarrow \bbr$ be differentiable, $\x \in \K^n$ an improper i
 and suppose that for each $i \in \{1,\ldots,n\}$, we can compute $[\bfm{\Delta}_i] \in \I$ such that 
 \begin{equation} 
 \left\{ \frac{\partial f}{\partial x_i} (x), \; x \in \pro \x \right\} 
-\sqsubseteq [\bfm{\Delta}_i].
+\subseteq [\bfm{\Delta}_i].
 \label{delta1} 
 \end{equation}
 Then, for any $\tilde x \in \pro \x$, the following interval, evaluated with Kaucher arithmetic, is $(f,\x)$-interpretable~:
@@ -767,7 +764,7 @@ f^{[i+1]}_k & = & \sum\limits_{j=1}^n \frac{\partial{f^{[i]}_k}}{\partial z_j} f
 \end{eqnarray}
 
 \begin{proof}
-Let $z(t)$ be a solution to Equation (\ref{eq:flow}) starting at
+Let $z(t)$ be a solution to Equation (\ref{eq:flowb}) starting at
 time 0 at point $z_0$. By definition~: 
 $$
 \begin{array}{rclcl}
@@ -781,7 +778,7 @@ $\frac{d^{(l+1)} z}{dt^{(l+1)}}(t) = f^{[l+1]}(z(t))$,
 %\noindent 
 since by induction hypothesis :
 $$\begin{array}{rclcl}
-\frac{d^{(l+1)} z}{dt^{(l+1)}}(t) & = & \frac{d}{dt}\left(t \rightarrow
+\frac{d^{(l+1)} z}{dt^{(l+1)}}(t) & = & \frac{d}{dt}\left(t \mapsto
 f^{[l]}(z(t))\right) \\
 & = & \sum\limits_{j=1}^n \dot{z}_j(t) \frac{\partial f^{[l]}}{\partial z_j}(z(t)) \\
 & = & \sum\limits_{j=1}^n f_j(z(t)) \frac{\partial f^{[l]}}{\partial z_j}(z(t)) 
@@ -798,9 +795,9 @@ Equation (\ref{eq:TM}) is then a direct consequence from Taylor-La\-grange expan
 % \SP{A completer ou pas?} 
 Finally, we use enclosure $[{\z}_{j+1}]=[\z](t_{j+1},t_j,[{\z}_j])$ as initial solution set at time $t_{j+1}$ to derive the interval Taylor model on the next time step. \\
 
-If evaluated plainly in interval arithmetic, scheme~(\ref{eq:TM}) yields enclosures of increasing width. A classical way to improve 
-this evaluation is the method introduced by Lohner, that uses QR-factorization.
-We chose here to control wrapping using affine arithmetic~\cite{com-sto-93-aa}. 
+If evaluated plainly in interval arithmetic, scheme~(\ref{eq:TM}) yields enclosures of increasing width. A classical way to control the loss 
+of accuracy due to the loss of correlation in interval arithmetic, called wrapping effect, is a method introduced by Lohner, that uses QR-factorization~\cite{Nedialkov99}.
+Alternatively, we choose here to control wrapping using affine arithmetic~\cite{com-sto-93-aa} instead of interval arithmetic in this evaluation. 
 
 %******************************************************************************
 \section{Forward inner reachability}
@@ -817,8 +814,8 @@ We now want to compute also an inner-approximating flowpipe of this reachable se
 a range $]\z[(t,t_j,[\z_j])$ such that all values inside that range are sure to be reached at time $t$ by an execution of system (\ref{eq:flowb}).
 %\ForAuthors{Est-ce qu'on ne veut pas ecrire $]\z[(t,t_j,]\z_j[)$ plut\^ot avec
 %$]\z_0[=[\z_0]$?}
-For that, we will apply Theorem~\ref{thm1}, at all time $t$, to the function $z$ from $\R^n$ to $R^n$, defined by 
-$z_0 \mapsto z(t,z_0)$, solution to the IVP (\ref{eq:flowb}). 
+For that, we will apply Theorem~\ref{thm1}, at all time $t$, to the function $z_0 \mapsto z(t,z_0)$ from $\R^n$ to $\R^n$
+ solution of the IVP (\ref{eq:flowb}). 
 
 In Section~\ref{principle}, we give the main lines of the computation of inner-approximated flowpipes, 
 and state the algorithm. We then detail and comment each of its steps. In Section~\ref{roughenc}, we
@@ -899,7 +896,7 @@ H^{[2]} =
 \end{equation}
 
 \begin{proof}
-Consider a solution $t \rightarrow z_i(t)$ and $t \rightarrow J_{ij}(t)$ of
+Consider a solution $t \mapsto z_i(t)$ and $t \mapsto J_{ij}(t)$ of
 Equations (\ref{eq:IVP_jac}) and (\ref{eq:flow}). The Lie derivative of $H$
 is
 the time derivative of $\tilde{H}(t)=H(z_1(t),\ldots,z_n(t),J_{11}(t),\ldots,J_{nn}(t))$ : 
@@ -1211,7 +1208,7 @@ inexpensive.
 We need to outer-approximate the values of some functions, and in particular, all Lie
 derivatives, which are coefficients in the Taylor models, in Equations 
 (\ref{eq:TM1}-\ref{eq:TM3}). We have a wide choice from all the existing set-based
-methods, from interval computations to Bernstein polynomials \cite{Dang} if $f$
+methods, from interval computations to Bernstein polynomials if $f$
 is polynomial. We will use in our running example simple affine arithmetic
 \cite{com-sto-93-aa}, as used in our prototype. % and will compare it with interval computations, that we
 %both used in our prototype implementation, in Section \ref{sec:experiments}. 
@@ -1472,7 +1469,446 @@ what we will be doing in Section \ref{sec:exp_bruss}.
 \label{sec:experiments}
 %******************************************************************************
 %----------------------------------------------------------------------------------------------------------------------------------------------------------------
-\input{experiments.tex}
+For the experiments if this paper, we implemented our method as follows. We use the {\tt FILIB++} C++ library~\cite{filib} for 
+interval computations, the {\tt FADBAD++} package \\ (http://www.fadbad.com) for automatic differentiation, and (a slightly modified version of)
+the {\tt aaflib} library \\ 
+(http://aaflib.sourceforge.net) for affine arithmetic.
+
+It allows us to first demonstrate in Section~\ref{sec:exp_bruss} the good behavior of our inner-approximated flowpipes
+ on the quite difficult Brusselator model. % plus des elements permettant de quantifier le cout de surapprox par rapport a sousapprox
+Then, in Section~\ref{sec:exp_compar}, we provide some elements of comparison to the experimental results 
+of the related work. 
+ 
+\subsection{Brusselator}
+\label{sec:exp_bruss}
+
+We consider in this section another instance of the Brusselator system, slightly different  from the version of  Example~\ref{running0}, 
+which has been used in e.g.~\cite{Underapproxflowpipes,underapprox16}~: 
+$$\left\{\begin{array}{rcl}
+\dot{x}_1 & = & 1+x_1^2x_2-2.5x_1 \\
+\dot{x}_2 & = & 1.5x_1-x_1^2x_2
+\end{array}\right.$$
+\noindent with $x_1(0) \in [0.9,1]$ and $x_2(0) \in [0,0.1]$.
+
+%\paragraph{Control of the wrapping effect}
+%We first use Taylor models of order 3 in time, which we first evaluate for inner and outer-approximations 
+%with plain interval arithmetic. When computing flowpipes for time ranging between $0$ and $1$, 
+%we see, in Figure~\ref{fig:brusselator_order3_t1}, that the width of the outer-approximation 
+%(external dashed lines) quickly increases, while the 
+%width of the inner-approximation (internal dotted lines) decreases even more quickly, 
+%until it disappears at time 0.6~: after this time, the inner-approximation is empty. Indeed, it is well 
+%known that effective methods should be used to control this wrapping effect, for instance mean-value 
+%forms or matrix preconditioning. In our implementation, we control wrapping by using 
+%affine arithmetic to evaluate these models. %While accurate as shown in Figure \ref{fig:brusselator_order3_t1} (inner
+
+%This is convenient for prototyping, as we rely on the implementation of affine arithmetic present in the  {\tt aaflib} library.
+ 
+%\begin{figure}[htbp]
+%\begin{center}
+%\epsfig{file=brusselator_x1_IA_AA.png,width=9cm,height=5cm}
+%\end{center}
+%\caption{Order 3 models, interval vs affine arithmetic \label{fig:brusselator_order3_t1}}
+%\end{figure}
+
+We use Taylor models of order 4 in time, and represent  in Figure~\ref{fig:brusselator_order4_x2_t10}, the inner and outer approximated flowpipes for variable $x_2$, up to a maximum time $t=10$. The wrapping effect is controlled by using affine arithmetic for the
+coefficients of the Taylor models. Matrix preconditioning is a more classical alternative. 
+However, the use of affine arithmetic is convenient for prototyping, as we rely on the {\tt aaflib} library,
+but it also provides a nice trade-off between efficiency and accuracy. We see that the width of the outer-approximation 
+(external lines) remains indeed stable. 
+Note that the width of the inner-approximation (internal lines) can decrease until the inner-approximation becomes empty 
+(this is the case for variable $x_2$ around $t=4$), but the width can still later be non-zero again. 
+%At first look, this could appear as a bug in our implementation, but this is not the case. 
+This is not a bug: this phenomenon is an illustration of the fact detailed in Section~\ref{practicalissues}, that when adding an improper with a proper interval to get the inner range of a variable, we can get a proper interval, which results in an empty inner-approximation (of the variable of interest - actually, on this example, the inner-approximations of the two variables do not become empty at the same time). 
+This does not prevent us from carrying
+on with the computation of the Taylor models~:  they can indeed give non-empty inner-approximations at later times, 
+depending on the behavior of the Jacobian of the flow.    
+
+%\begin{figure}[htbp]
+%\begin{center}
+%\epsfig{file=brusselator_x1_t10.png,clip=,width=9cm}
+%\end{center}
+%\caption{Brusselator (x1), evaluation of the Taylor models (order 4) with affine arithmetic \label{fig:brusselator_order4_x1_t10}}
+%\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+\epsfig{file=cav16_bruss_order4_x1x2b.png,width=9cm,height=5cm}
+\end{center}
+\caption{Brusselator ($x_1$ and $x_2$), Taylor models order 4 \label{fig:brusselator_order4_x2_t10}}
+\end{figure}
+
+
+%------------------------------------------------------------------------------------------------------------------------------------------------
+
+% Exemple retiré car je n'arrive pas a bioen le traiter pour le moment
+%\subsection{Car on the hill}
+%\[ \left\{ 
+%\begin{array}{lll} \dot x_1 & = & x_2 \\
+%\dot x_2 & = & - 9.81 \sin(\frac{dg}{dx}(x_1))-0.7 x_2 + u
+%\end{array}
+%\right.
+%\]
+%where \[ g(x) = \frac{1}{2} (-\frac{1.1}{1.2} \cos(x) + \frac{1.2}{1.1} cos(1.1x)), \]
+%the command $u$ is bounded in $[-2,2]$, the initial condition is $x_1(0) \in [-1,1]$, $x_2(0) \in [-1,1]$, 
+%and we have limit conditions $x_1(t) \in [-1,13]$, $x_2(t) \in \R$ (conditions as in T. Le Mezo's document ``viability list of problems'')
+
+%\SP{Si on peut montrer qu'on peut soit reussir a remonter la cite soit rester bloque, un peu comme T. Le Mezo a montre dans sa pres a brest, ca serait chouette. 
+%Mais au moins dans l'implem matlab ca explose completement, mais relativement bizarrement: je ne suis qu'a moitié confiante sur l'AA dedans ...}
+%}
+
+\subsection{Comparisons to the related work}
+\label{sec:exp_compar}
+We provide in this section some elements of comparisons to the experimental results given in the related work~\cite{Underapproxflowpipes,underapprox16}.
+Let us highlight that it is difficult to compare these methods in a fair manner, as evaluating the compared accuracy of these methods is difficult. 
+Also, our implementation is preliminary (using fixed step of integration for instance), while some of the related work relies on the highly optimized 
+interval solver for initial value problem {\tt VNODE-LP}~\cite{VNODELP}. 
+%and on the other hand we only used a very basic Matlab implementation of our approach, whereas the related work relies on actual implementations,
+%using optimized solvers such as VNode. In order to partially account for this overhead of our preliminary implementation, we will also compare in our experiments 
+%the computation time of our inner approximated flowpipes, with the time taken by our implementation for the classical outer-approximation 
+%of Taylor model flowpipes.  
+
+%\ForAuthors{J'aime bien l'idee de comparer le cout du calcul sous-approx
+%a celui de l'outer-approx du meme degre avec ton implem - tu le mets en
+%remarque plus loin. Je pense qu'il faut l'expliquer un peu ici?
+%Ok je ferai quand j'aurai integre ces resultats}
+
+Among the examples studied in both ~\cite{Underapproxflowpipes} and \cite{underapprox16}, we first selected
+the version of the Brusselator introduced in Section~\ref{sec:exp_bruss} as a representative of the systems of low degree. 
+We chose as second example the following biological system, because of its higher degree (7), to investigate the way our approach scales. 
+\begin{equation}
+\dot{\left(\begin{array}{c}
+x_1 \\
+x_2 \\
+x_3 \\
+x_4 \\
+x_5 \\
+x_6 \\
+x_7
+\end{array}\right)} = \left(\begin{array}{c}
+-0.4x_1+ a x_3x_4 \\
+0.4x_1-x_2 \\
+x_2- a x_3x_4 \\
+a x_5x_6- a x_3x_4 \\
+- a x_5x_6+ a x_3x_4 \\
+0.5x_7- a x_5x_6 \\
+-0.5x_7+ a x_5x_6
+\end{array}\right)
+\end{equation}
+In this system, $a$ is a parameter which is taken, from our understanding, equal to 50 in \cite{Underapproxflowpipes} and to 5 in \cite{underapprox16}. 
+We will use the corresponding value of the parameter when comparing to the related work.
+
+\subsubsection{Comparison to \cite{Underapproxflowpipes}}
+In  \cite{Underapproxflowpipes}, the  accuracy of computations is measured by the minimum width ratio 
+\[ \gamma_{\min}=\min{\frac{\gamma_u(v)}{\gamma_o(v)}}, v \in V \]
+where $V$ is a set of vectors, and $\gamma_u(v)$ and $\gamma_o(v)$ measure respectively the width of the inner-approximation and outer-approximation
+in direction $v \in V$. 
+Intuitively, the larger this ratio, the better the approximation. 
+Our method naturally gives inner ranges for the projection of the flow system on its state variables. %(although we can also directly deduce from our Taylor models 
+%an inner-approximation of the range of any linear function of these variables, and also define a joint range, as 
+%already mentioned).
+%\ForAuthors{Deja dit avant, on insiste ou pas?} 
+We thus measure in our case the minimum over the state variables $x_i$ of our system of this ratio.  % \[ \gamma_{\min}=\min_{i}{\frac{\gamma_u(x_i)}{\gamma_o(x_i)}}, \]
+%where the $x_i$ are the state variables of the system. 
+We believe this corresponds to the measure that was used for experiments 
+in~\cite{Underapproxflowpipes}, as they mention that the vectors are selected along the dimensions (axis-aligned).
+
+%\ForAuthors{Sriram dit dans le dernier paragraph ``Results'' de [1], 
+%pour $\gamma_{min}$ que ``The vectors are selected along the dimensions
+%(axis-aligned).''? Donc ca serait comparable a nous?}
+\paragraph{Comparison on the Brusselator}
+The initial set taken in~\cite{Underapproxflowpipes}, defined by 
+$x_1 \geq 0.9$, $x_2 \geq 0$, $x_1+x_2-1 \leq 0$, can be projected on $1 \geq x_1 \geq 0.9$, $0.1 \geq x_2 \geq 0$.
+Naturally, this outer-approximation of the initial set is quite inaccurate, which will result in a lower quality of the inner-approximation
+that must be taken into account in the comparison to the results of~\cite{Underapproxflowpipes}. In our approach, 
+we could actually consider initial sets that are not given as intervals, for instance given as zonotopes 
+(in the present case, we could use a zonotopic outer-approximation of the simplex),  
+but we did not investigate this here. 
+
+
+In ~\cite{Underapproxflowpipes}, the authors study the result for $t=3$ and $t=4$, with 4th order Taylor models and integration time step $h=0.02$. 
+We choose, as they do, 4th order Taylor models,  and time step $h=0.02$. Our implementation until $t=4$
+takes a total of $3.2$ seconds (to compute both outer and inner approximations), where \cite{Underapproxflowpipes} takes 89 seconds.
+Our implementation is thus more than an order of magnitude quicker.
+Note also that with our approach, taking order 3 Taylor models and a larger time step of 0.1, we still obtain results of very similar quality on $\gamma$, in 0.25 seconds. 
+Further decreasing the precision starts degrading the quality of results. 
+
+
+
+On Figure~\ref{ex:width_sriram_bruss1}, we represent $\gamma_{\min}$. We see that at $t=3$, the relative width of the inner-approximation over the
+outer-approximation is of order $0.7$, which is equal to the value given in Table~1 of \cite{Underapproxflowpipes}. 
+However, this ratio decreases quickly, mostly due to the $x_2$ component, and at $t=4$, we get a ratio very close to $0.1$,
+instead of 0.55 as in [1]. Indeed, $t=4$ is a time at which, as already seen in Section~\ref{sec:exp_bruss}, our 
+inner-approximation of variable $x_2$ is temporarily of lower quality, whereas $x_1$ inner estimate
+is still of high quality.
+\begin{figure}[htbp]
+\begin{center}
+\epsfig{file=sriram_bruss_order4_t4_minwidth.png,width=9cm,height=5cm}
+\end{center}
+\caption{Evolution of $\gamma_{\min}$ with time \label{ex:width_sriram_bruss1} }
+\end{figure}
+On Figure~\ref{ex:width_sriram_bruss2}, we represent the evolution with time of the widths of the inner- and outer-approximations of both x1 and x2. We see that when the width of the inner-approximation on $x_2$ gets very close 
+to zero (around t=4), the width of the outer-approximation is also strongly decreasing: the difference between these width remains 
+quite stable. This stable difference could be due to the outer-approximation of the flow starting from the center of our 
+initial value interval, and it could be interesting to use a higher order model to estimate this center, keeping lower order models for the Jacobian.
+\begin{figure}[htbp]
+\begin{center}
+\epsfig{file=sriram_bruss_order4_t4_widthx1x2.png,width=9cm,height=5cm}
+\end{center}
+\caption{Evolution with time of the width of inner- and outer-approximations \label{ex:width_sriram_bruss2} }
+\end{figure}
+
+
+\paragraph{Comparison on the biological system}
+We now consider the biological system, with initial condition $\x_0 \in [0.1,0.1175] \times...\times [0.1,0.1175]$, which is an outer-approximation
+of the simplex taken in  \cite{Underapproxflowpipes}. We compute inner and outer approximated flowpipes for time in [0,0.2], 
+with order 5 Taylor Models and a step size of 0.01. The computation completes in 4.7 seconds, and we get as a measure of quality of the approximation 
+$\gamma(t=0.2) \approx 0.65$, which is this time a much better accuracy than the $\gamma(t=0.2) = 0.25$ obtained in 632 seconds in  \cite{Underapproxflowpipes}. 
+This seems to confirm that our approaches scales very well to high dimensional systems, with a very good accuracy. 
+
+We also measure as an indication of the accuracy the mean value on the components $x_i$ of the distance between the inner and outer approximations $x_i^{in}$ and $x_i^{out}$,
+computed as $$\sum_{i=1}^n \frac{\max(\sup(x_i^{out})-\sup(x_i^{in}),\inf(x_i^{in})- \inf(x_i^{out}))}{n}.$$
+It gives an over-estimation of the error between the inner-approximation and the exact reachable state at time $t$: this value for $t=0.2$ is $4.10^{-3}$.
+
+%elapsed_time_AA =  122.1330, step = 0.02, order 3
+%elapsed_time_surapprox_AA =  39.6906
+
+
+% je l'enleve pas passionnant 
+%\begin{figure}
+%\begin{center}
+%\epsfig{file=biological_sriram_002_order2_width.png,clip=,width=8cm}
+%\end{center}
+%\caption{Evolution of $\gamma_{\min}$ with time on the biological system}
+%\label{ex:width_sriram_bio}
+%\end{figure}
+
+\subsubsection{Comparison to \cite{underapprox16}}
+\paragraph{Comparison on the Brusselator}
+In \cite{underapprox16} the authors take $X=[0.3, 0.4] \times [0.5, 0.7]$ for a time frame in [0,1.1], and a time step h=0.05. 
+We compute the inner and outer-approximations, for same time step and with order 3 Taylor Models.
+%Our implementation of the classical outer-approximated Taylor models only takes 16 seconds. 
+%In Figure~\ref{fig:bruss_cav16}, we represent the inner and outer-approximations obtained for $x_1$ and $x_2$.  
+%\begin{figure}[htbp]
+%\begin{tabular}{cc}
+%\epsfig{file=cav16_bruss_order4_x1.png,clip=,width=4cm}
+%&
+%\epsfig{file=cav16_bruss_order4_x2.png,clip=,width=4cm}
+%\end{tabular}
+%\caption{Inner and outer approximations (order 4) for $x_1$ and $x_2$ \label{fig:bruss_cav16}}
+%\ForAuthors{Trop petit?}
+%\end{figure}
+In \cite{underapprox16}, the accuracy of the result is estimated by a parameter $\epsilon_M$ that bounds the size of 
+the boxes used to approximated the boundary of the exact reachable set, inside which they will look for an inner-approximation. 
+We believe this parameter comparable in spirit 
+to our measure of the maximum distance between the inner and the outer approximations. We can point 2 differences. First, in our case 
+we compute the distance to the outer-approximation, which will always be greater than the distance to the exact reachable set.
+Also, our understanding is that there are no guarantees in the method of \cite{underapprox16} on the actual distance from the inner-approximation itself 
+to the reachable set, whereas our bounds are guaranteed. 
+
+We measure obtain in 0.8 seconds a distance equal to 0.005 for $x_1$, and 0.01 for $x_2$, which is 10 times larger than the estimation 0.001 obtained 
+in 55 seconds in \cite{underapprox16}. 
+% However, choosing  higher order models or smaller time steps does not seem to improve much our distance measures. 
+
+
+
+\paragraph{Comparison on the biological system}
+We now consider the biological system, with, as in \cite{underapprox16}, a box initial condition $\x_0 \in [-0.015,0.001] \times...\times [-0.015,0.001]$. 
+In order to compare our results to their backward estimate, we compute inner and outer approximated flowpipes on the reverse flow, 
+for time in [0,0.2] , and use order 3 Taylor Models and a step size of 0.02. Our computation of the inner and outer approximated flowpipes takes 0.2 seconds. 
+We get inner-approximations that always strictly contain the  ones of \cite{underapprox16}, which takes 0.67 seconds to compute. Our analysis is thus both 
+faster and with better quality results. 
+%$[  -0.01628536833380,   0.00103619844301]  [  -0.01833708041159,   0.00255842760143]  [  -0.01514208680158,   0.00416990950253]  [  -0.01488096912574,   0.00087696255375] 
+%[  -0.01487744391170,   0.00088145048369]  [  -0.01492448895828,   0.00247920964913]  [  -0.01660493465136,   0.00105021396051] $
+%to be compared to the always tighter (thus with lower quality) $[-0.0152,0.000]\times[-0.0169,0.0011]\times [-0.00140,0.0030]\times[-0.0141,0.0001]\times [-0.0141,0.0001]\times [-0.0138,0.0014]\times [-0.0155,0.0000]$
+%of \cite{underapprox16}, which takes 0.67 seconds to compute.
+
+Using as quality measure the measure of  \cite{Underapproxflowpipes} that computes the ratio $\gamma$ of the width of the inner-approximation over the width of the outer-approximation, 
+here componentwise on the variables, and using our outer-approximation in both cases, we obtain for our approximation
+$(\gamma_1,\ldots,\gamma_n)=(0.970,   0.999,   0.973,   0.938,   0.938,   0.970,   0.971)$, 
+while with the results of \cite{underapprox16} we get the lower quality results
+$(\gamma_1,\ldots,\gamma_n)=( 0.85,   0.86,   0.22,   0.84 ,  0.84 ,  0.85,   0.85)$.
+
+We also compare our results with the outer-approximation computed by VNODE with a Taylor model of order 5. 
+We represent on Figure~\ref{fig:histo} the upper bound for each of the 7 variables $x_i$ on the outer-approximation by VNode,  
+our outer-approximation, our inner-approximation, and that of \cite{underapprox16}, in that order, from left to right.
+\begin{figure}[htbp]
+\begin{center}
+%\epsfig{file=histo_sup.png,width=9cm,height=5cm}
+\epsfig{file=biological_matlab.png,width=9cm,height=5cm}
+\end{center}
+\caption{Upper bounds on inner and outer-approximations on the 7 variables of the biological system \label{fig:histo}}
+\end{figure}
+The results confirm that our inner-approximation (third bar of each group in the Figure, noted 'in') is generally very close to the outer-approximations (first two bars in each group),
+while the inner-approximation of the related work (fourth bar, noted 'related') is of lower quality, and on some variables even absent (upper bound equal to zero).
+
+%We get as width of inner-approximation on each component at time 0.2 the following:
+
+%\begin{tabular}{l|c|c|c}
+% & õur inner/outer & VNODE (order 20) &  inner\cite{underapprox16} \\
+%Time & 115sec (36 for outer-approx only) & < 1 sec & 0.67 sec \\
+%$x_1$ &  [  -0.016286,   0.0010362] / [  -0.016547,   0.0012979] & [-0.0166, 0.00131] & [-0.0152,0.000] 
+
+%\end{tabular}
+
+% $[   -0.01628,    0.00104]\times[   -0.01834,    0.00256]\times [   -0.01515,    0.00417]\times 
+%[   -0.01489,    0.00088] \times[   -0.01488,    0.00089]\times[   -0.0150,    0.00248]\times [   -0.01661,    0.00106]$
+
+%$[  -0.01628536833380,   0.00103619844301]  [  -0.01833708041159,   0.00255842760143]  [  -0.01514208680158,   0.00416990950253]  [  -0.01488096912574,   0.00087696255375] 
+%[  -0.01487744391170,   0.00088145048369]  [  -0.01492448895828,   0.00247920964913]  [  -0.01660493465136,   0.00105021396051] $
+
+%to be compared to the $[-0.0152,0.000]\times[-0.0169,0.0011]\times [-0.00140,0.0030]\times[-0.0141,0.0001]\times [-0.0141,0.0001]\times [-0.0138,0.0014]\times [-0.0155,0.0000]$
+%Of \cite{underapprox16} .
+
+%With VNODE at order 20 (with an execution time smaller than 1 second, which confirms the poor efficiency of our matlab implementation...) 
+%$[-0.0166, 0.00131]
+%[-0.0184, 0.00262]
+%[-0.0154, 0.00451]
+%[-0.0154, 0.00141]
+%[-0.0154, 0.00141]
+%[-0.0152, 0.00277]
+%[-0.0169, 0.00131]$
+
+%Our outer-approximation is $ [  -0.01654701249765,   0.00129784260686]  [  -0.01834542409233,   0.00256677128217]  [  -0.01540563322262,   0.00443345592357]
+%[  -0.01539838418560,   0.00139437761361] [  -0.01538981256285,   0.00139381913484] [  -0.01519231394425,   0.00274703463510] [  -0.01686300688068,   0.00130828618983]$
+%which look tighter than the VNODE order 20 results (???). 
+
+%The mean distance from our inner-approximation to our outer-approximation, defined by $\sum_i=1^n \frac{|x_i^{out} - x_i^{in}|}{n}$, is thus equal to $3.10^{-4}$
+% distance = sum(max(xouter.sup-xinner.sup,xinner.inf-xouter.inf))/7
+%when the mean distance from the inner-approximation of \cite{underapprox16} to our approximation is $2.10^{-3}$ 
+
+%the width of our outer-approximation is 
+%   0.017844855104504   0.020912195374498   0.019839089146175   0.016792761799198   0.016783631697686   0.017939348579340   0.018171293070502
+
+%the width of our inner-approx is
+%   0.017321566776802   0.020895508013012   0.019311996304100   0.015757931679485   0.015758894395382   0.017403698607404   0.017655148611861
+
+%width of inner / width of outer (same as sriram but componentwise)
+%0.970675675165903   0.999202027277059   0.973431600705454   0.938376418835229   0.938944245157293   0.970141057822295   0.971595612010733
+
+% 0.851786126084267   0.860741767072022   0.221784375662647   0.845602419054034   0.846062416989170   0.847299439707952   0.852993781997937
+
+%\ForAuthors{A comparer au related workj, mais width de am surapporx (a recopier) < width de leur surapprox sur certains cas => wierd}
+
+% [t,y] = ode23(@Bio_forode,[0 0.2],[-0.015; -0.015 ; -0.015; -0.015; -0.015; -0.015; -0.015]); => x3 sort de leur boite
+
+%\paragraph{Comparaison to \cite{Underapproxflowpipes} on the biological system}
+
+%for time in $[0,0.2]$, but again on differential initial conditions. 
+
+
+
+%\subsection{Other examples}
+%\paragraph{Moore-Greitzer model of a jet engine}
+%\begin{equation}
+%\dot{\left(\begin{array}{c}
+%x \\
+%y
+%\end{array}\right)} = \left(\begin{array}{c}
+%-y-1.5x^2-0.5x^3-0.5 \\
+%3x-y
+%\end{array}\right)
+%\end{equation}
+%The initial set is given by the simplex 
+%$$X_0=\{(x,y) \in \R^2 | -x \leq -0.9 \wedge -y \leq -0.9\wedge x+y-2 \leq 0\}$$
+
+%In \cite{Underapproxflowpipes}, two cases are considered : 
+%\begin{itemize}
+%\item computation of the inner and outer approximations of the reachable set at time
+%$t=0.04$
+%\item computation of the inner and outer approximations of the reachable set at times
+%in [0,3] (using a step-size $\delta=0.02$)
+%\end{itemize}
+
+%\ForAuthors{Je rajoute les equations plus tard}
+
+%\paragraph{Shimizu-Morioka}
+
+%\paragraph{Steam governor}
+
+%\paragraph{R\"ossler}
+
+
+%\paragraph{Lorenz}
+
+%\paragraph{Lotka-Volterra}
+%(also from \cite{underapprox16}?)
+
+%\begin{equation}
+%\dot{\left(\begin{array}{c}
+%x_1 \\
+%x_2 \\
+%x_3
+%\end{array}\right)} = \left(\begin{array}{c}
+%x_1x_2-x_1x_3 \\
+%x_2x_3-x_2x_1 \\
+%x_3x_1-x_3x_2
+%\end{array}\right)
+%\end{equation}
+
+%\paragraph{Coupled Van der Pol}
+
+%The next set of examples is taken from \cite{underapprox16}. 
+
+%\paragraph{Electromechanical oscillation}
+
+%\begin{equation}
+%\dot{\left(\begin{array}{c}
+%x \\
+%y
+%\end{array}\right)} = \left(\begin{array}{c}
+%y \\
+%0.2-0.7sin(x)-0.05y
+%\end{array}\right)
+%\end{equation}
+%The initial set is given by $[-0.1,0.1]\times [2.9,3.1]$. We are looking at an 
+%inner-approximation at times $t=0.5$ and $t=3$. 
+
+%\paragraph{Van der Pol}
+
+%\begin{equation}
+%\dot{\left(\begin{array}{c}
+%x_1 \\
+%x_2
+%\end{array}\right)} = \left(\begin{array}{c}
+%x_2 \\
+%-0.2(x^2_1-1)x_2-x_1
+%\end{array}\right)
+%\end{equation}
+
+%\paragraph{Integrable systems}
+%To make precision estimates of our method. 
+
+%$$\dot{u}=u^2$$
+%\noindent with $u(0)=u_0$. 
+%Then $u=\frac{u_0}{1-u_0t}$
+
+%The logistic equation :
+
+%$$\dot{u}=\lambda u(1-u)$$
+%\noindent with $u(0)=u_0$. Then
+%$u(t)=\frac{u_0e^{\lambda t}}{1-u_0+u_0e^{\lambda t}}$.
+
+%\ForAuthors{Pour $0 < u_0 < 1$ et $\lambda > 0$ par exemple, c'est une fonction decroissante
+%en $u_0$ et $\lambda$ donc on trouve facilement les bornes!}
+
+%\ForAuthors{Pas mal d'autres dans \url{http://www.math.umn.edu/~olver/am_/odz.pdf} mais les deux au dessus paraissent simples et raisonnables, surtout la 
+%logistic equation?}
+
+%$$\dot{y} = \frac{a}{\sqrt{y}}+y$$
+%\noindent with $y(a)=1$
+%Solution is :
+%$$y(t)=\left(exp\left(\frac{3t}{2} - \frac{3a}{2} + log(a + 1)\right) - a\right)^{\frac{2}{3}}$$
+%(from Mathworks - can find $y(0)$ and translate it into polynomial system?)
+
+%\subsection{Conclusion}
+%Resultats preliminaires qui peuvent ne pas sembler que positif mais a priori essentiellement dus a %la presente implem
+%\ForAuthors{
+%- comparaison sur / sous-approx => sous-approx competitive en complexite par rapport aux modeles de Taylor classiques\\
+%- bon passage a l'echelle sur degre 7 ? \\
+%- IA / AA laissant etendre que implem AA utilisee tres sous-optimale
+%- un des interets est qu'on peut raffiner la precision (sur et sous-approximee) en montant en ordre a la demande, du style algo a pas ou ordre adaptatif par cette 
+%estimation directe de l'erreur!
+%}
 %------------------------------------------------------------------------------------------------------------------------------------------------
 
 %******************************************************************************
@@ -1481,7 +1917,7 @@ what we will be doing in Section \ref{sec:exp_bruss}.
 %
 We presented an approach to compute inner-approxima\-ting flowpipes of uncertain ODEs, that extends in a simple way Taylor-based 
 methods for outer-approximating flowpipes. We assessed the good behaviour of the inner compared to the classical outer-approximations
-with a preliminary Matlab implementation, and showed that the method scales very well to larger-order systems of ODEs. 
+with a prototype implementation, and showed that the method scales very well to larger-order systems of ODEs. 
 The joint computation of the inner and outer-approximating flowpipes gives us at each instant a bound on the error to the exact reachable 
 set at each instant, that we can use if needed to dynamically refine the approximation by using higher order Taylor models or smaller step sizes. 
 Indeed, error estimation, which is usually a difficult task, is a direct outcome of our computation.
