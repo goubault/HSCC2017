@@ -1631,7 +1631,7 @@ In ~\cite{Underapproxflowpipes}, the authors study the result for $t=3$ and $t=4
 We choose, as they do, 4th order Taylor models,  and time step $h=0.02$. Our implementation until $t=4$
 takes a total of $3.2$ seconds (to compute both outer and inner approximations), where \cite{Underapproxflowpipes} takes 89 seconds.
 Our implementation is thus more than an order of magnitude quicker.
-Note also that with our approach, taking order 3 Taylor models and a larger time step of 0.1, we still obtain results of very similar quality on $\gamma$, in 0.25 seconds. 
+Note also that with our approach, taking order 3 Taylor models and a larger time step of 0.1, we still obtain results of very similar quality on $\gamma_{\min}$, in 0.25 seconds. 
 Further decreasing the precision starts degrading the quality of results. 
 
 
@@ -1652,12 +1652,13 @@ is still of high quality. We note that it is only temporary, as at further times
 \caption{Evolution of $\gamma_{\min}$ with time \label{ex:width_sriram_bruss1} }
 \end{figure}
 On Figure~\ref{ex:width_sriram_bruss2}, we represent the evolution with time of the widths of the inner- and outer-approximations of $x_2$, 
-the component that makes $\gamma$ decrease drastically around $t=4$. We see that whenever the width of the inner-approximation on $x_2$ decreases 
+the component that makes $\gamma_{\min}$ decrease drastically around $t=4$. We see that whenever the width of the inner-approximation on $x_2$ decreases 
 to zero, the width of the outer-approximation is also strongly decreasing: the difference between these width remains 
 almost stable. We also note again that the inner-approximation becoming empty at some point does not impact the behavior of the inner-approximation 
 at further times. Finally, we note that this system looks quite stable, with solution widths that tend to decrease with time. This is of course a
-difficult case for demonstrating the good behavior of the inner-approximation, as its width tends towards 0 as we note on 
-Figure~\ref{ex:width_sriram_bruss2}.
+difficult case for demonstrating  the inner-approximation, as its width naturally tends towards 0 due to the problem, as we note on 
+Figure~\ref{ex:width_sriram_bruss2}. We advocate that inner and outer-approximations should be considered jointly in order to assess 
+the behavior of a system. 
 
 %This stable difference could be due to the outer-approximation of the flow starting from the center of our 
 %initial value interval, and it could be interesting to use a higher order model to estimate this center, keeping lower order models for the Jacobian.
@@ -1674,7 +1675,7 @@ Figure~\ref{ex:width_sriram_bruss2}.
 We now consider the biological system, with initial condition $\x_0 \in [0.1,0.1175] \times...\times [0.1,0.1175]$, which is an outer-approximation
 of the simplex taken in  \cite{Underapproxflowpipes}. We compute inner and outer approximated flowpipes for time in [0,0.2], 
 with order 5 Taylor Models and a step size of 0.01. The computation completes in 4.7 seconds, and we get as a measure of quality of the approximation 
-$\gamma(t=0.2) \approx 0.65$, which is this time a much better accuracy than the $\gamma(t=0.2) = 0.25$ obtained in 632 seconds in  \cite{Underapproxflowpipes}. 
+$\gamma_{\min}(t=0.2) \approx 0.65$, which is this time a much better accuracy than the $\gamma_{\min}(t=0.2) = 0.25$ obtained in 632 seconds in  \cite{Underapproxflowpipes}. 
 This seems to confirm that our approaches scales very well to high dimensional systems, with a very good accuracy. 
 
 We also measure as an indication of the accuracy the mean value on the components $x_i$ of the distance between the inner and outer approximations $x_i^{in}$ and $x_i^{out}$,
@@ -1928,11 +1929,11 @@ while the inner-approximation of the related work (fourth bar, noted 'related') 
 %******************************************************************************
 %
 We presented an approach to compute inner-approxima\-ting flowpipes of uncertain ODEs, that extends in a simple way Taylor-based 
-methods for outer-approximating flowpipes. We assessed the good behaviour of the inner compared to the classical outer-approximations
-with a prototype implementation, and showed that the method scales very well to larger-order systems of ODEs. 
-The joint computation of the inner and outer-approximating flowpipes gives us at each instant a bound on the error to the exact reachable 
+methods for outer-approximating flowpipes. We assessed the good behaviour of the inner compared to the classical outer-approximations, 
+and demonstrated that the method scales very well to larger-order systems of ODEs. 
+The joint computation of the inner and outer-approximating flowpipes gives us a bound on the error to the exact reachable 
 set at each instant, that we can use if needed to dynamically refine the approximation by using higher order Taylor models or smaller step sizes. 
-Indeed, error estimation, which is usually a difficult task, is a direct outcome of our computation.
+Indeed, accurate error estimation, which is usually a difficult task, is a direct outcome of our computation.
 A natural future extension of the present work, is the inner-approximation of reachable sets 
 in presence of guards and constraints, so as to handle general hybrid systems. Our approach allows us to inner-approximate 
 not only the variables as demonstrated here, but also the projection on whatever function of these variables, not only at 
@@ -1944,8 +1945,8 @@ of joint range of functions and constraint solving, as e.g.~\cite{DBLP:journals/
 %handle this symbolic information in a satisfying way, and some engineering improvement is needed and planned.
 
 Among the main interests of inner-approximation is the possibility to falsify properties. Our mid-term objective in that respect, 
-is to use the combination of inner and outer approximations to tackle the verification and falsification of temporal properties, 
-along the lines of~\cite{falsification2,IshiiYG16}. 
+is to use the combination of inner and outer approximations to tackle the verification and falsification of temporal properties
+of uncertain hybrid systems, along the lines of~\cite{falsification2,IshiiYG16}. 
 
 %\begin{itemize}
 %\item comparaison sur / sous-approx => sous-approx competitive en complexite par rapport aux modeles de Taylor classiques : oui
