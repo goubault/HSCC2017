@@ -403,7 +403,9 @@ The second main ingredient of our method is
 a generalized mean value theorem, that we introduce in Section \ref{generalizedmean}, applied to the flow of the uncertain ODE. 
 The generalized mean value theorem relies itself on modal intervals, a simple 
 extension of classical interval arithmetic (see Section \ref{Kaucherar}), to inner-approximate 
-the image of an input set by a non-linear vector-valued function. 
+the image of an input set by a non-linear vector-valued function. Note that (Kaucher) interval methods, known to be conservative, 
+are locally used to derive inner ranges, but that this conservatism does not propagate:
+ the  inner range is always computed from the outer-approximated Taylor models. 
 
 In many ways, all this is remarkably simple, with respect to other existing methods (using backward propagation
 of the flow of the dynamics), that we discuss in the paragraph devoted to related work. Our method
@@ -895,7 +897,8 @@ H^{[2]} =
 \label{eqfirstH}
 \end{equation}
 
-\begin{proof}
+%\begin{proof}
+Let us briefly detail how we obtained Equation~(\ref{eqfirstH}).
 Consider a solution $t \mapsto z_i(t)$ and $t \mapsto J_{ij}(t)$ of
 Equations (\ref{eq:IVP_jac}) and (\ref{eq:flow}). The Lie derivative of $H$
 is
@@ -906,18 +909,26 @@ $$\begin{array}{rcl}
 \end{array}$$
 We get the formula (\ref{eqfirstH}) by 
 replacing $\dot{z}_i$ by its expression in Equation (\ref{eq:flow}) and
-$\dot{J}_{kl}$ by its expression in Equation (\ref{eq:IVP_jac}). 
-\end{proof}
+$\dot{J}_{kl}$ by its expression in Equation (\ref{eq:IVP_jac}). \\
+%\end{proof}
+
+We now summarize the full procedure for computing the inner and outer reachable sets of the system 
+on a time grid $t_0 < t_1 < \ldots < t_N$ in pseudo-Algorithm~\ref{algo}.
+
+%Altogether, given a time grid  $t_0 < t_1 < \ldots < t_N$, 
+%an initial range $\z_0$, and some $\tilde{z_0} \in \z_0$, the algorithm is as follows~:
+% {\par %\smallskip                     %  authors:
+%  \begin{center}%                    %
+%   \fbox%                            %    --------
+%   {\parbox{1.\linewidth}%          %    |  #1  |
+%    { %\raggedright\sc  
+
+\RestyleAlgo{boxed}% Change from the 'ruled' style to 'boxed'
 
 
-
-Altogether, given a time grid  $t_0 < t_1 < \ldots < t_N$, 
-an initial range $\z_0$, and some $\tilde{z_0} \in \z_0$, the algorithm is as follows~:
- {\par %\smallskip                     %  authors:
-  \begin{center}%                    %
-   \fbox%                            %    --------
-   {\parbox{1.\linewidth}%          %    |  #1  |
-    { %\raggedright\sc  
+\begin{algorithm}[h]
+\KwData{ a time grid  $t_0 < t_1 < \ldots < t_N$, 
+an initial range $\z_0$, and some $\tilde{z_0} \in \z_0$}
 \underline{Initialize}: $j=0$, $t_j=t_0$, $[\z_j]=\z_0$, $[\tilde{z}_j]=\tilde{z}_0$, $[\J_j] = Id$
 
 Then on each time interval $[t_j,t_{j+1}]$ do:
@@ -950,13 +961,15 @@ then interval $\pro]\z[(t,t_j)$ is an inner-approximation of  the set of solutio
 otherwise the inner-approximation is empty.\\
 
 \underline{Step 4}. initialize the next iteration by computing $[{\z}_{j+1}]=[\z](t_{j+1},t_j,[{\z}_j])$, $[\tilde{\z}_{j+1}]=[\tilde{\z}](t_{j+1},t_j,$ $[\tilde{\z}_j])$, $[\J_{j+1}] = [\J](t,t_j,[{\z}_j]) $\\
- }%         %    --------
-   }%                                %
-  \end{center}%                      %
-  \par\smallskip                     %
- }        
+% }%         %    --------
+%   }%                                %
+%  \end{center}%                      %
+%  \par\smallskip                     %
+% }   
+\caption{Computing inner and outer reachable sets \label{algo}}     
+\end{algorithm}
 
-We will illustrate the computations on the following example:
+In the next sections, we detail the different steps of Algorithm~\ref{algo}, and illustrate them on the following example:
 \begin{example}
 \label{running0}
 \label{running1}
@@ -1948,14 +1961,6 @@ Among the main interests of inner-approximation is the possibility to falsify pr
 is to use the combination of inner and outer approximations to tackle the verification and falsification of temporal properties
 of uncertain hybrid systems, along the lines of~\cite{falsification2,IshiiYG16}. 
 
-%\begin{itemize}
-%\item comparaison sur / sous-approx => sous-approx competitive en complexite par rapport aux modeles de Taylor classiques : oui
-%\item bon passage a l'echelle sur degre 7 ? : oui
-%\item IA / AA laissant etendre que implem AA utilisee tres sous-optimale : Trop sur la defensive et deja dit
-%\item un des interets est qu'on peut raffiner la precision (sur et sous-approximee) en montant en ordre a la demande, du style algo a pas ou ordre adaptatif par cette 
-%estimation directe de l'erreur! : oui
-%\item combination with backward inner-approximated analyses ? 
-%\end{itemize}
 
 Finally, this work can be applied to other, related problems. First, this can be applied
 to backward reachability problems, such as the ones treated in e.g.~\cite{underapprox16}, by considering
