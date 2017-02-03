@@ -396,7 +396,7 @@ There are two main ingredients involved in our method. The first ingredient is t
 outer-approxima\-tions of some dynamics, which we can compute using classical
 Taylor models, introduced in Section \ref{sec:Taylor}. But we need to outer-approximate not only 
 the set of reachable states of the dynamics but also
-of the ``variational equations'', including the dynamics of the Jacobian of the flow with respect to the uncertain
+of the variational equations, including the dynamics of the Jacobian of the flow with respect to the uncertain
 initial values. 
 
 The second main ingredient of our method is 
@@ -848,8 +848,13 @@ a loss of accuracy in the inner-approximation, and even possibly to an empty inn
 
 \label{principle}
 
-We thus need an (outer) enclosure of $z(t,\tilde{z_0})$ for some $\tilde{z_0} \in \z_0$, and of its Jacobian with respect to $z_0$, evaluated over range $\z_0$, 
-defined by the coefficients $J_{ij}(t,\z_0)=\frac{\partial z_i}{\partial z_{0,j}}(t,\z_0)$, for $i$ and $j$ between $1$ and $n$, and where $z_i$ is the $i$-th 
+On each time interval, in order to compute an inner range of the solution of the uncertain system, we  need an outer-enclosure of the solution 
+starting from a point in the initial set, 
+$z(t,\tilde{z_0})$ for some $\tilde{z_0} \in \z_0$ (Equation~(\ref{eq:TM1}) in Algorithm~\ref{algo}), 
+an enclosure of the solution by the system $z(t,z_0)$ over range $z_0 in \z_0$ (Equation~(\ref{eq:TM2})), 
+and an enclosure of its Jacobian with respect to $z_0$, evaluated over range $\z_0$ (Equation~(\ref{eq:TM3})). 
+The Jacobian is
+defined $J_{ij}(t,\z_0)=\frac{\partial z_i}{\partial z_{0,j}}(t,\z_0)$, for $i$ and $j$ between $1$ and $n$, and where $z_i$ is the $i$-th 
 component of the vector flow function $z$, and $z_{0,j}$ the $j$-th component of the vector of initial conditions $z_0$. 
 
 We compute these outer-approximations by applying the Taylor method of Section~\ref{sec:Taylor} to  $z(t,\tilde{z_0})$ 
