@@ -432,16 +432,21 @@ experiments with our prototype implementation, and make tentative comparisons to
 \paragraph{Related work:}
 \label{relatedwork}
 
-The computation of outer-approximating (or over-approximating) flowpipes
-and reachable sets of ODEs, either linear~\cite{GirardHSCC2005,LeGuernic09}, or non-linear~\cite{AlthoffS08,Nedialkov99,Dang4}
-has become a well-studied problem. This is  supported by several tools,
+There are numerous methods for the computation of outer-approximating (or over-approximating) flowpipes
+and reachable sets of ODEs, either linear \cite{GirardLinear06,LeGuernic09}, or non-linear \cite{Nedialkov99,Dang4,Dang3}, linear
+in the presence of uncertain parameters \cite{GirardHSCC2005}
+or non-linear with uncertain parameters \cite{Althoff}. This is also 
+supported by several tools,
 that can often also consider hybrid systems, see e.g. NLToolBox \cite{NLTOOLBOX}, 
-SpaceEx \cite{SPACEEX}, Flow* \cite{FLOW} and VNODE-LP \cite{VNODELP} to mention but a few. 
+SpaceEx \cite{SPACEEX}, Flow* \cite{FLOW}, \cite{Althoff2} and VNODE-LP \cite{VNODELP} to mention but a few. 
+
+CHECK \cite{kaynama2012computing,DBLP:phd/hal/LeGuernic09,Cardaliaguet2007}.
 
 %Outer-approximations of non-linear systems are well studied, using in particular Taylor
 %models, see \cite{Taylor07} for instance. 
 Inner-approximations have been far less studied, except in the case of linear systems, 
-see e.g. \cite{LeGuernic09,GirardLinear06}.
+see e.g. \cite{LeGuernic09,GirardLinear06}, or using ellipsoidal methods
+\cite{kurzhanski2000ellipsoidal} (see also the corresponding tool \cite{ellipsoidaltoolbox}).
 The main existing method for under-approximating (or inner-approximating as we put it 
 here) flowpipes of non-linear systems is a backward method, described in \cite{Underapproxflowpipes}. 
 The method starts with a general
