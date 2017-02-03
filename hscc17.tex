@@ -765,8 +765,8 @@ f^{[i+1]}_k & = & \sum\limits_{j=1}^n \frac{\partial{f^{[i]}_k}}{\partial z_j} f
 \label{Lie1}
 \end{eqnarray}
 
-\begin{proof}
-Let $z(t)$ be a solution to Equation (\ref{eq:flowb}) starting at
+%\begin{proof}
+Let us quickly recall how Equation~(\ref{eq:TM}) is obtained. Let $z(t)$ be a solution to Equation (\ref{eq:flowb}) starting at
 time 0 at point $z_0$. By definition~: 
 $$
 \begin{array}{rclcl}
@@ -786,8 +786,8 @@ f^{[l]}(z(t))\right) \\
 & = & \sum\limits_{j=1}^n f_j(z(t)) \frac{\partial f^{[l]}}{\partial z_j}(z(t)) 
 & = & f^{[l+1]}(z(t))
 \end{array}$$
-Equation (\ref{eq:TM}) is then a direct consequence from Taylor-La\-grange expansion, for sufficiently smooth functions $f$. 
-\end{proof}
+Equation (\ref{eq:TM}) is then a direct consequence from Taylor-La\-grange expansion, for sufficiently smooth functions $f$. \\
+%\end{proof}
 
 %\ForAuthors{Une ligne sur 
 %bien les derivees de Lie de f qu'il faut prendre pour l'expansion de Taylor}
@@ -917,7 +917,7 @@ replacing $\dot{z}_i$ by its expression in Equation (\ref{eq:flow}) and
 $\dot{J}_{kl}$ by its expression in Equation (\ref{eq:IVP_jac}). \\
 %\end{proof}
 
-We now summarize the full procedure for computing the inner and outer reachable sets of the system 
+We summarize the procedure for computing the inner and outer reachable sets of the system 
 on a time grid $t_0 < t_1 < \ldots < t_N$ in pseudo-Algorithm~\ref{algo}.
 
 %Altogether, given a time grid  $t_0 < t_1 < \ldots < t_N$, 
@@ -930,13 +930,16 @@ on a time grid $t_0 < t_1 < \ldots < t_N$ in pseudo-Algorithm~\ref{algo}.
 
 \RestyleAlgo{boxed}% Change from the 'ruled' style to 'boxed'
 
-
 \begin{algorithm}[h]
+\SetKwInput{KwInit}{Init}
+
 \KwData{ a time grid  $t_0 < t_1 < \ldots < t_N$, 
 an initial range $\z_0$, and some $\tilde{z_0} \in \z_0$}
-\underline{Initialize}: $j=0$, $t_j=t_0$, $[\z_j]=\z_0$, $[\tilde{z}_j]=\tilde{z}_0$, $[\J_j] = Id$
+\KwResult{$[\z](t,\z_0)$ and $]\z[(t,\z_0)$ over $t=[t_0,t_N]$}
+\KwInit{ $j=0$, $t_j=t_0$, $[\z_j]=\z_0$, $[\tilde{z}_j]=\tilde{z}_0$, $[\J_j] = Id$}
+\While{$j<N-1$}{
 
-Then on each time interval $[t_j,t_{j+1}]$ do:
+%Then on each time interval $[t_j,t_{j+1}]$ do:
 
 \underline{Step 1}. compute a priori enclosures $[\r_{j+1}]$  of  ${\cal Z}(t;t_j,\z_j)$ for all $t$ in $[t_j,t_{j+1}]$, $[\tilde{\r}_{j+1}]$  of  ${\cal Z}(t;t_j,\tilde{z}_j)$ for all $t$ in $[t_j,t_{j+1}]$,
 and $[\bfm{R}_{j+1}]$ of ${\cal J}(t;t_j,\z_j)$
@@ -952,20 +955,22 @@ and $[\bfm{R}_{j+1}]$ of ${\cal J}(t;t_j,\z_j)$
 \label{eq:TM2}
 \end{multline}
 \begin{multline}
-[\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} \mbox{Jac}_z(f^{[i]})([{\z}_{j}]). [{\J}_j] \\ +  \frac{(t-t_j)^k}{k !} \mbox{Jac}_z(f^{[k]})([{\r}_{j+1}]). [\bfm{R}_{j+1}]
+\hspace*{-0.5cm} [\J](t,t_j,[{\z}_j]) = [{\J}_j] + \sum\limits_{i=1}^{k-1} \frac{(t-t_j)^i}{i !} \mbox{Jac}_zf^{[i]}([{\z}_{j}]). [{\J}_j] \\ +  \frac{(t-t_j)^k}{k !} \mbox{Jac}_zf^{[k]}([{\r}_{j+1}]). [\bfm{R}_{j+1}]
 \label{eq:TM3}
 \end{multline}
 
-\underline{Step 3}. deduce an inner-approximation valid for $t$ in $[t_j,t_{j+1}]$~: if $]\z[(t,t_j)$ defined by Equation~(\ref{eq:inner_cont}) is an improper interval\\
-\begin{equation} 
-]\z[(t,t_j) = [\tilde{\z}](t,t_j,[\tilde{\z}_j]) + [\J](t,t_j,[{\z}_j])*([\overline{z_0},\underline{z_0}]-\tilde{z_0}) 
+\underline{Step 3}. deduce an inner-approximation valid for $t$ in $[t_j,t_{j+1}]$~: if $]\z[(t,t_j)$ defined by Equation~(\ref{eq:inner_cont}) is an improper interval
+\begin{multline} 
+ ]\z[(t,t_j) = [\tilde{\z}](t,t_j,[\tilde{\z}_j]) \\+ [\J](t,t_j,[{\z}_j])*([\overline{z_0},\underline{z_0}]-\tilde{z_0}) 
 \label{eq:inner_cont}
-\end{equation}
+\end{multline}
 \noindent 
 then interval $\pro]\z[(t,t_j)$ is an inner-approximation of  the set of solutions $\{ z(t,z_0), \, z_0(t_0) \in \z_0 \}$ of  (\ref{eq:flowb}) at time $t$,
 otherwise the inner-approximation is empty.\\
 
-\underline{Step 4}. initialize the next iteration by computing $[{\z}_{j+1}]=[\z](t_{j+1},t_j,[{\z}_j])$, $[\tilde{\z}_{j+1}]=[\tilde{\z}](t_{j+1},t_j,$ $[\tilde{\z}_j])$, $[\J_{j+1}] = [\J](t,t_j,[{\z}_j]) $\\
+\underline{Step 4}. %initialize the next iteration:
+ $[{\z}_{j+1}]=[\z](t_{j+1},t_j,[{\z}_j])$, $[\tilde{\z}_{j+1}]=[\tilde{\z}](t_{j+1},t_j,$ $[\tilde{\z}_j])$, $[\J_{j+1}] = [\J](t,t_j,[{\z}_j]) $
+}
 % }%         %    --------
 %   }%                                %
 %  \end{center}%                      %
@@ -974,7 +979,7 @@ otherwise the inner-approximation is empty.\\
 \caption{Computing inner and outer reachable sets \label{algo}}     
 \end{algorithm}
 
-In the next sections, we detail the different steps of Algorithm~\ref{algo}, and illustrate them on the following example:
+In the next sections, we detail the different steps of Algorithm~\ref{algo}, and illustrate them on the following running example:
 \begin{example}
 \label{running0}
 \label{running1}
@@ -1152,7 +1157,8 @@ is linear in the $J_{ij}$ as in Equation (\ref{pqentry}).
 %\ForAuthors{A compl\'eter}
 Equations (\ref{eq:TM3}) and (\ref{eq:TM3b}) are equivalent since the two derivatives (the Jacobian calculation
 and the Lie derivative) commute.  
-\begin{proof}
+%\begin{proof}
+
 We prove this equivalence by induction on the number of Lie derivations. 
 For $i=1$, we have, by definition $\nabla_z(f^{[1]})
 =\nabla_z(f)=(\nabla_z(f))^{[1]}$. Suppose now we have, as an induction
@@ -1211,7 +1217,7 @@ Equation (\ref{firstpart}).
 %\insertext{by the induction step} \\
 %& =& \sum_{i=1}^n \frac{\partial^2 f^{[i]}_p}{\partial z_i z_q} f_i \\
 %\end{array}$$
-\end{proof}
+%\end{proof}
 
 Equation (\ref{eq:TM3}) 
 is simpler to compute since we already computed
@@ -1308,7 +1314,7 @@ $.
 %\label{firstderivative}
 %\end{equation}
 %\end{eqnarray}
-Note that the non-linearity of $f$ and its Jacobian produces new noise symbols than just $\epsilon_1$,
+Note that the non-linearity of $f$ and its Jacobian produces new symbols in the evaluation with affine arithmetic than just $\epsilon_1$,
 $\epsilon_2$ : we noted them using the $\eta$ letter, instead of $\epsilon$, to make apparent the uncertainty
 produced by the interpretation in affine arithmetic. 
 Equation (\ref{firstcompf1}) evaluates in intervals
