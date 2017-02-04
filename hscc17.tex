@@ -438,15 +438,21 @@ in the presence of uncertain parameters \cite{GirardHSCC2005}
 or non-linear with uncertain parameters \cite{Althoff}. This is also 
 supported by several tools,
 that can often also consider hybrid systems, see e.g. NLToolBox \cite{NLTOOLBOX}, 
-SpaceEx \cite{SPACEEX}, Flow* \cite{FLOW}, \cite{Althoff2} and VNODE-LP \cite{VNODELP} to mention but a few. 
+SpaceEx \cite{SPACEEX}, Flow* \cite{FLOW}, CORA \cite{Althoff2} and VNODE-LP \cite{VNODELP} to mention but a few. 
 
-CHECK \cite{kaynama2012computing,DBLP:phd/hal/LeGuernic09,Cardaliaguet2007}.
-
+%CHECK \cite{kaynama2012computing,DBLP:phd/hal/LeGuernic09}
+%\cite{Cardaliaguet2007} bof, vois pas trop le rapport
 %Outer-approximations of non-linear systems are well studied, using in particular Taylor
 %models, see \cite{Taylor07} for instance. 
 Inner-approximations have been far less studied, except in the case of linear systems, 
 see e.g. \cite{LeGuernic09,GirardLinear06}, or using ellipsoidal methods
 \cite{kurzhanski2000ellipsoidal} (see also the corresponding tool \cite{ellipsoidaltoolbox}).
+Note that in \cite{kaynama2012computing}, the authors compute inner-approximations
+of the viability kernel by iterating backward (inner-approxima\-ted) reachability 
+problems, using the ellipsoidal methods of \cite{kurzhanski2000ellipsoidal}, and
+that the methods we propose here for inner-approximating reachable sets 
+can be used for inner-approxi\-mating viability kernels as well. 
+
 The main existing method for under-approximating (or inner-approximating as we put it 
 here) flowpipes of non-linear systems is a backward method, described in \cite{Underapproxflowpipes}. 
 The method starts with a general
@@ -1498,13 +1504,17 @@ what we will be doing in Section \ref{sec:exp_bruss}.
 \label{sec:experiments}
 %******************************************************************************
 %----------------------------------------------------------------------------------------------------------------------------------------------------------------
-We implemented \footnote{available from \url{http://www.lix.polytechnique.fr/Labo/Sylvie.Putot/software.html}}{} our method as follows: we use the {\tt FILIB++} C++ library~\cite{filib} for 
-interval computations, the {\tt FADBAD++} package \\ (http://www.fadbad.com) for automatic differentiation, and (a slightly modified version of)
-the {\tt aaflib} library \\ 
-(http://aaflib.sourceforge.net) for affine arithmetic. Affine arithmetic is used for the
+We implemented\footnote{available from \url{http://www.lix.polytechnique.fr/Labo/Sylvie.Putot/software.html}}{} our method relying on the {\tt FILIB++} C++ library~\cite{filib} for 
+interval computations, the {\tt FADBAD++} package (\url{http://www.fadbad.com}) for automatic differentiation, and (a slightly modified version of)
+the {\tt aaflib} library 
+(\url{http://aaflib.sourceforge.net}) for affine arithmetic. Affine arithmetic is used for the
 coefficients of the Taylor models in order to limit the wrapping effect. Matrix preconditioning is a more classical alternative. 
 But the use of affine arithmetic is convenient for prototyping, as we rely on the {\tt aaflib} library,
 and it also provides a nice trade-off between efficiency and accuracy.
+\EG{Tu n'es pas tres positive sur affine arithmetic versus preconditioning? 
+Moi j'avais l'impression quand meme que ca pouvait etre mieux aussi
+bien precision que efficiency avec affine arithmetic? J'ai un peu reedite 
+les phrases au dessus - et utilise l'environnement url}
 
 It allows us to first demonstrate in Section~\ref{sec:exp_bruss} the good behavior of our inner-approximated flowpipes
  on the quite difficult Brusselator model. % plus des elements permettant de quantifier le cout de surapprox par rapport a sousapprox
@@ -1566,6 +1576,8 @@ depending on the behavior of the Jacobian of the flow.
 \epsfig{file=cav16_bruss_order4_x1x2b.png,width=9cm,height=5cm}
 \end{center}
 \caption{Brusselator ($x_1$ and $x_2$), Taylor models order 4 \label{fig:brusselator_order4_x2_t10}}
+\EG{La qualite du png est moyenne? Ptet sous apercu quand tu change de tiff
+en png, il faut mettre qualite max ou qqchose comme ca?}
 \end{figure}
 
 
@@ -1634,6 +1646,10 @@ In  \cite{Underapproxflowpipes}, the  accuracy of computations is measured by th
 where $V$ is a set of vectors, and $\gamma_u(v)$ and $\gamma_o(v)$ measure respectively the width of the inner-approximation and outer-approximation
 in direction $v \in V$. 
 Intuitively, the larger this ratio, the better the approximation. 
+\EG{Je n'arrive pas a trouver une formulation qui me paraisse vraiment anglaise,
+peut-etre celle-ci, mais pas de verbe et pour moi c'etait the larger, the better
+ou si tu precises, il faut un verbe pour faire une phrase? sinon 
+je propose the larger this ratio is, the better the approximation gets ?}
 Our method naturally gives inner ranges for the projection of the flow system on its state variables. %(although we can also directly deduce from our Taylor models 
 %an inner-approximation of the range of any linear function of these variables, and also define a joint range, as 
 %already mentioned).
@@ -1665,7 +1681,7 @@ Further decreasing the precision starts degrading the quality of results.
 
 
 
-On Figure~\ref{ex:width_sriram_bruss1}, we represent $\gamma_{\min}$ as a function of time, for a  time range 
+On Figure~\ref{ex:width_sriram_bruss1}, \EG{Ou ``In Figure?''} we represent $\gamma_{\min}$ as a function of time, for a  time range 
 extended to a maximum time of 10 in order to observe further behavior. 
 We observe that at $t=3$, the relative width of the inner-approximation over the
 outer-approximation is of order $0.7$, which is equal to the value given in Table~1 of \cite{Underapproxflowpipes}. 
@@ -1682,7 +1698,7 @@ is still of high quality. We note that it is only temporary, as at further times
 \end{figure}
 On Figure~\ref{ex:width_sriram_bruss2}, we represent the evolution with time of the widths of the inner- and outer-approximations of $x_2$, 
 the component that makes $\gamma_{\min}$ decrease drastically around $t=4$. We see that whenever the width of the inner-approximation on $x_2$ decreases 
-to zero, the width of the outer-approximation is also strongly decreasing: the difference between these width remains 
+to zero, the width of the outer-approximation is also strongly decreasing: the difference between these widths remains 
 almost stable. We also note again that the inner-approximation becoming empty at some point does not impact the behavior of the inner-approximation 
 at further times. Finally, we note that this system looks quite stable, with solution widths that tend to decrease with time. This is of course a
 difficult case for demonstrating  the inner-approximation, as its width naturally tends towards 0 due to the problem, as we note on 
@@ -1747,7 +1763,7 @@ we compute the distance to the outer-approximation, which will always be greater
 Also, our understanding is that there are no guarantees in the method of \cite{underapprox16} on the actual distance from the inner-approximation itself 
 to the reachable set, whereas our bounds are guaranteed. 
 
-We measure obtain in 0.8 seconds a distance equal to 0.005 for $x_1$, and 0.01 for $x_2$, which is 10 times larger than the estimation 0.001 obtained 
+We obtain in 0.8 seconds a distance equal to 0.005 for $x_1$, and 0.01 for $x_2$, which is 10 times larger than the estimation 0.001 obtained 
 in 55 seconds in \cite{underapprox16}. 
 % However, choosing  higher order models or smaller time steps does not seem to improve much our distance measures. 
 
